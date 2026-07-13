@@ -1,5 +1,5 @@
 DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS spaces;
+DROP TABLE IF EXISTS listings;
 
 CREATE TABLE users(
     id SERIAL PRIMARY KEY,
@@ -9,7 +9,7 @@ CREATE TABLE users(
     password TEXT NOT NULL
 );
 
-CREATE TABLE spaces(
+CREATE TABLE listings(
     id SERIAL PRIMARY KEY, 
     owner_id INT NOT NULL REFERENCES users(id),
     title TEXT NOT NULL,
