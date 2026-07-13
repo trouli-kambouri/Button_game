@@ -4,3 +4,4 @@ class Listing():
         self.location = location
         self.price = price
         self.owner_id = owner_id
+
