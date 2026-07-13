@@ -25,8 +25,8 @@ Everyone in the team should then clone that copy of the repo to their local mach
 # If you have problems with the above, contact your coach
 
 # Create a test and development database
-(makersbnb-venv); createdb YOUR_PROJECT_NAME
-(makersbnb-venv); createdb YOUR_PROJECT_NAME_TEST
+(makersbnb-venv); createdb makers_bnb
+(makersbnb-venv); createdb makers_bnb_test
 
 # Open lib/database_connection.py and change the database names
 (makersbnb-venv); open lib/database_connection.py
