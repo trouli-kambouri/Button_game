@@ -1,3 +1,13 @@
-body {
-    font-size: 18px;
+h1      /* Header 1 */
+{
+    color:  #522081; 
+    font-size: 40px;
+    text-align: center;
+}
+h2      /* Header 2 */
+{
+    color: #601f9e;
+    font-size: 36px;
+    text-align: center;
+    font-style: italic;
 }

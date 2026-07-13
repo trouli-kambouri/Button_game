@@ -1,5 +1,5 @@
 import os, psycopg
-from flask import g
+from flask import Flask
 from psycopg.rows import dict_row
 
 
