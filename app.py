@@ -38,6 +38,10 @@ def remove_listing():
     listing_repository.remove(listing)
     return redirect("/")    
 
+@app.route('/listings', methods=['GET'])
+def get_listings_page():
+    return render_template('static.html')
+
 
 # These lines start the server if you run this file directly
 # They also start the server configured to use the test database
