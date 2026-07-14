@@ -54,6 +54,14 @@ def test_find_by_email_returns_user_with_passed_email_address(db_connection):
     repository = UserRepository(db_connection)
     user = repository.find_by_email("gurpgill@grillsforu.net")
 
-    
-
     assert user == User('gurpeetgill', 'gurpgill@grillsforu.net', '07652987709', 'youcantguess', 3)
+
+def test_find_by_email_returns_None_if_no_user_exists_with_passed_email_address(db_connection):
+    db_connection.seed("seeds/reset_users_data.sql")
+    db_connection.seed("seeds/listings.sql")
+
+    repository = UserRepository(db_connection)
+    user = repository.find_by_email("pinkgrapefruit@grillsforu.net")
+
+    assert user == None
+    
