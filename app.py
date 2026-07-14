@@ -24,7 +24,7 @@ def create_listing():
     connection.connect()
     listing_repository = ListingRepository(connection)
     listing_details = request.form
-    new_listing = Listing(title=listing_details["title"], description=listing_details["description"], price=listing_details['price'])
+    new_listing = Listing(title=listing_details["title"], description=listing_details["description"], price=listing_details['price'], owner_id=listing_details['owner_id'])
     listing_repository.create(new_listing)
     return redirect("/")
 
@@ -34,7 +34,7 @@ def remove_listing():
     connection.connect()
     listing_repository = ListingRepository(connection)
     listing_details = request.form
-    listing = Listing(title=listing_details["title"], description=listing_details["description"], price=listing_details['price'])
+    listing = Listing(title=listing_details["title"], description=listing_details["description"], price=listing_details['price'], owner_id=listing_details['owner_id'])
     listing_repository.remove(listing)
     return redirect("/")    
 
