@@ -68,7 +68,7 @@ def signup_user():
     user_details = request.form
     new_user = User(name=user_details["name"], email=user_details["email"], phone_number=user_details["phone_number"], password=user_details["password"])
     user_repository.create(new_user)
-    return redirect("/login")
+    return redirect("/users/login")
 
 """
 Login Page GET(get login page) POST(create session)
@@ -85,14 +85,14 @@ def create_session():
     connection = DatabaseConnection()
     connection.connect()
     user_repository = UserRepository(connection)
-    name = request.form["name"]
+    email = request.form["email"]
     password = request.form["password"]
-    user = user_repository.find_by_name(name)
+    user = user_repository.find_by_name(email)
 
     if user and user.password == password:
         session["user_id"] = user.id
-        session["name"] = user.name
-        return redirect("/listings")
+        session["email"] = user.email
+        return redirect("/")
     else:
         return redirect("/users/login")
 
