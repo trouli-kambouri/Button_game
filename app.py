@@ -28,6 +28,17 @@ def create_listing():
     listing_repository.create(new_listing)
     return redirect("/")
 
+@app.route('/', methods=['POST'])
+def remove_listing():
+    connection = DatabaseConnection()
+    connection.connect()
+    listing_repository = ListingRepository(connection)
+    listing_details = request.form
+    listing = Listing(title=listing_details["title"], description=listing_details["description"], price=listing_details['price'])
+    listing_repository.remove(listing)
+    return redirect("/")    
+
+
 # These lines start the server if you run this file directly
 # They also start the server configured to use the test database
 # if started in test mode.
