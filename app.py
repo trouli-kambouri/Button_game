@@ -25,9 +25,10 @@ Landing page GET(get landing page) POST(create listig) POST(remove listing)
 def get_landing_page():
     connection = DatabaseConnection()
     connection.connect()
-    lising_repository = ListingRepository(connection)
-    listing = lising_repository .all()
-    return render_template('static.html', listing=listing)
+    listing_repository = ListingRepository(connection)
+    listing = listing_repository.all()
+    return render_template('index.html', listing=listing)
+
 
 @app.route('/', methods=['POST'])
 def create_listing():

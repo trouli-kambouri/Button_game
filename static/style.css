@@ -1,13 +1,56 @@
-h1      /* Header 1 */
+
+/* Header 1 */
+h1      
 {
-    color:  #522081; 
+    margin: 0;
+    padding: 0;
+    color:  #FFFFFF; 
     font-size: 40px;
     text-align: center;
+    text-shadow: 0px 4px 10px rgba(0, 0, 0, 0.7);
 }
-h2      /* Header 2 */
+
+/* Header 2 */
+h2      
 {
-    color: #601f9e;
+    color: #FFFFFF;
     font-size: 36px;
     text-align: center;
     font-style: italic;
+    text-shadow: 0px 4px 10px rgba(0, 0, 0, 0.7);
 }
+
+/* Header 3*/
+h3     
+{
+    color: #FFFFFF;
+    font-size: 32px;
+    text-align: center;
+    font-style: italic;
+    text-shadow: 0px 4px 10px rgba(0, 0, 0, 0.7);
+}
+
+/* Background Image */
+body{
+
+    /* Setting a gradient that overlays the background image. */
+    /* This makes the background image dimmer and the text easier to see */
+    /* Change 0.5 to larger or smaller number to make background dimmer or less dim */
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+    
+    url('../static/background.png');  /* The background image is at the location ../static/background.png. */
+    margin: 0;
+    height: 100vh;
+    background-size: cover;        /* Filling screen */
+    background-position: center;   /* Image centred */
+    background-repeat: no-repeat;  /* No tiling */
+}
+
+/* Logo - optional */
+/*
+.logo {
+    display: block;
+    width: 200px;
+    margin: 20px auto;
+}
+*/
