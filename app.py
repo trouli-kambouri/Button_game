@@ -20,14 +20,13 @@ app.secret_key = "some_really_secret_key"
 Landing page GET(get landing page) POST(create listig) POST(remove listing)
 """
 
-
 @app.route('/', methods=['GET'])
 def get_landing_page():
     connection = DatabaseConnection()
     connection.connect()
     listing_repository = ListingRepository(connection)
-    listing = listing_repository.all()
-    return render_template('index.html', listing=listing)
+    listings = listing_repository.all()
+    return render_template('index.html', listings=listings)
 
 
 @app.route('/', methods=['POST'])

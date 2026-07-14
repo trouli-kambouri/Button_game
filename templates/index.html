@@ -8,7 +8,15 @@
         <h1> Welcome to MakersBnB </h1>
         <h2> Listings </h2>
         <section>
-            <h3>Top {{ listings_list | length }}</h3> 
+            <h3>Top {{ listings| length }}</h3> 
+            <ul>
+                {% for listing in listings %}
+                    <li><strong>{{ listing.title }}</strong> ({{ listing.owner_id }}, <em>{{ listing.price_per_night }}</em>)</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </section>
+</html>
 
             <!-- Optional logo
             <div class="logo">
@@ -24,12 +32,3 @@
                 <li><a href="#">Sign Up</a></li>
             </ul>
             -->
-
-            <ul>
-                {% for listing in listings_list %}
-                    <li><strong>{{ listing.title }}</strong> ({{ listing.owner_id }}, <em>{{ listing.price_per_night }}</em>)</li>
-                {% endfor %}
-            </ul>
-        </div>
-    </section>
-</html>
