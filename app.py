@@ -30,16 +30,6 @@ def get_landing_page():
 
 
 @app.route('/', methods=['POST'])
-def create_listing():
-    connection = DatabaseConnection()
-    connection.connect()
-    listing_repository = ListingRepository(connection)
-    listing_details = request.form
-    new_listing = Listing(title=listing_details["title"], description=listing_details["description"], price=listing_details['price'], owner_id=listing_details['owner_id'])
-    listing_repository.create(new_listing)
-    return redirect("/")
-
-@app.route('/', methods=['POST'])
 def remove_listing():
     connection = DatabaseConnection()
     connection.connect()
@@ -98,9 +88,33 @@ def create_session():
         return redirect("/")
     else:
         return redirect("/users/login")
+    
+
+# listings pages
+
+@app.route('/listings', methods=['GET'])
+def get_listings():
+    connection = DatabaseConnection()
+    connection.connect()
+    listing_repository = ListingRepository(connection)
+    listings = listing_repository.all()
+    return render_template('listings.html', listings=listings)
+
+@app.route('/listings/new', methods=['POST'])
+def create_listing():
+    connection = DatabaseConnection()
+    connection.connect()
+    listing_repository = ListingRepository(connection)
+    listing_details = request.form
+    new_listing = Listing(title=listing_details["title"], description=listing_details["description"], price=listing_details['price'], owner_id=listing_details['owner_id'])
+    listing_repository.create(new_listing)
+    return redirect("/listings")
+
 
 # These lines start the server if you run this file directly
 # They also start the server configured to use the test database
 # if started in test mode.
 if __name__ == '__main__':
     app.run(debug=True, port=int(os.environ.get('PORT', 5001)))
+
+
