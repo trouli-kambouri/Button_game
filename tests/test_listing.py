@@ -2,9 +2,9 @@ from lib.listing import Listing
 
 def test_listing_intialises_with_expected_fields_represented_in_string():
 
-    listing = Listing("A beautiful hovel by the sea", "Place-on-Sea", 32, 1, 1)
+    listing = Listing(1, "A beautiful hovel by the sea", "Place-on-Sea", 32, 1)
 
-    assert str(listing) == "Listing(1, A beautiful hovel by the sea, Place-on-Sea, £32, 1)"
+    assert str(listing) == "Listing(1, 1, A beautiful hovel by the sea, Place-on-Sea, £32)"
 
 def test_listing_compares_listings_by_attributes():
 
