@@ -10,7 +10,7 @@
         <section>
             <ul>
                 {% for listing in listings %}
-                    <li><strong>{{ listing.title }}</strong> ({{ listing.owner_id }}, <em>{{ listing.price_per_night }}</em>)</li>
+                    <li><strong>{{ listing.title }}</strong> ({{ listing.description }}, <em>£{{ listing.price_per_night }}</em>)</li>
                 {% endfor %}
             </ul>
         </div>
