@@ -4,7 +4,7 @@ from lib.database_connection import DatabaseConnection
 from lib.users import User
 from lib.user_repository import UserRepository
 from lib.listing import Listing
-# from lib.listing_repository import ListingRepository
+from lib.listing_repository import ListingRepository
 # Create a new Flask app
 app = Flask(__name__)
 
@@ -16,7 +16,11 @@ app = Flask(__name__)
 #   ; open http://localhost:5001/index
 @app.route('/', methods=['GET'])
 def get_landing_page():
-    return render_template('index.html')
+    connection = DatabaseConnection()
+    connection.connect()
+    lising_repository = ListingRepository(connection)
+    listing = lising_repository .all()
+    return render_template('index.html', listing=listing)
 
 @app.route('/', methods=['POST'])
 def create_listing():
