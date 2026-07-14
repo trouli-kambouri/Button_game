@@ -1,50 +1,19 @@
-
-<!--
-This .html will be used if we have a separate /listings route
--->
-
-<!--
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Our Listings</title>
+        <title>Add a listing</title>
         <link rel="stylesheet" href="static/style.css"> 
-        Optional: edit to your own css sheet
     </head>
-
-    <body>
-        <header>
-            <h1>Listings</h1>
-            <p>Exclusive to MakersBnB!</p>
-        </header>
-        <section>
-            <h2>Top {{ listings_list | length }}</h2>
-            <div>
-                <ul>
-                    {% for listing in listings_list %}
-                        <li><strong>{{ listing.title }}</strong> ({{ listing.owner_id }}, <em>{{ listing.price_per_night }}</em>)</li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </section>
-    -->
-
-    <!--
-    (This section is in preparation for users creating their own listings)
-    -->
-    
-    <!--
         <section>
             <h3>Add new listing:</h3>
             <form method="POST" action="/listings">
                 <input type="text" name="owner_id" placeholder="Owner"><br>
                 <input type="text" name="title" placeholder="Title"><br>
                 <input type="text" name="price" placeholder="Price"><br>
-                <input type="text" name="id" placeholder="id"
+                <input type="text" name="id" placeholder="id"><br>
                 <input type="submit" value="Submit">
             </form>	
         </section>
     </body>
 
 </html> 
--->
