@@ -91,7 +91,7 @@ def create_session():
     user_repository = UserRepository(connection)
     email = request.form["email"]
     password = request.form["password"]
-    user = user_repository.find_by_name(email)
+    user = user_repository.find_by_email(email)
 
     if user and user.password == password:
         session["user_id"] = user.id
