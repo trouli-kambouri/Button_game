@@ -28,6 +28,16 @@ class ListingRepository():
         rows = self._connection.execute(query)
         return [[Listing(row["owner_id"], row["title"], row["description"], row["price_per_night"], row["property_id"]), row["owner_email"]] for row in rows]
 
+    def find_by_listing_id(self, property_id):
+        
+        result = self._connection.execute("SELECT * FROM listings WHERE id = %s", [property_id])[0]
 
+        return Listing(result["owner_id"], result["title"], result["description"], result["price_per_night"], result["id"])
 
+    def create(self, listing):
+        self._connection.execute("INSERT INTO listings (owner_id, title, description, price_per_night) VALUES (%s, %s, %s, %s)", 
+                                 [listing.owner_id, listing.title, listing.description, listing.price_per_night])
+        
+        return None
+        
 
