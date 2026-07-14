@@ -16,15 +16,11 @@ app = Flask(__name__)
 #   ; open http://localhost:5001/index
 @app.route('/', methods=['GET'])
 def get_landing_page():
-<<<<<<< HEAD
-    return render_template('static.html')
-=======
     connection = DatabaseConnection()
     connection.connect()
-    lising_repository = ListingRepository(connection)
-    listing = lising_repository .all()
-    return render_template('index.html', listing=listing)
->>>>>>> 6f9d7422ba5a9daec1c214adfe5df6b3d10c5e64
+    listing_repository = ListingRepository(connection)
+    listings_list = listing_repository.all()
+    return render_template('index.html', listings_list=listings_list)
 
 @app.route('/', methods=['POST'])
 def create_listing():
