@@ -16,6 +16,9 @@ def test_listing_repository_all_returns_list_of_all_listings(db_connection):
     assert listings == repository.all()
 
 def test_listing_repository_returns_list_of_all_properties_with_owner_emails(db_connection):
+    db_connection.seed("seeds/reset_users_data.sql")
+    db_connection.seed("seeds/listings.sql")
+
     listings = [
         Listing(1, 'Rain-soaked shed on a mountain', 'Greenfield', 71, 1 ),
         Listing(1, 'Uncomfortable camper van in a lay-by', 'Newtown', 21, 2),
