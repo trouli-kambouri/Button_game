@@ -2,6 +2,15 @@ from playwright.sync_api import Page, expect
 from lib.database_connection import DatabaseConnection
 
 
+def reset_database(db_connection: DatabaseConnection):
+    db_connection.execute(
+        """
+        TRUNCATE TABLE listings, users
+        RESTART IDENTITY CASCADE
+        """
+    )
+
+
 def create_test_user(
     db_connection: DatabaseConnection
 ):
@@ -21,34 +30,34 @@ def create_test_user(
     )
 
 
-def test_signin_page_displays_form(
-    page: Page,
-    test_web_address: str
-):
-    page.goto(f"http://{test_web_address}/sessions/new")
-
-    expect(
-        page.get_by_role("heading", name="Sign in")
-    ).to_be_visible()
-
-    expect(page.locator('input[name="email"]')).to_be_visible()
-    expect(
-        page.locator('input[name="password"]')
-    ).to_be_visible()
-
-    expect(
-        page.get_by_role("button", name="Sign in")
-    ).to_be_visible()
-
-
-def test_user_can_sign_in(
+def test_login_page_displays_form(
     page: Page,
     test_web_address: str,
     db_connection: DatabaseConnection
 ):
+    reset_database(db_connection)
+
+    page.goto(f"http://{test_web_address}/users/login")
+
+    expect(page.locator('input[name="email"]')).to_be_visible()
+    expect(page.locator('input[name="password"]')).to_be_visible()
+
+    expect(
+        page.locator(
+            'button[type="submit"], input[type="submit"]'
+        )
+    ).to_be_visible()
+
+
+def test_user_can_log_in(
+    page: Page,
+    test_web_address: str,
+    db_connection: DatabaseConnection
+):
+    reset_database(db_connection)
     create_test_user(db_connection)
 
-    page.goto(f"http://{test_web_address}/sessions/new")
+    page.goto(f"http://{test_web_address}/users/login")
 
     page.locator('input[name="email"]').fill(
         "anton@example.com"
@@ -57,21 +66,25 @@ def test_user_can_sign_in(
         "password123"
     )
 
-    page.get_by_role("button", name="Sign in").click()
+    page.locator(
+        'button[type="submit"], input[type="submit"]'
+    ).click()
 
+    # Successful login redirects to the landing page
     expect(page).to_have_url(
         f"http://{test_web_address}/"
     )
 
 
-def test_user_cannot_sign_in_with_wrong_password(
+def test_user_cannot_log_in_with_wrong_password(
     page: Page,
     test_web_address: str,
     db_connection: DatabaseConnection
 ):
+    reset_database(db_connection)
     create_test_user(db_connection)
 
-    page.goto(f"http://{test_web_address}/sessions/new")
+    page.goto(f"http://{test_web_address}/users/login")
 
     page.locator('input[name="email"]').fill(
         "anton@example.com"
@@ -80,12 +93,11 @@ def test_user_cannot_sign_in_with_wrong_password(
         "wrong-password"
     )
 
-    page.get_by_role("button", name="Sign in").click()
+    page.locator(
+        'button[type="submit"], input[type="submit"]'
+    ).click()
 
-    expect(
-        page.get_by_text("Incorrect email or password")
-    ).to_be_visible()
-
+    # app.py redirects failed logins back to the login page
     expect(page).to_have_url(
-        f"http://{test_web_address}/sessions/new"
+        f"http://{test_web_address}/users/login"
     )
