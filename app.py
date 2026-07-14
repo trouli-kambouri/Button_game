@@ -16,7 +16,7 @@ app = Flask(__name__)
 #   ; open http://localhost:5001/index
 @app.route('/', methods=['GET'])
 def get_landing_page():
-    return render_template('index.html')
+    return render_template('static.html')
 
 @app.route('/', methods=['POST'])
 def create_listing():
