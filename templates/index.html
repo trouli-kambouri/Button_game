@@ -8,7 +8,6 @@
         <h1> Welcome to MakersBnB </h1>
         <h2> Listings </h2>
         <section>
-            <h3>Top {{ listings| length }}</h3> 
             <ul>
                 {% for listing in listings %}
                     <li><strong>{{ listing.title }}</strong> ({{ listing.owner_id }}, <em>{{ listing.price_per_night }}</em>)</li>

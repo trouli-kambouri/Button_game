@@ -44,6 +44,9 @@ body{
     background-size: cover;        /* Filling screen */
     background-position: center;   /* Image centred */
     background-repeat: no-repeat;  /* No tiling */
+    color: #FFFFFF;
+    font-size: 28px;
+    text-align: center;
 }
 
 /* Logo - optional */
