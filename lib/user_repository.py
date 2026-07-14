@@ -25,9 +25,16 @@ class UserRepository():
 
         if user.email in emails:
             raise ValueError("Email already exists. Please log-in.")
-
+        
         self._connection.execute(
             "INSERT INTO users (name, email, phone_number, password) "
             "VALUES (%s, %s, %s, %s)", [user.name, user.email, user.phone_number, user.password]
         )
         return None
+    
+    def find_by_email(self, email_address):
+        result = self._connection.execute('SELECT * FROM users WHERE email = %s', [email_address])[0]
+
+
+
+        return User(result["name"], result["email"], result["phone_number"], result["password"], result["id"])
