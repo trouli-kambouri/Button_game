@@ -1,6 +1,16 @@
 class Listing():
-    def __init__(self, title, location, price, owner_id):
-        self.title = title
-        self.location = location
-        self.price = price
+    def __init__(self, owner_id, title, description, price, id=None):
+        # For MVP, description is used as proxy for location
+
         self.owner_id = owner_id
+        self.title = title
+        self.description = description
+        self.price_per_night = price
+        self.id = id
+
+    def __repr__(self):
+        return(f"Listing({self.id}, {self.owner_id}, {self.title}, {self.description}, £{self.price_per_night})")
+    
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__
+    
