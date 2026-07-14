@@ -61,4 +61,18 @@ def test_listing_adds_new_listing(db_connection):
         Listing(1, 'Palacial shed in a field', 'Idyllicville', 1010, 4)        
     ]
 
-    assert listings == repository.all() 
+    assert listings == repository.all()
+
+def test_listing_repository_deletes_listing_with_given_id(db_connection):
+    db_connection.seed("seeds/reset_users_data.sql")
+    db_connection.seed("seeds/listings.sql")
+
+    repository = ListingRepository(db_connection)
+    listings = [
+        Listing(1, 'Rain-soaked shed on a mountain', 'Greenfield', 71, 1 ),
+        Listing(2, 'Glamorous pad in fancy town', 'Hopington', 311, 3)
+    ]
+
+    repository.remove(2)
+
+    assert listings == repository.all()
