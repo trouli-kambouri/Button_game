@@ -16,9 +16,9 @@ class UserRepository():
     
     
     
-    # def create(self, book):
-    #     self._connection.execute(
-    #         "INSERT INTO books (name, author, image_url) "
-    #         "VALUES (%s, %s, %s)", [book.title, book.author, book.image_url]
-    #     )
-    #     return None
+    def create(self, user):
+        self._connection.execute(
+            "INSERT INTO books (name, email, phone_number, password) "
+            "VALUES (%s, %s, %s, %s)", [user.name, user.email, user.phone_number, user.password]
+        )
+        return None
