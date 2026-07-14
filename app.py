@@ -69,9 +69,10 @@ def signup_user():
     try:
         user_repository.create(new_user)
         flash("Sign up successful!", "success")
+        return redirect('users/login')
     except ValueError as e:
-        flash(str(e), 'credentials unavailable, please try again')
-    return redirect("/users/login")
+        flash(str(e), "error")
+        return redirect("/users/new")
 
 """
 Login Page GET(get login page) POST(create session)
@@ -90,7 +91,7 @@ def create_session():
     user_repository = UserRepository(connection)
     email = request.form["email"]
     password = request.form["password"]
-    user = user_repository.find_by_name(email)
+    user = user_repository.find_by_email(email)
 
     if user and user.password == password:
         session["user_id"] = user.id
@@ -98,6 +99,14 @@ def create_session():
         return redirect("/")
     else:
         return redirect("/users/login")
+
+@app.after_request
+def add_header(response):
+    # This tells the browser: "Do not save a frozen snapshot of this page!"
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
 
 # These lines start the server if you run this file directly
 # They also start the server configured to use the test database

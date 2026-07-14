@@ -2,6 +2,7 @@
     <head>
         <title>Sign Up page</title>
         <link rel="stylesheet" href="/static/style.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='flash_styles.css') }}">
     </head>
     <body>
         <main>
@@ -15,4 +16,15 @@
 
                 <button type="submit">Sign Up</button>            
             </form>
+
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="flash-message {{ category }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
         </main>
