@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, flash
 from lib.database_connection import DatabaseConnection
 from lib.users import User
 from lib.user_repository import UserRepository
@@ -67,7 +67,11 @@ def signup_user():
     user_repository = UserRepository(connection)
     user_details = request.form
     new_user = User(name=user_details["name"], email=user_details["email"], phone_number=user_details["phone_number"], password=user_details["password"])
-    user_repository.create(new_user)
+    try:
+        user_repository.create(new_user)
+        flash("Sign up successful!", "success")
+    except ValueError as e:
+        flash(str(e), 'credentials unavailable, please try again')
     return redirect("/users/login")
 
 """
