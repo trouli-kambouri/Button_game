@@ -5,7 +5,7 @@ class UserRepository():
         self._connection = connection
 
     def all(self):
-        rows = self._connection.execute('SELECT * FROM user')
+        rows = self._connection.execute('SELECT * FROM users')
         users = []
         for row in rows:
 
@@ -13,6 +13,8 @@ class UserRepository():
 
             users.append(item)
         return users
+    
+    
     
     # def create(self, book):
     #     self._connection.execute(
