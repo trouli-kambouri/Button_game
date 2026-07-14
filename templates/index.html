@@ -1,11 +1,35 @@
 <!DOCTYPE html>
 <html>
     <head>
-            <h1>Welcome to MakersBnB!</h1>
-            <h2>Find your dream home here...</h2> 
-        <link rel="stylesheet" href="/static/style.css" >
+        <title>Welcome to MakersBnB</title> 
+        <link rel="stylesheet" href="static/style.css"> 
     </head>
     <body>
-        <p>This is the homepage.</p>
-    </body>
+        <h1> Welcome to MakersBnB </h1>
+        <h2> Listings </h2>
+        <section>
+            <h3>Top {{ listings_list | length }}</h3> 
+
+            <!-- Optional logo
+            <div class="logo">
+                <img src="static/logo.png" alt="MakersBnB logo">
+            </div>
+            -->
+
+            <!-- Optional navigation bar
+            <ul class="nav_area">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Listings</a></li>
+                <li><a href="#">Create Listing</a></li>
+                <li><a href="#">Sign Up</a></li>
+            </ul>
+            -->
+
+            <ul>
+                {% for listing in listings_list %}
+                    <li><strong>{{ listing.title }}</strong> ({{ listing.owner_id }}, <em>{{ listing.price_per_night }}</em>)</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </section>
 </html>
