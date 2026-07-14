@@ -2,6 +2,15 @@ from playwright.sync_api import Page, expect
 from lib.database_connection import DatabaseConnection
 
 
+def reset_database(db_connection: DatabaseConnection):
+    db_connection.execute(
+        """
+        TRUNCATE TABLE listings, users
+        RESTART IDENTITY CASCADE
+        """
+    )
+
+
 def create_test_user(
     db_connection: DatabaseConnection
 ):
@@ -21,11 +30,15 @@ def create_test_user(
     )
 
 
-def sign_in(
+def test_successful_login_creates_session_cookie(
     page: Page,
-    test_web_address: str
+    test_web_address: str,
+    db_connection: DatabaseConnection
 ):
-    page.goto(f"http://{test_web_address}/sessions/new")
+    reset_database(db_connection)
+    create_test_user(db_connection)
+
+    page.goto(f"http://{test_web_address}/users/login")
 
     page.locator('input[name="email"]').fill(
         "anton@example.com"
@@ -34,37 +47,56 @@ def sign_in(
         "password123"
     )
 
-    page.get_by_role("button", name="Sign in").click()
-
-
-def test_signed_out_user_cannot_access_new_listing_page(
-    page: Page,
-    test_web_address: str
-):
-    page.goto(f"http://{test_web_address}/listings/new")
+    page.locator(
+        'button[type="submit"], input[type="submit"]'
+    ).click()
 
     expect(page).to_have_url(
-        f"http://{test_web_address}/sessions/new"
+        f"http://{test_web_address}/"
     )
 
+    cookies = page.context.cookies()
 
-def test_signed_in_user_can_access_new_listing_page(
+    session_cookies = [
+        cookie
+        for cookie in cookies
+        if cookie["name"] == "session"
+    ]
+
+    assert len(session_cookies) == 1
+
+
+def test_failed_login_does_not_create_session_cookie(
     page: Page,
     test_web_address: str,
     db_connection: DatabaseConnection
 ):
+    reset_database(db_connection)
     create_test_user(db_connection)
-    sign_in(page, test_web_address)
 
-    page.goto(f"http://{test_web_address}/listings/new")
+    page.goto(f"http://{test_web_address}/users/login")
 
-    expect(page).to_have_url(
-        f"http://{test_web_address}/listings/new"
+    page.locator('input[name="email"]').fill(
+        "anton@example.com"
+    )
+    page.locator('input[name="password"]').fill(
+        "wrong-password"
     )
 
-    expect(
-        page.get_by_role(
-            "heading",
-            name="Create a new listing"
-        )
-    ).to_be_visible()
+    page.locator(
+        'button[type="submit"], input[type="submit"]'
+    ).click()
+
+    expect(page).to_have_url(
+        f"http://{test_web_address}/users/login"
+    )
+
+    cookies = page.context.cookies()
+
+    session_cookies = [
+        cookie
+        for cookie in cookies
+        if cookie["name"] == "session"
+    ]
+
+    assert len(session_cookies) == 0

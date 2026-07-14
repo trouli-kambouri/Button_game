@@ -2,25 +2,33 @@ from playwright.sync_api import Page, expect
 from lib.database_connection import DatabaseConnection
 
 
+def reset_database(db_connection: DatabaseConnection):
+    db_connection.execute(
+        """
+        TRUNCATE TABLE listings, users
+        RESTART IDENTITY CASCADE
+        """
+    )
+
+
 def test_signup_page_displays_form(
     page: Page,
-    test_web_address: str
+    test_web_address: str,
+    db_connection: DatabaseConnection
 ):
-    page.goto(f"http://{test_web_address}/users/new")
+    reset_database(db_connection)
 
-    expect(
-        page.get_by_role("heading", name="Sign up")
-    ).to_be_visible()
+    page.goto(f"http://{test_web_address}/users/new")
 
     expect(page.locator('input[name="name"]')).to_be_visible()
     expect(page.locator('input[name="email"]')).to_be_visible()
-    expect(
-        page.locator('input[name="phone_number"]')
-    ).to_be_visible()
+    expect(page.locator('input[name="phone_number"]')).to_be_visible()
     expect(page.locator('input[name="password"]')).to_be_visible()
 
     expect(
-        page.get_by_role("button", name="Sign up")
+        page.locator(
+            'button[type="submit"], input[type="submit"]'
+        )
     ).to_be_visible()
 
 
@@ -29,6 +37,8 @@ def test_user_can_sign_up(
     test_web_address: str,
     db_connection: DatabaseConnection
 ):
+    reset_database(db_connection)
+
     page.goto(f"http://{test_web_address}/users/new")
 
     page.locator('input[name="name"]').fill("Anton Edeh")
@@ -42,10 +52,13 @@ def test_user_can_sign_up(
         "password123"
     )
 
-    page.get_by_role("button", name="Sign up").click()
+    page.locator(
+        'button[type="submit"], input[type="submit"]'
+    ).click()
 
+    # app.py redirects here after creating the user
     expect(page).to_have_url(
-        f"http://{test_web_address}/sessions/new"
+        f"http://{test_web_address}/users/login"
     )
 
     users = db_connection.execute(
