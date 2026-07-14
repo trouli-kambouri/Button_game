@@ -16,7 +16,15 @@ app = Flask(__name__)
 #   ; open http://localhost:5001/index
 @app.route('/', methods=['GET'])
 def get_landing_page():
+<<<<<<< HEAD
     return render_template('static.html')
+=======
+    connection = DatabaseConnection()
+    connection.connect()
+    lising_repository = ListingRepository(connection)
+    listing = lising_repository .all()
+    return render_template('index.html', listing=listing)
+>>>>>>> 6f9d7422ba5a9daec1c214adfe5df6b3d10c5e64
 
 @app.route('/', methods=['POST'])
 def create_listing():
@@ -24,7 +32,7 @@ def create_listing():
     connection.connect()
     listing_repository = ListingRepository(connection)
     listing_details = request.form
-    new_listing = Listing(title=listing_details["title"], description=listing_details["description"], price=listing_details['price'])
+    new_listing = Listing(title=listing_details["title"], description=listing_details["description"], price=listing_details['price'], owner_id=listing_details['owner_id'])
     listing_repository.create(new_listing)
     return redirect("/")
 
@@ -34,9 +42,13 @@ def remove_listing():
     connection.connect()
     listing_repository = ListingRepository(connection)
     listing_details = request.form
-    listing = Listing(title=listing_details["title"], description=listing_details["description"], price=listing_details['price'])
+    listing = Listing(title=listing_details["title"], description=listing_details["description"], price=listing_details['price'], owner_id=listing_details['owner_id'])
     listing_repository.remove(listing)
     return redirect("/")    
+
+@app.route('/listings', methods=['GET'])
+def get_listings_page():
+    return render_template('static.html')
 
 
 # These lines start the server if you run this file directly
