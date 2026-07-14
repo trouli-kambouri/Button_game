@@ -40,4 +40,6 @@ class ListingRepository():
         
         return None
         
-
+    def remove(self, id):
+        self._connection.execute("DELETE FROM listings WHERE id = %s", [id])
+        return None
