@@ -46,3 +46,14 @@ def test_create_user_adds_user_with_existing_email_raises_value_error(db_connect
     
 
     assert str(err.value) == "Email already exists. Please log-in."
+
+def test_find_by_email_returns_user_with_passed_email_address(db_connection):
+    db_connection.seed("seeds/reset_users_data.sql")
+    db_connection.seed("seeds/listings.sql")
+
+    repository = UserRepository(db_connection)
+    user = repository.find_by_email("gurpgill@grillsforu.net")
+
+    
+
+    assert user == User('gurpeetgill', 'gurpgill@grillsforu.net', '07652987709', 'youcantguess', 3)
