@@ -90,7 +90,6 @@ def create_session():
     else:
         return redirect("/users/login")
     
-
 # listings pages
 
 @app.route('/listings', methods=['GET'])
@@ -110,7 +109,6 @@ def create_listing():
     new_listing = Listing(title=listing_details["title"], description=listing_details["description"], price=listing_details['price'], owner_id=listing_details['owner_id'])
     listing_repository.create(new_listing)
     return redirect("/listings")
-
 
 @app.after_request
 def add_header(response):
