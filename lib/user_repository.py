@@ -17,8 +17,17 @@ class UserRepository():
     
     
     def create(self, user):
+        # check whether user email, etc. already exists
+
+        rows = self._connection.execute("SELECT email FROM users;")
+
+        emails = [row["email"] for row in rows]
+
+        if user.email in emails:
+            raise ValueError("Email already exists. Please log-in.")
+
         self._connection.execute(
-            "INSERT INTO books (name, email, phone_number, password) "
+            "INSERT INTO users (name, email, phone_number, password) "
             "VALUES (%s, %s, %s, %s)", [user.name, user.email, user.phone_number, user.password]
         )
         return None
