@@ -2,7 +2,7 @@ import datetime as dt
 
 class Listing():
     def __init__(self, owner_id, title, description, price, available_from, available_until, id=None):
-        # For MVP, description is used as proxy for location
+        # Added dates for available from and until
 
         self.owner_id = owner_id
         self.title = title
