@@ -224,15 +224,19 @@ body{
     font-size: 1.1rem;
 }
 
+/* This is styling for the individual property_page
 /* Remove default link styling (no blue text or underlines) */
-.listing-link {
+
+.listing-link 
+{
     text-decoration: none;
     color: inherit;
     display: block; /* Makes the entire card area clickable */
 }
 
 /* Base style for the card */
-.listing-card {
+.listing-card 
+{
     border: 1px solid #ddd;
     border-radius: 8px;
     overflow: hidden;
@@ -241,12 +245,14 @@ body{
 }
 
 /* Subtle "lift" effect when the user hovers over the card */
-.listing-card:hover {
+.listing-card:hover 
+{
     transform: translateY(-4px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
-.listing-thumbnail {
+.listing-thumbnail 
+{
     width: 100%;
     height: 200px;
     object-fit: cover; /* Ensures images fit nicely without stretching */
