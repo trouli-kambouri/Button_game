@@ -1,19 +1,17 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Add a listing</title>
+<!DOCTYPE html> 
+<html> 
+    <head> 
+        <title>Listings</title> 
         <link rel="stylesheet" href="static/style.css"> 
-    </head>
-        <section>
-            <h3>Add new listing:</h3>
-            <form method="POST" action="/listings">
-                <input type="text" name="owner_id" placeholder="Owner"><br>
-                <input type="text" name="title" placeholder="Title"><br>
-                <input type="text" name="price" placeholder="Price"><br>
-                <input type="text" name="id" placeholder="id"><br>
-                <input type="submit" value="Submit">
-            </form>	
-        </section>
+    </head> 
+    <body>
+        {% include "navigation_bar.html" %} <!-- Adds navigation bar -->
+        <h2> Listings </h2> <!-- Header -->
+            <p> 
+                This is a Listings page, <br> 
+                currently functioning as a placeholder, <br>
+                while our hard-working team set everything up. <br> <br>
+                Watch this space!
+            </p>
     </body>
-
-</html> 
+</html>

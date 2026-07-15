@@ -100,6 +100,15 @@ def get_listings():
     listings = listing_repository.all()
     return render_template('listings.html', listings=listings)
 
+# Start
+# This route gets /listings/new (renders create_listing.html).
+# Added by Trouli, to check that she made the html file correctly.
+# Please feel free to edit/change.
+@app.route('/listings/new', methods=['GET'])
+def get_create_listing():
+    return render_template("create_listing.html")
+# End
+
 @app.route('/listings/new', methods=['POST'])
 def create_listing():
     connection = DatabaseConnection()

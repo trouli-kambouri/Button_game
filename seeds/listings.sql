@@ -15,7 +15,7 @@ INSERT INTO listings (
         (1, 'Rain-soaked shed on a mountain', 'Greenfield', 71),
         (1, 'Uncomfortable camper van in a lay-by', 'Newtown', 21),
         (2, 'Glamorous pad in fancy town', 'Hopington', 311);
-        (2, 'Castle with only three ghosts included', 'Spookingham', 199),
+        (2, 'Medieval castle with ghost included', 'Spooksville', 199),
         (3, 'Luxury treehouse with unreliable ladder', 'Treeford', 89),
         (1, 'Converted bus stop with panoramic traffic views', 'Roundabout-on-Sea', 34),
         (4, 'Medieval prison cell', 'Stonechester', 66),

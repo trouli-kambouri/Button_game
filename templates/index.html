@@ -1,32 +1,38 @@
-<!DOCTYPE html>
-<html>
-    <head>
+<!DOCTYPE html> 
+<html> 
+    <head> 
         <title>Welcome to MakersBnB</title> 
         <link rel="stylesheet" href="static/style.css"> 
-    </head>
+    </head> 
     <body>
-        <h1> Welcome to MakersBnB </h1>
+        {% include "navigation_bar.html" %} <!-- Adds navigation bar -->
         <h2> Listings </h2>
-        <section>
-            <ul>
-                {% for listing in listings %}
-                    <li><strong>{{ listing.title }}</strong> ({{ listing.description }}, <em>£{{ listing.price_per_night }}</em>)</li>
-                {% endfor %}
-            </ul>
-    </section>
+        <section class="listings-container">
+            {% for listing in listings %}
+                <article class="listing-card">
+                    <div class="image-container">
+                        <img 
+                            src="/static/placeholder.png" 
+                            alt="{{ listing.title }}"
+                            class="listing-image"
+                        >
+                    </div>
+                    <div class="listing-details">
+                        <h3>{{ listing.title }}</h3>
+
+                        <p>{{ listing.description }}</p>
+
+                        <p class="price">
+                            £{{ listing.price_per_night }} per night
+                        </p>
+                    </div>
+                </article>
+            {% endfor %}
+    </body>
 </html>
 
-            <!-- Optional logo
-            <div class="logo">
-                <img src="static/logo.png" alt="MakersBnB logo">
-            </div>
-            -->
-
-            <!-- Optional navigation bar
-            <ul class="nav_area">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Listings</a></li>
-                <li><a href="#">Create Listing</a></li>
-                <li><a href="#">Sign Up</a></li>
-            </ul>
-            -->
+<!-- Optional logo
+    <div class="logo">
+        <img src="static/logo.png" alt="MakersBnB logo">
+    </div>
+-->
