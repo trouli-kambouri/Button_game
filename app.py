@@ -152,7 +152,7 @@ def get_individual_listin_converter_with_calendar(property_id):
     cal_matrix = calendar.monthcalendar(year, month)
     month_name = calendar.month_name[month]
 
-    return render_template('property_page.html', listing=listing, cal_matrix=cal_matrix, month_name=month_name, year=year)
+    return render_template('property_page.html', listing=listing, cal_matrix=cal_matrix, month_name=month_name, month=month, year=year)
 
 # The POST route: Processes the booking submission for that listing
 # @app.post('/listings/<int:listing_id>')
