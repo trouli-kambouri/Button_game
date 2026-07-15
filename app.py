@@ -125,14 +125,14 @@ def create_listing():
 Individual listing page. GET(get listing page)
 """
 
-@app.get('/listings/<int:listing_id>')
+@app.get('/listings/<int:property_id>')
 def get_individual_listin_converter(property_id):
     connection = DatabaseConnection()
     connection.connect()
     listing_repository = ListingRepository(connection)
 
     listing = listing_repository.find_by_listing_id(property_id)
-    return render_template('property_id.html', listing=listing)
+    return render_template('property_page.html', listing=listing)
     
     
 
