@@ -1,0 +1,57 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book a Stay</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css">
+</head>
+<body>
+    <main>
+        <h1>Select Your Dates</h1>
+
+        <form method="POST" action="/listings/{{listing_id}}">
+            <input type="hidden" id="date_range" name="date_range" required>
+
+            <div id="inline-calendar"></div>
+
+            <button type="submit" style="margin-top: 20px;">Confirm Booking</button>
+        </form>
+    </main> -->
+<section class="booking-section">
+
+    <form method="POST" action="/listings/{{listing_id}}">
+        <h2>Book for {{ month_name }} {{ year }}</h2>
+
+        <table class="no-js-calendar">
+            <thead>
+                <tr>
+                    <th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th><th>Sun</th>
+                </tr>
+            </thead>
+                <tbody>
+                    {% for week in cal_matrix %}
+                        <tr>
+                            {% for day in week %}
+                                <td>
+                                    {% if day != 0 %}
+                                        <button type="submit" 
+                                                name="selected_date" 
+                                                value="{{ year }}-{{ '%02d' % month }}-{{ '%02d' % day }}" 
+                                                class="calendar-day-btn">
+                                            {{ day }}
+                                        </button>
+                                    {% else %}
+                                        <span class="empty-day"></span>
+                                    {% endif %}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+        </table>
+    </form>
+</section>
+
