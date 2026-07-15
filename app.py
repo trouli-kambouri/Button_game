@@ -5,6 +5,10 @@ from lib.users import User
 from lib.user_repository import UserRepository
 from lib.listing import Listing
 from lib.listing_repository import ListingRepository
+
+import calendar
+from datetime import datetime
+
 # Create a new Flask app
 app = Flask(__name__)
 app.secret_key = "some_really_secret_key"
@@ -125,6 +129,15 @@ def create_listing():
 Individual listing page. GET(get listing page)
 """
 
+# @app.get('/listings/<int:property_id>')
+# def get_individual_listin_converter(property_id):
+#     connection = DatabaseConnection()
+#     connection.connect()
+#     listing_repository = ListingRepository(connection)
+
+#     listing = listing_repository.find_by_listing_id(property_id)
+#     return render_template('property_page.html', listing=listing)
+    
 @app.get('/listings/<int:property_id>')
 def get_individual_listin_converter(property_id):
     connection = DatabaseConnection()
@@ -132,11 +145,19 @@ def get_individual_listin_converter(property_id):
     listing_repository = ListingRepository(connection)
 
     listing = listing_repository.find_by_listing_id(property_id)
-    return render_template('property_page.html', listing=listing)
-    
-    
+    return render_template('property_page.html', listing=listing, cal_matrix=cal_matrix, month_name=month_name, year=year)
 
-    #return render_template("create_listing.html")
+# 2. The POST route: Processes the booking submission for that listing
+@app.post('/listings/<int:listing_id>')
+def create_booking(listing_id):
+    # Fetch the chosen date from your form submission
+    selected_date = request.form.get('selected_date')
+    
+    # Process your database logic to save the booking under listing_id
+    # e.g., booking_repository.create(listing_id, selected_date, current_user_id)
+    
+    flash("Booking successful!", "success")
+    return redirect(f'/listings/{listing_id}')
 
 @app.after_request
 def add_header(response):
