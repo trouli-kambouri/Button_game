@@ -11,7 +11,7 @@ class Booking():
 
 change the below to bookings:
     def __repr__(self):
-        return(f"Listing({self.id}, {self.owner_id}, {self.title}, {self.description}, \
+        return(f"Booking({self.id}, {self.owner_id}, {self.title}, {self.description}, \
             {self.available_from}, {self.available_until}, £{self.price_per_night})")
     
     def __eq__(self, other):
