@@ -30,3 +30,4 @@ class Listing():
     def _format_date(self, date):
         if isinstance(date, (dt.date, dt.datetime)):
             return date.strftime("%d-%m-%Y")
+        
