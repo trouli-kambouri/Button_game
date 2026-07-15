@@ -101,9 +101,9 @@ def get_listings():
     return render_template('listings.html', listings=listings)
 
 # Start
-# This route gets /listings/new (create_listing.html).
-# It was made by Trouli to check that she made the html file correctly.
-# Feel free to edit/change.
+# This route gets /listings/new (renders create_listing.html).
+# Added by Trouli, to check that she made the html file correctly.
+# Please feel free to edit/change.
 @app.route('/listings/new', methods=['GET'])
 def get_create_listing():
     return render_template("create_listing.html")
