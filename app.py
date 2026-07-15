@@ -136,7 +136,7 @@ def get_individual_listin_converter(property_id):
     
     
 
-    return render_template("create_listing.html")
+    #return render_template("create_listing.html")
 
 @app.after_request
 def add_header(response):
