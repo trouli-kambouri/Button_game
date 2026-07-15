@@ -20,7 +20,9 @@ class ListingRepository():
                         u.email AS owner_email,
                         l.title,
                         l.description,
-                        l.price_per_night
+                        l.price_per_night,
+                        l.available_from,
+                        l.available_until
                     FROM listings l
                         JOIN users u
                         ON l.owner_id = u.id;
@@ -29,7 +31,7 @@ class ListingRepository():
         rows = self._connection.execute(query)
         return [[Listing(row["owner_id"], row["title"], row["description"], row["price_per_night"], row["available_from"], row["available_until"], row["property_id"]), row["owner_email"]] for row in rows]
 
-    def find_by_listing_id(self, property_id):
+    def find_listing_by_id(self, property_id):
         
         result = self._connection.execute("SELECT * FROM listings WHERE id = %s", [property_id])[0]
 
