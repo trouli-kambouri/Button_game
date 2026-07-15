@@ -18,9 +18,9 @@ INSERT INTO listings (
         (2, 'Medieval castle with ghost included', 'Spooksville', 199),
         (3, 'Luxury treehouse with unreliable ladder', 'Treeford', 89),
         (1, 'Converted bus stop with panoramic traffic views', 'Roundabout-on-Sea', 34),
-        (4, 'Medieval prison cell', 'Stonechester', 66),
+        (3, 'Medieval prison cell', 'Stonechester', 66),
         (2, 'Studio flat above a loud pub', 'Pintbury', 88),
-        (5, 'Floating house that is not sinking', 'Above Mariana''s Trench', 112),
+        (3, 'Floating house that is not sinking', 'Above Mariana''s Trench', 112),
         (3, 'Countryside cottage with sheep included', 'Baaxton', 93),
-        (4, 'Tiny house that is not a shed', 'Little Houseton', 68),
-        (5, 'Beach hut only 5 days walk from beach', 'Landlockedshire', 58);
+        (3, 'Tiny house that is not a shed', 'Little Houseton', 68),
+        (3, 'Beach hut only 5 days walk from beach', 'Landlockedshire', 58);
