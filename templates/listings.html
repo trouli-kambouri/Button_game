@@ -7,22 +7,33 @@
     <body>
         {% include "navigation_bar.html" %} <!-- Adds navigation bar -->
         <h2> Listings </h2> <!-- Header -->
-            <p> 
-                This is a Listings page, <br> 
-                currently functioning as a placeholder, <br>
-                while our hard-working team set everything up. <br> <br>
-                Watch this space!
-            </p>
+            <section class="listings-container">
+                {% for (listing, email) in listings %}
+                    <a href="/listings/{{ listing.id }}" class="listing-link">
+                        <article class="listing-card">
+                            <div class="image-container">
+                                <img 
+                                    src="/static/placeholder.png" 
+                                    alt="{{ listing.title }}"
+                                    class="listing-image"
+                                >
+                            </div>
+                            <div class="listing-details">
+                                <h3>{{ listing.title }}</h3>
 
-            
-        {% for listing in listings %}
-            <div class="listing-card">
-                <h3>{{ listing.title }}</h3>
-                <p>${{ listing.price_per_night }} / night</p>
-                
-                <a href="/listings/{{ listing.id }}">View Details</a>
-            </div>
-        {% endfor %}
-    
+                                <p>{{ listing.description }}</p>
+
+                                <p class="price">
+                                    £{{ listing.price_per_night }} per night
+                                </p>
+
+                                <p class="email">
+                                    Contact: {{ email }}
+                                </p>
+                            </div>
+                        </article>
+                    </a>
+            {% endfor %}
+        </section>
     </body>
 </html>
