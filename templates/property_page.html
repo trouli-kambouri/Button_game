@@ -1,8 +1,41 @@
-<!DOCTYPE html> 
-<html> 
-    <head> 
-        <title>Listings</title> 
-        <link rel="stylesheet" href="static/style.css"> 
-    </head> 
-
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{ listing.title }}</title>
+        <link rel="stylesheet"
+            href="{{ url_for('static', filename='style.css') }}">
+    </head>
+    <body>
+    {% include "navigation_bar.html" %}
+        <main class="property-page">
+            <h1>{{ listing.title }}</h1>
+                <section class="image-gallery">
+                    <img
+                        src="/static/placeholder.png"
+                        alt="{{ listing.title }}"
+                        class="hero-image"
+                    >
+                <div class="thumbnail-gallery">
+                    <img src="/static/placeholder.png" alt="">
+                    <img src="/static/placeholder.png" alt="">
+                    <img src="/static/placeholder.png" alt="">
+                    <img src="/static/placeholder.png" alt="">
+                </div>
+            </section>
+            <section class="property-details">
+                <h2>£{{ listing.price_per_night }} per night</h2>
+                <p>
+                    <strong>Host:</strong>
+                    {{ email }}
+                </p>
+                <h3>About this property</h3>
+                <p>{{ listing.description }}</p>
+            </section>
+            <section class="booking-card">
+                <button>
+                    Request to Book
+                </button>
+            </section>
+        </main>
+    </body>
 </html>
