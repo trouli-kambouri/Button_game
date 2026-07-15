@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -19,7 +19,9 @@
 
             <button type="submit" style="margin-top: 20px;">Confirm Booking</button>
         </form>
-    </main>
+    </main> -->
+<section class="booking-section">
+    <h2>Book for {{ month_name }} {{ year }}</h2>
 
     <form method="POST" action="/listings/{{listing_id}}">
         <h2>Book for {{ month_name }} {{ year }}</h2>
@@ -43,6 +45,7 @@
                                         <span class="empty-day"></span>
                                     {% endif %}
                                 </td>
+                            {% endfor %}
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -50,6 +53,5 @@
 
         <button type="submit" style="margin-top: 20px;">Confirm Booking</button>
     </form>
-</body>
-</html>
+</section>
 
