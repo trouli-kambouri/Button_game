@@ -5,6 +5,10 @@ from lib.users import User
 from lib.user_repository import UserRepository
 from lib.listing import Listing
 from lib.listing_repository import ListingRepository
+
+import calendar
+from datetime import datetime
+
 # Create a new Flask app
 app = Flask(__name__)
 app.secret_key = "some_really_secret_key"
@@ -125,18 +129,60 @@ def create_listing():
 Individual listing page. GET(get listing page)
 """
 
+# @app.get('/listings/<int:property_id>')
+# def get_individual_listin_converter(property_id):
+#     connection = DatabaseConnection()
+#     connection.connect()
+#     listing_repository = ListingRepository(connection)
+
+#     listing = listing_repository.find_by_listing_id(property_id)
+#     return render_template('property_page.html', listing=listing)
+    
 @app.get('/listings/<int:property_id>')
-def get_individual_listin_converter(property_id):
+def get_individual_listin_converter_with_calendar(property_id):
     connection = DatabaseConnection()
     connection.connect()
     listing_repository = ListingRepository(connection)
-
     listing = listing_repository.find_by_listing_id(property_id)
-    return render_template('property_page.html', listing=listing)
-    
-    
 
-    return render_template("create_listing.html")
+    now = datetime.now()
+    year = now.year
+    month = now.month
+
+    cal_matrix = calendar.monthcalendar(year, month)
+    month_name = calendar.month_name[month]
+
+    return render_template('property_page.html', listing=listing, cal_matrix=cal_matrix, month_name=month_name, month=month, year=year)
+
+# The POST route: Processes the booking submission for that listing
+# @app.post('/listings/<int:listing_id>')
+# def create_booking(listing_id):
+#     selected_date = request.form.get('selected_date') # Format: "YYYY-MM-DD"
+    
+#     # 1. Validation: Make sure they actually clicked a date
+#     if not selected_date:
+#         flash("Please select a date on the calendar.", "error")
+#         return redirect(f'/listings/{listing_id}')
+        
+#     # 2. Database Integration
+#     connection = DatabaseConnection()
+#     connection.connect()
+#     booking_repository = BookingRepository(connection)
+    
+#     try:
+#         # Mocking user_id = 1 for now (replace this with session['user_id'] once login is set up)
+#         booker_id = 1
+        
+#         # 3. USE the selected_date variable to write a new row to your bookings table!
+#         booking_repository.create(listing_id=listing_id, user_id=booker_id, date=selected_date)
+        
+#         # 4. Success feedback
+#         flash(f"Successfully booked for {selected_date}!", "success")
+#         return redirect(f'/listings/{listing_id}')
+        
+#     except Exception as e:
+#         flash(f"Could not complete booking: {str(e)}", "error")
+#         return redirect(f'/listings/{listing_id}')
 
 @app.after_request
 def add_header(response):
