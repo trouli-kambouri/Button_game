@@ -32,6 +32,13 @@
                     </div>
                 </article>
             {% endfor %}
+
+        {% for listing in listings %}
+            <div class="listing-card">                
+                <a href="/listings/{{ listing.id }}">View Details</a>
+            </div>
+        {% endfor %}
+
     </body>
 </html>
 
