@@ -131,7 +131,6 @@ def get_individual_listin_converter(property_id):
     connection.connect()
     listing_repository = ListingRepository(connection)
 
-    
     listing = listing_repository.find_by_listing_id(property_id)
     return render_template('property_id.html', listing=listing)
     
