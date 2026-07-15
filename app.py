@@ -121,7 +121,9 @@ def create_listing():
     connection.connect()
     listing_repository = ListingRepository(connection)
     listing_details = request.form
-    new_listing = Listing(title=listing_details["title"], description=listing_details["description"], price=listing_details['price'], owner_id=listing_details['owner_id'])
+    new_listing = Listing(title=listing_details["title"], description=listing_details["description"],
+                          price=listing_details['price'], available_from=listing_details['available_from'],
+                          available_until=listing_details['available_until'], owner_id=listing_details['owner_id'])
     listing_repository.create(new_listing)
     return redirect("/listings")
 

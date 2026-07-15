@@ -22,10 +22,10 @@ class Listing():
     
     def _convert_datestrings_to_dates(self):
         if type(self.available_from) == str:
-            self.available_from = dt.datetime.strptime(self.available_from, '%d-%m-%Y').date()
+            self.available_from = dt.datetime.strptime(self.available_from, '%Y-%m-%d').date()
         
         if type(self.available_until) == str:
-            self.available_until = dt.datetime.strptime(self.available_until, '%d-%m-%Y').date()
+            self.available_until = dt.datetime.strptime(self.available_until, '%Y-%m-%d').date()
 
     def _format_date(self, date):
         if isinstance(date, (dt.date, dt.datetime)):
