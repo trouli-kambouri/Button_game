@@ -10,7 +10,16 @@ def test_listing_repository_all_returns_list_of_all_listings(db_connection):
     listings = [
         Listing(1, 'Rain-soaked shed on a mountain', 'Greenfield', 71, 1 ),
         Listing(1, 'Uncomfortable camper van in a lay-by', 'Newtown', 21, 2),
-        Listing(2, 'Glamorous pad in fancy town', 'Hopington', 311, 3)
+        Listing(2, 'Glamorous pad in fancy town', 'Hopington', 311, 3),
+        Listing(2, 'Medieval castle with ghost included', 'Spooksville', 199, 4),
+        Listing(3, 'Luxury treehouse with unreliable ladder', 'Treeford', 89, 5),
+        Listing(1, 'Converted bus stop with panoramic traffic views', 'Roundabout-on-Sea', 34, 6),
+        Listing(4, 'Medieval prison cell', 'Stonechester', 66, 7),
+        Listing(2, 'Studio flat above a loud pub', 'Pintbury', 88, 8),
+        Listing(5, 'Floating house that is not sinking', 'Above Mariana\'s Trench', 112, 9),
+        Listing(3, 'Countryside cottage with sheep included', 'Baaxton', 93, 10),
+        Listing(4, 'Tiny house that is not a shed', 'Little Houseton', 68, 11),
+        Listing(5, 'Beach hut only 5 days walk from beach', 'Landlockedshire', 58, 12)
     ]
 
     assert listings == repository.all()
@@ -22,12 +31,30 @@ def test_listing_repository_returns_list_of_all_properties_with_owner_emails(db_
     listings = [
         Listing(1, 'Rain-soaked shed on a mountain', 'Greenfield', 71, 1 ),
         Listing(1, 'Uncomfortable camper van in a lay-by', 'Newtown', 21, 2),
-        Listing(2, 'Glamorous pad in fancy town', 'Hopington', 311, 3)
+        Listing(2, 'Glamorous pad in fancy town', 'Hopington', 311, 3),
+        Listing(2, 'Medieval castle with ghost included', 'Spooksville', 199, 4),
+        Listing(3, 'Luxury treehouse with unreliable ladder', 'Treeford', 89, 5),
+        Listing(1, 'Converted bus stop with panoramic traffic views', 'Roundabout-on-Sea', 34, 6),
+        Listing(4, 'Medieval prison cell', 'Stonechester', 66, 7),
+        Listing(2, 'Studio flat above a loud pub', 'Pintbury', 88, 8),
+        Listing(5, 'Floating house that is not sinking', 'Above Mariana\'s Trench', 112, 9),
+        Listing(3, 'Countryside cottage with sheep included', 'Baaxton', 93, 10),
+        Listing(4, 'Tiny house that is not a shed', 'Little Houseton', 68, 11),
+        Listing(5, 'Beach hut only 5 days walk from beach', 'Landlockedshire', 58, 12)
     ]
     owner_emails = [
         "kayleighk@kickabout.com",
         "kayleighk@kickabout.com",
-        "maming@matsforcats.co.uk"
+        "maming@matsforcats.co.uk",
+        "maming@matsforcats.co.uk",
+        "gurpgill@grillsforu.net",
+        "kayleighk@kickabout.com",
+        "salsal@salsalsalads.net",
+        "maming@matsforcats.co.uk",
+        "ttipple@taliastipples.co.uk",
+        "gurpgill@grillsforu.net",
+        "salsal@salsalsalads.net",
+        "ttipple@taliastipples.co.uk"
     ]
     repository = ListingRepository(db_connection)
     listing_details = repository.all_with_owner_emails()
@@ -55,11 +82,20 @@ def test_listing_adds_new_listing(db_connection):
     repository.create(listing)
 
     listings = [
-        Listing(1, 'Rain-soaked shed on a mountain', 'Greenfield', 71, 1 ),
-        Listing(1, 'Uncomfortable camper van in a lay-by', 'Newtown', 21, 2),
-        Listing(2, 'Glamorous pad in fancy town', 'Hopington', 311, 3),
-        Listing(1, 'Palacial shed in a field', 'Idyllicville', 1010, 4)        
-    ]
+            Listing(1, 'Rain-soaked shed on a mountain', 'Greenfield', 71, 1 ),
+            Listing(1, 'Uncomfortable camper van in a lay-by', 'Newtown', 21, 2),
+            Listing(2, 'Glamorous pad in fancy town', 'Hopington', 311, 3),
+            Listing(2, 'Medieval castle with ghost included', 'Spooksville', 199, 4),
+            Listing(3, 'Luxury treehouse with unreliable ladder', 'Treeford', 89, 5),
+            Listing(1, 'Converted bus stop with panoramic traffic views', 'Roundabout-on-Sea', 34, 6),
+            Listing(4, 'Medieval prison cell', 'Stonechester', 66, 7),
+            Listing(2, 'Studio flat above a loud pub', 'Pintbury', 88, 8),
+            Listing(5, 'Floating house that is not sinking', 'Above Mariana\'s Trench', 112, 9),
+            Listing(3, 'Countryside cottage with sheep included', 'Baaxton', 93, 10),
+            Listing(4, 'Tiny house that is not a shed', 'Little Houseton', 68, 11),
+            Listing(5, 'Beach hut only 5 days walk from beach', 'Landlockedshire', 58, 12),
+            Listing(1, 'Palacial shed in a field', 'Idyllicville', 1010, 13)        
+        ]
 
     assert listings == repository.all()
 
@@ -68,9 +104,19 @@ def test_listing_repository_deletes_listing_with_given_id(db_connection):
     db_connection.seed("seeds/listings.sql")
 
     repository = ListingRepository(db_connection)
+
     listings = [
         Listing(1, 'Rain-soaked shed on a mountain', 'Greenfield', 71, 1 ),
-        Listing(2, 'Glamorous pad in fancy town', 'Hopington', 311, 3)
+        Listing(2, 'Glamorous pad in fancy town', 'Hopington', 311, 3),
+        Listing(2, 'Medieval castle with ghost included', 'Spooksville', 199, 4),
+        Listing(3, 'Luxury treehouse with unreliable ladder', 'Treeford', 89, 5),
+        Listing(1, 'Converted bus stop with panoramic traffic views', 'Roundabout-on-Sea', 34, 6),
+        Listing(4, 'Medieval prison cell', 'Stonechester', 66, 7),
+        Listing(2, 'Studio flat above a loud pub', 'Pintbury', 88, 8),
+        Listing(5, 'Floating house that is not sinking', 'Above Mariana\'s Trench', 112, 9),
+        Listing(3, 'Countryside cottage with sheep included', 'Baaxton', 93, 10),
+        Listing(4, 'Tiny house that is not a shed', 'Little Houseton', 68, 11),
+        Listing(5, 'Beach hut only 5 days walk from beach', 'Landlockedshire', 58, 12)
     ]
 
     repository.remove(2)
