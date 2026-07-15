@@ -90,10 +90,12 @@ def create_session():
     else:
         return redirect("/users/login")
     
-# listings pages
+"""
+Listings page GET(get listings page) POST(get create listings page) POST(create listing)
+"""
 
 @app.route('/listings', methods=['GET'])
-def get_listings():
+def get_all_listings():
     connection = DatabaseConnection()
     connection.connect()
     listing_repository = ListingRepository(connection)
@@ -118,6 +120,24 @@ def create_listing():
     new_listing = Listing(title=listing_details["title"], description=listing_details["description"], price=listing_details['price'], owner_id=listing_details['owner_id'])
     listing_repository.create(new_listing)
     return redirect("/listings")
+
+"""
+Individual listing page. GET(get listing page)
+"""
+
+@app.get('/listings/<int:listing_id>')
+def get_individual_listin_converter(property_id):
+    connection = DatabaseConnection()
+    connection.connect()
+    listing_repository = ListingRepository(connection)
+
+    
+    listing = listing_repository.find_by_listing_id(property_id)
+    return render_template('property_id.html', listing=listing)
+    
+    
+
+    return render_template("create_listing.html")
 
 @app.after_request
 def add_header(response):
