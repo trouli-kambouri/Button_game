@@ -20,5 +20,9 @@ CREATE TABLE listings (
     available_from DATE NOT NULL,
     available_until DATE NOT NULL,
 
-    CONSTRAINT valid_date_range CHECK available_from <= available_until
+    CONSTRAINT valid_date_range CHECK (available_from <= available_until)
 );
+
+-- Adds column for url image to listings
+
+-- bookings table
