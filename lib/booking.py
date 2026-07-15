@@ -1,6 +1,3 @@
-'''
-TBD - being edited by Trouli
-'''
 
 '''
 class Booking():

@@ -1,6 +1,3 @@
-'''
-TBD - Being edited by Trouli
-'''
 
 '''
 from lib.booking import Booking
