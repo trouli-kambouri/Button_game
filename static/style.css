@@ -88,6 +88,90 @@ body{
     transform: translateY(-2px);
 }
 
+/* Formatting the form containers */
+.form-card 
+{
+    width: 400px;
+    margin: 40px auto;
+    padding: 35px;
+
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+
+    border-radius: 20px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}
+
+/* Formatting the form labels */
+.form-card label 
+{
+    color: white;
+    font-size: 18px;
+    text-align: left;
+}
+
+/* Formatting the text input in forms. */
+.form-card input,
+.form-card textarea 
+{
+    width: 100%;
+    box-sizing: border-box;
+
+    padding: 12px;
+
+    border: none;
+    border-radius: 10px;
+
+    font-size: 16px;
+
+    background: rgba(255,255,255,0.9);
+}
+
+/* This makes the text area in forms a specific height */
+.form-card textarea 
+{
+    height: 120px;
+    resize: vertical;
+}
+
+/* This creates a 'highlight'-type effect when typing into forms. */
+.form-card input:focus,
+.form-card textarea:focus 
+{
+    outline: 3px solid rgba(255,255,255,0.5);
+}
+
+/* Formats the submit button */
+.form-card button 
+{
+    margin-top: 15px;
+
+    padding: 12px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: white;
+    color: black;
+
+    font-size: 18px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: transform 0.2s ease;
+}
+
+.form-card button:hover 
+{
+    transform: translateY(-2px);
+}
+
 /* Logo - optional */
 /*
 .logo {
