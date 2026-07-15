@@ -1,8 +1,6 @@
--- Have to do both because of FK on listings
-TRUNCATE TABLE listings, users RESTART IDENTITY;
--- Also works:
--- TRUNCATE TABLE users RESTART IDENTITY;
-
+-- Have to do together because of FK on listings
+-- Remember to repopulate listings, bookings
+TRUNCATE TABLE listings, users, bookings RESTART IDENTITY;
 
 
 INSERT INTO users (name, email, phone_number, password)

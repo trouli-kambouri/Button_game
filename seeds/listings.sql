@@ -1,13 +1,18 @@
--- DROP TABLE IF EXISTS listings;
+-- NOTE - will delete FK on referencing bookings table
+DROP TABLE IF EXISTS listings CASCADE;
 
--- CREATE TABLE listings(
---     id SERIAL PRIMARY KEY, 
---     owner_id INT NOT NULL,
---     title TEXT NOT NULL,
---     description TEXT,
---     price_per_night INT NOT NULL,
---     CONSTRAINT fk_owner FOREIGN KEY(owner_id) REFERENCES users(id) ON DELETE CASCADE
--- );
+CREATE TABLE listings(
+    id SERIAL PRIMARY KEY, 
+    owner_id INT NOT NULL,
+    title TEXT NOT NULL,
+    description TEXT,
+    price_per_night INT NOT NULL,
+    available_from DATE NOT NULL,
+    available_until DATE NOT NULL,
+
+    CONSTRAINT valid_date_range CHECK (available_from <= available_until),
+    CONSTRAINT fk_owner FOREIGN KEY(owner_id) REFERENCES users(id) ON DELETE CASCADE
+);
 
 INSERT INTO listings (
     owner_id, title, description, price_per_night, available_from, available_until)

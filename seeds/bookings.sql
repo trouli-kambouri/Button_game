@@ -1,3 +1,6 @@
+DROP TABLE IF EXISTS bookings;
+DROP TABLE IF EXISTS booking_statuses CASCADE;
+
 CREATE TABLE booking_statuses (
     id INT PRIMARY KEY,
     name VARCHAR(20)
