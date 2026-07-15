@@ -3,9 +3,11 @@ from lib.listing import Listing
 
 def test_listing_intialises_with_expected_fields_represented_in_string():
 
-    listing = Listing(1, "A beautiful hovel by the sea", "Place-on-Sea", 32, '12-12-1987', '08-01-2020', 1)
+    listing_1 = Listing(1, "A beautiful hovel by the sea", "Place-on-Sea", 32, '12-12-1987', '08-01-2020', 1)
+    listing_2 = Listing(1, "A hideous hovel by the sea", "Place-on-Sea", 31, '1987-12-12', '2020-01-08', 2)
 
-    assert str(listing) == "Listing(1, 1, A beautiful hovel by the sea, Place-on-Sea, 12-12-1987, 08-01-2020, £32)"
+    assert str(listing_1) == "Listing(1, 1, A beautiful hovel by the sea, Place-on-Sea, 12-12-1987, 08-01-2020, £32)"
+    assert str(listing_2) == "Listing(2, 1, A hideous hovel by the sea, Place-on-Sea, 12-12-1987, 08-01-2020, £31)"
 
 def test_listing_compares_listings_by_attributes():
 
