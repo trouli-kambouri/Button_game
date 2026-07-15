@@ -8,7 +8,7 @@
         {% include "navigation_bar.html" %} <!-- Adds navigation bar -->
         <h2> Listings </h2>
         <section class="listings-container">
-            {% for (listing, email) in listings %}
+            {% for (listing, email) in listings [:4] %}
                 <a href="/listings/{{ listing.id }}" class="listing-link">
                     <article class="listing-card">
                         <div class="image-container">
