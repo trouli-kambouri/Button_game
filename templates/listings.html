@@ -7,14 +7,31 @@
     <body>
         {% include "navigation_bar.html" %} <!-- Adds navigation bar -->
         <h2> Listings </h2> <!-- Header -->
-        {% for listing in listings %}
-            <div class="listing-card">
-                <h3>{{ listing.title }}</h3>
-                <p>${{ listing.price_per_night }} / night</p>
-                
-                <a href="/listings/{{ listing.id }}">View Details</a>
-            </div>
-        {% endfor %}
-    
+            {% for (listing, email) in listings %}
+                <a href="/listings/{{ listing.id }}" class="listing-link">
+                    <article class="listing-card">
+                        <div class="image-container">
+                            <img 
+                                src="/static/placeholder.png" 
+                                alt="{{ listing.title }}"
+                                class="listing-image"
+                            >
+                        </div>
+                        <div class="listing-details">
+                            <h3>{{ listing.title }}</h3>
+
+                            <p>{{ listing.description }}</p>
+
+                            <p class="price">
+                                £{{ listing.price_per_night }} per night
+                            </p>
+
+                            <p class="email">
+                                Contact: {{ email }}
+                            </p>
+                        </div>
+                    </article>
+                </a>
+            {% endfor %}
     </body>
 </html>
