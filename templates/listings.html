@@ -13,5 +13,16 @@
                 while our hard-working team set everything up. <br> <br>
                 Watch this space!
             </p>
+
+            
+        {% for listing in listings %}
+            <div class="listing-card">
+                <h3>{{ listing.title }}</h3>
+                <p>${{ listing.price_per_night }} / night</p>
+                
+                <a href="/listings/{{ listing.id }}">View Details</a>
+            </div>
+        {% endfor %}
+    
     </body>
 </html>
