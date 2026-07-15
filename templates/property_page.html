@@ -3,8 +3,8 @@
 <html>
     <head>
         <title>{{ listing.title }}</title>
-        <link rel="stylesheet"
-            href="{{ url_for('static', filename='style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='flash_styles.css') }}">
     </head>
     <body>
     {% include "navigation_bar.html" %}
@@ -36,6 +36,9 @@
                 <p>
                     "To book, contact: {{ email }}"
                 </p>
+            </section>
+            <section class="booking-card">
+                {% include "calendar.html" %}
             </section>
         </main>
     </body>
