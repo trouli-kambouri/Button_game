@@ -39,7 +39,7 @@ def remove_listing():
     connection.connect()
     listing_repository = ListingRepository(connection)
     listing_details = request.form
-    listing = Listing(title=listing_details["title"], description=listing_details["description"], price=listing_details['price'], owner_id=listing_details['owner_id'])
+    listing = Listing(title=listing_details["title"], description=listing_details["description"], price=listing_details['price'], thumbnail=listing_details['thumbnail'], owner_id=listing_details['owner_id'])
     listing_repository.remove(listing)
     return redirect("/")    
 
@@ -139,7 +139,7 @@ Individual listing page. GET(get listing page)
 #     return render_template('property_page.html', listing=listing)
     
 @app.get('/listings/<int:property_id>')
-def get_individual_listin_converter_with_calendar(property_id):
+def get_individual_listing_converter_with_calendar(property_id):
     connection = DatabaseConnection()
     connection.connect()
     listing_repository = ListingRepository(connection)

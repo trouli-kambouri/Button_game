@@ -11,7 +11,7 @@
             <h1>{{ listing.title }}</h1>
                 <section class="image-gallery">
                     <img
-                        src="/static/placeholder.png"
+                        src="{{ url_for('static', filename='thumbnails/' + listing.thumbnail) if listing.thumbnail else '/static/placeholder.png' }}"
                         alt="{{ listing.title }}"
                         class="hero-image"
                     >
