@@ -30,7 +30,7 @@ def test_listing_repository_returns_list_of_all_properties_with_owner_emails(db_
         "maming@matsforcats.co.uk"
     ]
     repository = ListingRepository(db_connection)
-    listing_details = repository.all_with_owner_details()
+    listing_details = repository.all_with_owner_emails()
 
     assert [[listing, email] for (listing, email) in list(zip(listings, owner_emails))] == listing_details
 

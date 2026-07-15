@@ -25,8 +25,8 @@ def get_landing_page():
     connection = DatabaseConnection()
     connection.connect()
     listing_repository = ListingRepository(connection)
-    listings = listing_repository.all()
-    return render_template('index.html', listings=listings)
+    listings_emails = listing_repository.all_with_owner_emails()
+    return render_template('index.html', listings=listings_emails)
 
 
 @app.route('/', methods=['POST'])

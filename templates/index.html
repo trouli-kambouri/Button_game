@@ -8,7 +8,7 @@
         {% include "navigation_bar.html" %} <!-- Adds navigation bar -->
         <h2> Listings </h2>
         <section class="listings-container">
-            {% for listing in listings %}
+            {% for (listing, email) in listings %}
                 <article class="listing-card">
                     <div class="image-container">
                         <img 
@@ -24,6 +24,10 @@
 
                         <p class="price">
                             £{{ listing.price_per_night }} per night
+                        </p>
+
+                        <p class="email">
+                            {{ email }} per night
                         </p>
                     </div>
                 </article>
