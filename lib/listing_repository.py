@@ -10,7 +10,7 @@ class ListingRepository():
 
         return [Listing(row["owner_id"], row["title"], row["description"], row["price_per_night"], row["id"]) for row in rows]
     
-    def all_with_owner_details(self):
+    def all_with_owner_emails(self):
         # Should this do this or should it get the owner ids 
         # using all and query the owner details separately?
         query = """ SELECT
