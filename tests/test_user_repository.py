@@ -11,7 +11,9 @@ def test_user_repository_all_returns_list_of_all_users(db_connection):
     users = [
         User('kayleighkarpal', 'kayleighk@kickabout.com', '07635183911', 'badpassword', 1),
         User('mingma', 'maming@matsforcats.co.uk', '07876543909', '-*76sjfyemv', 2),
-        User('gurpeetgill', 'gurpgill@grillsforu.net', '07652987709', 'youcantguess', 3)
+        User('gurpeetgill', 'gurpgill@grillsforu.net', '07652987709', 'youcantguess', 3),
+        User('salsalamander', 'salsal@salsalsalads.net', '076526479839', 'icanguess', 4),
+        User('taliatipple', 'ttipple@taliastipples.co.uk', '07856981178', 'guessmeifyoudare', 5)
     ]
 
     assert users == repository.all()
@@ -26,7 +28,9 @@ def test_create_user_adds_user_to_users(db_connection):
             User('kayleighkarpal', 'kayleighk@kickabout.com', '07635183911', 'badpassword', 1),
             User('mingma', 'maming@matsforcats.co.uk', '07876543909', '-*76sjfyemv', 2),
             User('gurpeetgill', 'gurpgill@grillsforu.net', '07652987709', 'youcantguess', 3),
-            User('urmauppal', 'urmau@umbrellasftw.com', '076352183911', 'terriblepwd', 4)
+            User('salsalamander', 'salsal@salsalsalads.net', '076526479839', 'icanguess', 4),
+            User('taliatipple', 'ttipple@taliastipples.co.uk', '07856981178', 'guessmeifyoudare', 5),
+            User('urmauppal', 'urmau@umbrellasftw.com', '076352183911', 'terriblepwd', 6)
             ]
 
     repository = UserRepository(db_connection)
