@@ -16,5 +16,9 @@ CREATE TABLE listings (
         ON DELETE CASCADE,
     title TEXT NOT NULL,
     description TEXT,
-    price_per_night INT NOT NULL
+    price_per_night INT NOT NULL,
+    available_from DATE NOT NULL,
+    available_until DATE NOT NULL,
+
+    CONSTRAINT valid_date_range CHECK available_from <= available_until
 );
