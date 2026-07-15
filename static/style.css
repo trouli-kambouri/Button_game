@@ -393,6 +393,71 @@ body{
     height: 45px;
 }
 
+
+/* Added in javascript code for the calendar. multiple months. lets you highlight range of dates*/
+
+.calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 15px 
+.nav-arrow {
+    text-decoration: none;
+    font-size: 1.5rem;
+    color: #FF5A5F;
+    font-weight: bold;
+    padding: 5px 15px;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+
+.nav-arrow:hover    background-color: rgba(255, 90, 95, 0.1);
+}
+
+/* Info Summary Box above calendar */
+.booking-summary {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 20px;    
+    font-size: 0.95rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.summary-dates {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.summary-duration {
+    text-align: center;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    padding-top: 8px;
+    color: #FF5A5F;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Button Active Selections & Range Highlights */
+.calendar-day-btn.selected {
+    background-color: #FF5A5F !important;
+    color: white !important;    border-color: #FF5A5F !important;
+    transform: scale(1.05);
+}
+
+.calendar-day-btn.in-range {
+    background-color: rgba(255, 90, 95, 0.2) !important;
+    color: #FF5A5F !important;
+    border-radius: 4px; /* Square off highlights so range looks like a solid bar */
+}
+
+
+
 /* Logo - optional */
 /*
 .logo {
