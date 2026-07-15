@@ -6,7 +6,8 @@
     </head> 
     <body>
         {% include "navigation_bar.html" %} <!-- Adds navigation bar -->
-        <h2> Listings </h2>
+        <h1> MakersBnB </h1>
+        <h2> Top Listings </h2>
         <section class="listings-container">
             {% for (listing, email) in listings [:4] %}
                 <a href="/listings/{{ listing.id }}" class="listing-link">
