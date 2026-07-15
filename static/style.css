@@ -315,8 +315,11 @@ body{
     max-width: 450px;
     border-radius: 16px;
     
-    /* 💡 Translucent Blurry Glass Effect */
-    background: rgba(255, 255, 255, 0.45); 
+    /* Translucent Blurry Glass Effect - edited for dark background */
+    background: rgba(20, 20, 20, 0.55);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255,255,255,0.15);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px); /* Safari support */
     
@@ -325,7 +328,9 @@ body{
 }
 
 .booking-section h2 {
-    color: #2c3e50;
+    color: white;
+    font-size: 2rem;
+    text-shadow: 0 3px 10px rgba(0,0,0,0.7);
     margin-bottom: 20px;
     text-align: center;
 }
@@ -337,7 +342,7 @@ body{
 }
 
 .no-js-calendar th {
-    color: #555;
+    color: rgba(255,255,255,0.85);
     font-weight: 600;
     padding-bottom: 15px;
     text-align: center;
@@ -350,27 +355,29 @@ body{
     vertical-align: middle;
 }
 
-/* 💡 Day buttons: Perfectly aligned horizontally and vertically */
+/* align buttons */
 .calendar-day-btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    
-    /* Force buttons to be identical perfect circles/squares */
+
     width: 45px;
     height: 45px;
     margin: 0 auto;
-    
-    /* Reset default button styling */
-    background: transparent;
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    border-radius: 50%; /* Rounded circles, change to 8px for soft squares */
-    
+
+    /* Dark glass style */
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+
+    /* White text */
+    color: white;
     font-size: 1rem;
-    font-weight: bold;
-    color: #2c3e50;
+    font-weight: 600;
+
     cursor: pointer;
-    transition: all 0.2s ease;
+
+    transition: all 0.25s ease;
 }
 
 /* Hover & Click Effects */
