@@ -56,7 +56,7 @@ INSERT INTO booking_statuses (id, name)
         (1, 'requested'),
         (2, 'confirmed'),
         (3, 'denied'),
-        (4, 'past');
+        (4, 'completed');
 
 INSERT INTO users (name, email, phone_number, password)
     VALUES

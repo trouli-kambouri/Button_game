@@ -1,6 +1,4 @@
-
-'''
-class Booking():
+class Bookings():
     def __init__(self, start_date, end_date, listing_id, guest_id, status):
         self.start_date = start_date
         self.end_date = end_date
@@ -9,7 +7,7 @@ class Booking():
         self.status = status
         self.id = id
 
-change the below to bookings:
+# change the below to bookings:
     def __repr__(self):
         return(f"Booking({self.id}, {self.owner_id}, {self.title}, {self.description}, \
             {self.available_from}, {self.available_until}, £{self.price_per_night})")
@@ -17,4 +15,3 @@ change the below to bookings:
     def __eq__(self, other):
         return self.__dict__ == other.__dict__
     
-'''
