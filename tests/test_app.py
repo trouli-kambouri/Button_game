@@ -26,10 +26,8 @@ We can render the index page
 """
 def test_get_index(page, test_web_address):
     # We load a virtual browser and navigate to the /index page
-    page.goto(f"http://localhost:5001/")
+    page.goto(f"http://{test_web_address}/")
 
-    # We look at the <p> tag
-    p_tag = page.locator("p")
-
-    # We assert that it has the text "This is the homepage."
-    expect(p_tag).to_have_text("This is the homepage.")
+    expect(
+        page.get_by_role("heading", name="Our Top Listings")
+    ).to_be_visible()

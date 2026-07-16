@@ -1,102 +1,61 @@
-from playwright.sync_api import Page, expect
 from lib.database_connection import DatabaseConnection
 
 
-def reset_database(db_connection: DatabaseConnection):
-    db_connection.execute(
-        """
-        TRUNCATE TABLE listings, users
-        RESTART IDENTITY CASCADE
-        """
+SEED_FILE = "seeds/setup_seed_tables.sql"
+
+
+def use_test_database(monkeypatch):
+    monkeypatch.setattr(
+        DatabaseConnection,
+        "DEV_DATABASE_NAME",
+        DatabaseConnection.TEST_DATABASE_NAME
     )
 
 
-def create_test_user(
-    db_connection: DatabaseConnection
+def test_successful_login_creates_session(
+    web_client,
+    db_connection,
+    monkeypatch
 ):
-    db_connection.execute(
-        """
-        INSERT INTO users
-            (name, email, phone_number, password)
-        VALUES
-            (%s, %s, %s, %s)
-        """,
-        [
-            "Anton Edeh",
-            "anton@example.com",
-            "07123456789",
-            "password123"
-        ]
+    use_test_database(monkeypatch)
+    db_connection.seed(SEED_FILE)
+
+    response = web_client.post(
+        "/sessions",
+        data={
+            "email": "kayleighk@kickabout.com",
+            "password": "badpassword"
+        }
     )
 
+    assert response.status_code == 302
 
-def test_successful_login_creates_session_cookie(
-    page: Page,
-    test_web_address: str,
-    db_connection: DatabaseConnection
+    with web_client.session_transaction() as flask_session:
+        assert flask_session["user_id"] == 1
+        assert (
+            flask_session["email"]
+            == "kayleighk@kickabout.com"
+        )
+
+
+def test_failed_login_does_not_create_session(
+    web_client,
+    db_connection,
+    monkeypatch
 ):
-    reset_database(db_connection)
-    create_test_user(db_connection)
+    use_test_database(monkeypatch)
+    db_connection.seed(SEED_FILE)
 
-    page.goto(f"http://{test_web_address}/users/login")
-
-    page.locator('input[name="email"]').fill(
-        "anton@example.com"
-    )
-    page.locator('input[name="password"]').fill(
-        "password123"
-    )
-
-    page.locator(
-        'button[type="submit"], input[type="submit"]'
-    ).click()
-
-    expect(page).to_have_url(
-        f"http://{test_web_address}/"
+    response = web_client.post(
+        "/sessions",
+        data={
+            "email": "kayleighk@kickabout.com",
+            "password": "wrong-password"
+        }
     )
 
-    cookies = page.context.cookies()
+    assert response.status_code == 302
 
-    session_cookies = [
-        cookie
-        for cookie in cookies
-        if cookie["name"] == "session"
-    ]
-
-    assert len(session_cookies) == 1
-
-
-def test_failed_login_does_not_create_session_cookie(
-    page: Page,
-    test_web_address: str,
-    db_connection: DatabaseConnection
-):
-    reset_database(db_connection)
-    create_test_user(db_connection)
-
-    page.goto(f"http://{test_web_address}/users/login")
-
-    page.locator('input[name="email"]').fill(
-        "anton@example.com"
-    )
-    page.locator('input[name="password"]').fill(
-        "wrong-password"
-    )
-
-    page.locator(
-        'button[type="submit"], input[type="submit"]'
-    ).click()
-
-    expect(page).to_have_url(
-        f"http://{test_web_address}/users/login"
-    )
-
-    cookies = page.context.cookies()
-
-    session_cookies = [
-        cookie
-        for cookie in cookies
-        if cookie["name"] == "session"
-    ]
-
-    assert len(session_cookies) == 0
+    with web_client.session_transaction() as flask_session:
+        assert "user_id" not in flask_session
+        assert "email" not in flask_session
