@@ -119,7 +119,7 @@ def get_create_listing():
 # End
 
 @app.route('/listings/new', methods=['POST'])
-def create_listing():
+def create_listing():    
     connection = DatabaseConnection()
     connection.connect()
     listing_repository = ListingRepository(connection)
@@ -181,6 +181,9 @@ def get_individual_listing_converter_with_calendar(property_id):
 # The POST route: Processes the booking submission for that listing
 @app.post('/listings/<int:listing_id>/my_bookings')
 def create_booking(listing_id):
+    if "user_id" not in session:
+        redirect("/users/login")
+
     connection = DatabaseConnection()
     connection.connect()
     booking_repository = BookingRepository(connection)
@@ -217,11 +220,30 @@ Manage bookings page: GET /my_bookings
 # Will need to get user id, e.g. from session
 @app.route("/my_bookings", methods=["GET"])
 def get_manage_bookings_page():
+    if "user_id" not in session:
+        redirect("/users/login")
     connection = DatabaseConnection()
     connection.connect()
-    # booking_repo = 
 
-    return render_template("my_bookings.html")
+    user_id = session["user_id"]
+
+    booking_repo = BookingRepository(connection)
+    listing_repo = ListingRepository(connection)
+    bookings = booking_repo.find_bookings_by_guest_id(user_id)
+    requests = booking_repo.find_bookings_by_owner_id(user_id)
+
+    guest_listings = []
+    owner_listings = []
+    for listing_id in [request.listing_id for request in requests]:
+        guest_listings.append(listing_repo.find_listing_by_id(listing_id))
+
+    for listing_id in [booking.listing_id for booking in bookings]:
+        owner_listings.append(listing_repo.find_listing_by_id(listing_id))
+    
+
+
+
+    return render_template("my_bookings.html", user_id=user_id, bookings_list=bookings, requests_list=requests, guest_list=guest_listings, owner_list=owner_listings)
 
 
 @app.after_request

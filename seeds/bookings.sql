@@ -1,10 +1,5 @@
 DROP TABLE IF EXISTS bookings;
-DROP TABLE IF EXISTS booking_statuses CASCADE;
 
-CREATE TABLE booking_statuses (
-    id INT PRIMARY KEY,
-    name VARCHAR(20)
-);
 
 CREATE TABLE bookings (
     id SERIAL PRIMARY KEY,
@@ -18,19 +13,13 @@ CREATE TABLE bookings (
         ON DELETE CASCADE,
     CONSTRAINT fk_guest FOREIGN KEY(guest_id) 
         REFERENCES users(id) 
-        ON DELETE CASCADE,
+        ON DELETE CASCADE
 );
 
-INSERT INTO booking_statuses (id, name)
-    VALUES
-        (1, 'requested'),
-        (2, 'confirmed'),
-        (3, 'denied'),
-        (4, 'completed');
 
 
 INSERT INTO bookings (start_date, end_date, listing_id, guest_id, status)
     VALUES
-        ('2026-11-21', '2026-11-22', 1, 3, 1),
-        ('2026-10-21', '2026-10-22', 1, 3, 1),
-        ('2026-08-21', '2026-08-22', 2, 3, 2);
+        ('2026-11-21', '2026-11-22', 1, 3, 'requested'),
+        ('2026-10-21', '2026-10-22', 1, 3, 'requested'),
+        ('2026-08-21', '2026-08-22', 2, 3, 'confirmed');
