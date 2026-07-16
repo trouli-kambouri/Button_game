@@ -1,7 +1,7 @@
 import datetime as dt
 
 class Bookings():
-    def __init__(self, start_date, end_date, listing_id, guest_id, status, id=None):
+    def __init__(self, start_date, end_date, listing_id, guest_id, status="requested", id=None):
         self.start_date = self._get_date(start_date)
         self.end_date = self._get_date(end_date)
         self.listing_id = listing_id

@@ -12,16 +12,13 @@ CREATE TABLE bookings (
     end_date DATE NOT NULL,
     listing_id INT NOT NULL,
     guest_id INT NOT NULL,
-    status INT NOT NULL,
+    status VARCHAR(20) NOT NULL,
     CONSTRAINT fk_listing FOREIGN KEY(listing_id) 
         REFERENCES listings(id) 
         ON DELETE CASCADE,
     CONSTRAINT fk_guest FOREIGN KEY(guest_id) 
         REFERENCES users(id) 
         ON DELETE CASCADE,
-    CONSTRAINT fk_statuses FOREIGN KEY(status) 
-        REFERENCES booking_statuses(id) 
-        ON DELETE CASCADE
 );
 
 INSERT INTO booking_statuses (id, name)
