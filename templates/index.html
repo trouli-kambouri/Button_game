@@ -13,7 +13,7 @@
                     <article class="listing-card">
                         <div class="image-container">
                             <img 
-                                src="/static/placeholder.png" 
+                                src="{{ url_for('static', filename='thumbnails/' + listing.thumbnail) if listing.thumbnail else '/static/placeholder.png' }}"
                                 alt="{{ listing.title }}"
                                 class="listing-image"
                             >
