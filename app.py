@@ -116,18 +116,23 @@ def get_all_listings():
 # Please feel free to edit/change.
 @app.route('/listings/new', methods=['GET'])
 def get_create_listing():
+    if "user_id" not in session:
+        return redirect("/users/login")
     return render_template("create_listing.html")
 # End
 
 @app.route('/listings/new', methods=['POST'])
-def create_listing():    
+def create_listing():
+    if "user_id" not in session:
+        return redirect("/users/login")
+
     connection = DatabaseConnection()
     connection.connect()
     listing_repository = ListingRepository(connection)
     listing_details = request.form
     new_listing = Listing(title=listing_details["title"], description=listing_details["description"],
                           price=listing_details['price'], available_from=listing_details['available_from'],
-                          available_until=listing_details['available_until'], owner_id=listing_details['owner_id'])
+                          available_until=listing_details['available_until'], owner_id=session["user_id"])
     listing_repository.create(new_listing)
     return redirect("/listings")
 
