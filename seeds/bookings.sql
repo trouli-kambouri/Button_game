@@ -1,31 +1,5 @@
 DROP TABLE IF EXISTS bookings;
 DROP TABLE IF EXISTS booking_statuses CASCADE;
-DROP TABLE IF EXISTS listings CASCADE;
-DROP TABLE IF EXISTS users CASCADE;
-
-CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
-    name TEXT NOT NULL,
-    email TEXT UNIQUE NOT NULL,
-    phone_number TEXT,
-    password TEXT NOT NULL
-);
-
-CREATE TABLE listings (
-    id SERIAL PRIMARY KEY,
-    owner_id INT NOT NULL
-        REFERENCES users(id)
-        ON DELETE CASCADE,
-    title TEXT NOT NULL,
-    description TEXT,
-    price_per_night INT NOT NULL,
-    available_from DATE NOT NULL,
-    available_until DATE NOT NULL,
-
-    CONSTRAINT valid_date_range CHECK (available_from <= available_until)
-);
-
--- TODO: Add column for url image to listings
 
 CREATE TABLE booking_statuses (
     id INT PRIMARY KEY,
@@ -56,3 +30,10 @@ INSERT INTO booking_statuses (id, name)
         (2, 'confirmed'),
         (3, 'denied'),
         (4, 'past');
+
+
+INSERT INTO bookings (start_date, end_date, listing_id, guest_id, status)
+    VALUES
+        ('2026-11-21', '2026-11-22', 1, 3, 1),
+        ('2026-10-21', '2026-10-22', 1, 3, 1),
+        ('2026-08-21', '2026-08-22', 2, 3, 2);
