@@ -1,0 +1,28 @@
+<!DOCTYPE html> 
+<html> 
+    <head> 
+        <title>Listings</title> 
+        <link rel="stylesheet" href="static/style.css"> 
+    </head> 
+    <body>
+        {% include "navigation_bar.html" %} <!-- Adds navigation bar -->
+
+        <h1> Manage Bookings </h1>
+
+        <section class="bookings-container">
+            <div class="booking-list-container">
+                <h2>My bookings</h2>
+                -- Listing [booking-listings] thumbnail, title, booking dates, status
+                {% for (booking, listing, status) in bookings-list %}    
+                <div class="booking-container">
+                    <p>{{ listing.title }}</p>
+                </div>
+                </ul>
+            </div>
+            <div class="booking-list-container">
+                <h2>My properties</h2>
+            </div>
+
+        </section>
+    </body>
+</html>
