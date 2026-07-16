@@ -173,34 +173,34 @@ def get_individual_listing_converter_with_calendar(property_id):
     return render_template('property_page.html', listing=listing, cal_matrix=cal_matrix, month_name=month_name, month=month, year=year, prev_month = prev_month, prev_year = prev_year, next_month = next_month, next_year = next_year)
 
 # The POST route: Processes the booking submission for that listing
-# @app.post('/listings/<int:listing_id>')
-# def create_booking(listing_id):
-#     selected_date = request.form.get('selected_date') # Format: "YYYY-MM-DD"
+@app.post('/listings/<int:listing_id>')
+def create_booking(listing_id):
+    selected_date = request.form.get('selected_date') # Format: "YYYY-MM-DD"
     
-#     # 1. Validation: Make sure they actually clicked a date
-#     if not selected_date:
-#         flash("Please select a date on the calendar.", "error")
-#         return redirect(f'/listings/{listing_id}')
+    # 1. Validation: Make sure they actually clicked a date
+    if not selected_date:
+        flash("Please select a date on the calendar.", "error")
+        return redirect(f'/listings/{listing_id}')
         
-#     # 2. Database Integration
-#     connection = DatabaseConnection()
-#     connection.connect()
-#     booking_repository = BookingRepository(connection)
+    # 2. Database Integration
+    connection = DatabaseConnection()
+    connection.connect()
+    booking_repository = BookingRepository(connection)
     
-#     try:
-#         # Mocking user_id = 1 for now (replace this with session['user_id'] once login is set up)
-#         booker_id = 1
+    try:
+        # Mocking user_id = 1 for now (replace this with session['user_id'] once login is set up)
+        booker_id = 1
         
-#         # 3. USE the selected_date variable to write a new row to your bookings table!
-#         booking_repository.create(listing_id=listing_id, user_id=booker_id, date=selected_date)
+        # 3. USE the selected_date variable to write a new row to your bookings table!
+        booking_repository.create(listing_id=listing_id, user_id=booker_id, date=selected_date)
         
-#         # 4. Success feedback
-#         flash(f"Successfully booked for {selected_date}!", "success")
-#         return redirect(f'/listings/{listing_id}')
+        # 4. Success feedback
+        flash(f"Successfully booked for {selected_date}!", "success")
+        return redirect(f'/listings/{listing_id}')
         
-#     except Exception as e:
-#         flash(f"Could not complete booking: {str(e)}", "error")
-#         return redirect(f'/listings/{listing_id}')
+    except Exception as e:
+        flash(f"Could not complete booking: {str(e)}", "error")
+        return redirect(f'/listings/{listing_id}')
 
 """
 Manage bookings page: GET /my_bookings
