@@ -3,10 +3,25 @@
 This creates a Navigation Bar that contains links to other pages.
 
 -->
-<nav class="navigation_bar">
+<!-- <nav class="navigation_bar">
     <a href="/">Home</a>
     <a href="/users/login">Login</a>
     <a href="/users/new">Sign Up</a>
     <a href="/listings">Listings</a>
     <a href="/listings/new">Create Listing</a>
+</nav> -->
+
+
+<nav class="navigation_bar">
+    <a href="/">Home</a>
+    <a href="/listings">Listings</a>
+    
+    {% if email %}
+        <a href="/listings/new">Create Listing</a>
+        <span class="user-status">Logged in as: <strong>{{ email }}</strong></span>
+        <a href="/users/logout" class="logout-link">Log Out</a>
+    {% else %}
+        <a href="/users/login">Login</a>
+        <a href="/users/new">Sign Up</a>
+    {% endif %}
 </nav>

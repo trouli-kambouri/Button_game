@@ -89,6 +89,37 @@ body{
     transform: translateY(-2px);
 }
 
+
+.user-status 
+{
+    color: rgba(255, 255, 255, 0.7); 
+    font-size: 14px;                 
+    font-weight: normal;             
+    padding: 10px 5px;               
+    
+    
+    white-space: nowrap; 
+}
+
+
+.user-status strong 
+{
+    color: #FFFFFF;                 
+    font-weight: bold;               
+}
+
+
+.logout-link 
+{
+    
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.logout-link:hover 
+{
+    background-color: rgba(255, 99, 71, 0.2)
+}
+
 /* Formatting the form containers */
 .form-card 
 {
