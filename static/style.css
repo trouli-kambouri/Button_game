@@ -290,8 +290,6 @@ body{
     height: 200px;
     object-fit: cover;
     display: block;
-<<<<<<< HEAD
-=======
 }
 
 .property-page 
@@ -459,8 +457,6 @@ body{
     transition: background 0.2s;
 }
 
-.nav-arrow:hover    background-color: rgba(255, 90, 95, 0.1);
-}
 
 /* Info Summary Box above calendar */
 .booking-summary {
@@ -503,7 +499,24 @@ body{
     border-radius: 4px; /* Square off highlights so range looks like a solid bar */
 }
 
+/* Manage Bookings */
 
+.bookings-container {
+    margin: 1em auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: minmax(150px, auto);
+    width: 90%;
+
+}
+
+.booking-list-container {
+    background: rgba(30, 30, 30, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(255, 255,255,0.15);
+    backdrop-filter: blur(5px);
+    gap: 1em;
+}
 
 /* Logo - optional */
 /*

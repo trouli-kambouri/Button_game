@@ -202,6 +202,20 @@ def get_individual_listing_converter_with_calendar(property_id):
 #         flash(f"Could not complete booking: {str(e)}", "error")
 #         return redirect(f'/listings/{listing_id}')
 
+"""
+Manage bookings page: GET /my_bookings
+"""
+# Will need to get user id, e.g. from session
+@app.route("/my_bookings", methods=["GET"])
+def get_manage_bookings_page():
+    connection = DatabaseConnection()
+    connection.connect()
+
+    # booking_repo = 
+
+    return render_template("my_bookings.html")
+
+
 @app.after_request
 def add_header(response):
     # This tells the browser: "Do not save a frozen snapshot of this page!"
