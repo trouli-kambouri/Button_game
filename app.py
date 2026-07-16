@@ -210,10 +210,22 @@ def add_header(response):
     response.headers["Expires"] = "0"
     return response
 
+@app.route('/users/logout', methods=['GET'])
+def logout_user():
+    session.clear() 
+    flash("You have been logged out.", "success")
+    return redirect('/')
+
+@app.context_processor
+def inject_user_email():
+    return dict(email=session.get('email'))
+
 # These lines start the server if you run this file directly
 # They also start the server configured to use the test database
 # if started in test mode.
 if __name__ == '__main__':
     app.run(debug=True, port=int(os.environ.get('PORT', 5001)))
+
+
 
 
