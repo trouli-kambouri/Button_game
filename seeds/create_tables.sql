@@ -12,24 +12,17 @@ CREATE TABLE users (
 );
 
 CREATE TABLE listings (
-    id SERIAL PRIMARY KEY,
-    owner_id INT NOT NULL
-        REFERENCES users(id)
-        ON DELETE CASCADE,
+    id SERIAL PRIMARY KEY, 
+    owner_id INT NOT NULL,
     title TEXT NOT NULL,
     description TEXT,
     price_per_night INT NOT NULL,
     available_from DATE NOT NULL,
     available_until DATE NOT NULL,
+    thumbnail VARCHAR(255),
 
-    CONSTRAINT valid_date_range CHECK (available_from <= available_until)
-);
-
--- TODO: Add column for url image to listings
-
-CREATE TABLE booking_statuses (
-    id INT PRIMARY KEY,
-    name VARCHAR(20)
+    CONSTRAINT valid_date_range CHECK (available_from <= available_until),
+    CONSTRAINT fk_owner FOREIGN KEY(owner_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE bookings (
@@ -38,21 +31,11 @@ CREATE TABLE bookings (
     end_date DATE NOT NULL,
     listing_id INT NOT NULL,
     guest_id INT NOT NULL,
-    status INT NOT NULL,
+    status VARCHAR(20) NOT NULL,
     CONSTRAINT fk_listing FOREIGN KEY(listing_id) 
         REFERENCES listings(id) 
         ON DELETE CASCADE,
     CONSTRAINT fk_guest FOREIGN KEY(guest_id) 
         REFERENCES users(id) 
-        ON DELETE CASCADE,
-    CONSTRAINT fk_statuses FOREIGN KEY(status) 
-        REFERENCES booking_statuses(id) 
         ON DELETE CASCADE
 );
-
-INSERT INTO booking_statuses (id, name)
-    VALUES
-        (1, 'requested'),
-        (2, 'confirmed'),
-        (3, 'denied'),
-        (4, 'past');
