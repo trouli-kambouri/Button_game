@@ -214,11 +214,21 @@ Manage bookings page: GET /my_bookings
 # Will need to get user id, e.g. from session
 @app.route("/my_bookings", methods=["GET"])
 def get_manage_bookings_page():
+    if "user_id" not in session:
+        redirect("/users/login")
     connection = DatabaseConnection()
     connection.connect()
-    # booking_repo = 
 
-    return render_template("my_bookings.html")
+    user_id = session["user_id"]
+
+    booking_repo = BookingRepository(connection)
+    bookings = booking_repo.find_bookings_by_guest_id(user_id)
+    requests = booking_repo.find_bookings_by_owner_id(user_id)
+    
+
+
+
+    return render_template("my_bookings.html", user_id=user_id, bookings_list=bookings, requests_list=requests)
 
 
 @app.after_request

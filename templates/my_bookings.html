@@ -9,13 +9,15 @@
 
         <h1> Manage Bookings </h1>
 
-        <section class="bookings-container">
+        <section class="bookings-container">            
             <div class="booking-list-container">
                 <h2>My bookings</h2>
 <!-- /*                -- Listing [booking-listings] thumbnail, title, booking dates, status */ -->
-                <div class="booking-container">
-                    <p>listing title</p>
-                </div>
+                {% for booking in bookings_list %}
+                    <div class="booking-container">
+                        <p>{{ booking.title }}</p>
+                    </div>
+                {% endfor %}
             </div>
             <div class="booking-list-container">
                 <h2>My properties</h2>

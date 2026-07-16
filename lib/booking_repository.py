@@ -20,6 +20,18 @@ class BookingRepository():
 
         return [Bookings(row["start_date"], row["end_date"], row["listing_id"], row["guest_id"], row["status"]) for row in rows]
 
+    def find_bookings_by_owner_id(self, owner_id):
+        query = """
+                    SELECT * FROM bookings AS b
+                        WHERE b.listing_id IN (
+                            SELECT l.id FROM listings AS l
+                                WHERE l.owner_id = %s );
+            """
+
+        rows = self._connection.execute(query, [owner_id])
+
+        return [Bookings(row["start_date"], row["end_date"], row["listing_id"], row["guest_id"], row["status"]) for row in rows]
+
     def find_by_status(self, status):
         rows = self._connection.execute("SELECT * FROM bookings WHERE status = %s", [status])
         
