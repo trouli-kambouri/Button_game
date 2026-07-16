@@ -381,6 +381,11 @@ body{
 
     transition: all 0.25s ease;
 }
+/* Greyed out unavailable dates */
+.calendar-day-btn.unavailable {
+    background: rgba(255, 255, 255, 0.01);
+    color: rgb(81, 71, 71);
+}
 
 /* Hover & Click Effects */
 .calendar-day-btn:hover {
