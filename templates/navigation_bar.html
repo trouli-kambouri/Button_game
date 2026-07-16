@@ -24,4 +24,12 @@ This creates a Navigation Bar that contains links to other pages.
         <a href="/users/login">Login</a>
         <a href="/users/new">Sign Up</a>
     {% endif %}
+    
+    <div class="nav-logo-inline">
+        <div class="house-logo-shadow-container">
+            <div class="house-logo-wrapper">
+                <img src="{{ url_for('static', filename='makers_academy_logo.png') }}" alt="MakersBnB Logo" class="house-logo-icon">
+            </div>
+        </div>
+    </div>
 </nav>
