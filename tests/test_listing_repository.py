@@ -205,6 +205,56 @@ def test_listing_repository_returns_listing_with_id(
 
     assert repository.find_listing_by_id(2) == expected
 
+def test_listing_repository_returns_listings_with_ids_in_list(db_connection):
+    db_connection.seed(SEED_FILE)
+
+    expected_listings = [
+        Listing(
+            1,
+            "Uncomfortable camper van in a lay-by",
+            "Newtown",
+            21,
+            "2026-01-01",
+            "2026-01-31",
+            "Newton.png",
+            2
+        ),
+        Listing(
+            4,
+            "Medieval prison cell",
+            "Stonechester",
+            66,
+            "2026-02-03",
+            "2026-07-21",
+            "Stonechester.png",
+            7
+        ),
+        Listing(
+            5,
+            "Floating house that is not sinking",
+            "Above Mariana's Trench",
+            112,
+            "2026-05-01",
+            "2026-11-10",
+            "Above_marianas_trench.png",
+            9
+        ),
+        Listing(
+            3,
+            "Countryside cottage with sheep included",
+            "Baaxton",
+            93,
+            "2025-01-01",
+            "2026-07-20",
+            "Baaxton.png",
+            10
+        )
+    ]
+
+    repository = ListingRepository(db_connection)
+
+    assert expected_listings == repository.find_listings_by_id_list([2, 7, 9, 10])
+
 
 def test_listing_repository_adds_new_listing(
     db_connection

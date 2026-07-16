@@ -13,22 +13,22 @@
             <div class="booking-list-container">
                 <h2>My bookings</h2>
 <!-- /*                -- Listing [booking-listings] thumbnail, title, booking dates, status */ -->
-                {% for (booking, listing) in guest_list %}
+                {% for (booking, dates, listing) in guest_list %}
                     <div class="booking-container">
                         <img src="{{ url_for('static', filename='thumbnails/' + listing.thumbnail) }}" width="40%" alt="{{ listing.title }}">
                         <p><a href="/listings/{{ booking.listing_id }}"> {{ listing.title }}</a></p>
-                        <p>Dates: {{ booking.start_date }} - {{ booking.end_date }}</p>
+                        <p>Dates: {{ dates[0] }} - {{ dates[1] }}</p>
                         <p>Status: {{ booking.status }}</p>
                     </div>
                 {% endfor %}
             </div>
             <div class="booking-list-container">
                 <h2>My properties</h2>
-                {% for (request, listing) in owner_list %}
+                {% for (request, dates, listing) in owner_list %}
                     <div class="booking-container">
                         <img src="{{ url_for('static', filename='thumbnails/' + listing.thumbnail) }}" width="40%" alt="{{ listing.title }}">
                         <p><a href="/listings/{{ request.listing_id }}">{{ listing.title }}</a></p>
-                        <p>Dates: {{ request.start_date }} - {{ request.end_date }}</p>
+                        <p>Dates: {{ dates[0] }} - {{ dates[1] }}</p>
                         <p>Status: {{ request.status }}</p>
 
                     </div>

@@ -36,6 +36,13 @@ class ListingRepository():
         result = self._connection.execute("SELECT * FROM listings WHERE id = %s", [property_id])[0]
 
         return Listing(result["owner_id"], result["title"], result["description"], result["price_per_night"], result["available_from"], result["available_until"], result["thumbnail"], result["id"])
+    
+    def find_listings_by_id_list(self, id_list):
+
+        rows = self._connection.execute("SELECT * FROM listings WHERE id = ANY(%s)", [id_list])
+
+        return [Listing(row["owner_id"], row["title"], row["description"], row["price_per_night"], row["available_from"], row["available_until"], row["thumbnail"], row["id"]) for row in rows]
+
 
     def create(self, listing):
         # DB wants dates as YYYY-MM-DD
