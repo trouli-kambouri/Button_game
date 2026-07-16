@@ -33,15 +33,15 @@ def get_landing_page():
     return render_template('index.html', listings=listings_emails)
 
 
-@app.route('/', methods=['POST'])
-def remove_listing():
-    connection = DatabaseConnection()
-    connection.connect()
-    listing_repository = ListingRepository(connection)
-    listing_details = request.form
-    listing = Listing(title=listing_details["title"], description=listing_details["description"], price=listing_details['price'], thumbnail=listing_details['thumbnail'], owner_id=listing_details['owner_id'])
-    listing_repository.remove(listing)
-    return redirect("/")    
+# @app.route('/', methods=['POST'])
+# def remove_listing():
+#     connection = DatabaseConnection()
+#     connection.connect()
+#     listing_repository = ListingRepository(connection)
+#     listing_details = request.form
+#     listing = Listing(title=listing_details["title"], description=listing_details["description"], price=listing_details['price'], thumbnail=listing_details['thumbnail'], owner_id=listing_details['owner_id'])
+#     listing_repository.remove(listing)
+#     return redirect("/")    
 
 
 """
