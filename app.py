@@ -5,6 +5,9 @@ from lib.users import User
 from lib.user_repository import UserRepository
 from lib.listing import Listing
 from lib.listing_repository import ListingRepository
+from lib.booking_repository import BookingRepository
+from lib.bookings import Bookings
+
 
 import calendar
 from datetime import datetime
@@ -176,34 +179,50 @@ def get_individual_listing_converter_with_calendar(property_id):
     return render_template('property_page.html', listing=listing, cal_matrix=cal_matrix, month_name=month_name, month=month, year=year, prev_month = prev_month, prev_year = prev_year, next_month = next_month, next_year = next_year, owner_email = owner.email)
 
 # The POST route: Processes the booking submission for that listing
-# @app.post('/listings/<int:listing_id>')
-# def create_booking(listing_id):
-#     selected_date = request.form.get('selected_date') # Format: "YYYY-MM-DD"
+@app.post('/listings/<int:listing_id>/my_bookings')
+def create_booking(listing_id):
+    connection = DatabaseConnection()
+    connection.connect()
+    booking_repository = BookingRepository(connection)
     
-#     # 1. Validation: Make sure they actually clicked a date
-#     if not selected_date:
-#         flash("Please select a date on the calendar.", "error")
-#         return redirect(f'/listings/{listing_id}')
-        
-#     # 2. Database Integration
-#     connection = DatabaseConnection()
-#     connection.connect()
-#     booking_repository = BookingRepository(connection)
+    # 1. Get the dates from the submitted form
+    start_date = request.form.get('check_in')
+    end_date = request.form.get('check_out')
     
-#     try:
-#         # Mocking user_id = 1 for now (replace this with session['user_id'] once login is set up)
-#         booker_id = 1
+    # Simple validation: ensure both dates were actually selected
+    if not start_date or not end_date:
+        flash("Please select both check-in and check-out dates.", "error")
+        return redirect(f"/listings/{listing_id}")
         
-#         # 3. USE the selected_date variable to write a new row to your bookings table!
-#         booking_repository.create(listing_id=listing_id, user_id=booker_id, date=selected_date)
-        
-#         # 4. Success feedback
-#         flash(f"Successfully booked for {selected_date}!", "success")
-#         return redirect(f'/listings/{listing_id}')
-        
-#     except Exception as e:
-#         flash(f"Could not complete booking: {str(e)}", "error")
-#         return redirect(f'/listings/{listing_id}')
+    # 2. Get the logged-in user's ID 
+
+    current_user_id = session["user_id"] 
+    
+    # 3. Create a new Booking instance (status defaults to 'pending')
+    new_booking = Bookings(
+        start_date=start_date,
+        end_date=end_date,
+        listing_id=listing_id,
+        guest_id=current_user_id,
+        status="requested"
+    )
+    
+    booking_repository.create(new_booking)
+    flash("Booking request sent successfully!", "success")
+    return redirect('/my_bookings')
+
+"""
+Manage bookings page: GET /my_bookings
+"""
+# Will need to get user id, e.g. from session
+@app.route("/my_bookings", methods=["GET"])
+def get_manage_bookings_page():
+    connection = DatabaseConnection()
+    connection.connect()
+    # booking_repo = 
+
+    return render_template("my_bookings.html")
+
 
 @app.after_request
 def add_header(response):
