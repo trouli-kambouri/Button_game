@@ -69,3 +69,10 @@ def test_find_by_email_returns_None_if_no_user_exists_with_passed_email_address(
 
     assert user == None
     
+def test_find_by_id_returns_user_with_passed_user_id(db_connection):
+    db_connection.seed("seeds/reset_users_data.sql")
+
+    repository = UserRepository(db_connection)
+    user = repository.find_by_user_id(3)
+
+    assert user == User('gurpeetgill', 'gurpgill@grillsforu.net', '07652987709', 'youcantguess', 3)

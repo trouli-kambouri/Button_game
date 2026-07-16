@@ -42,3 +42,10 @@ class UserRepository():
 
         return User(user["name"], user["email"], user["phone_number"], user["password"], user["id"])
     
+    def find_by_user_id(self, user_id):
+        result = self._connection.execute(
+            'SELECT * FROM users WHERE id = %s', [user_id])
+        if not result:
+            return None
+        user = result[0]
+        return User(user["name"], user["email"], user["phone_number"], user["password"], user["id"])
