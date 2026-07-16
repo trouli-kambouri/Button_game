@@ -37,8 +37,8 @@ class ListingRepository():
 
     def create(self, listing):
         self._connection.execute("INSERT INTO listings (owner_id, title, description, price_per_night) VALUES (%s, %s, %s, %s)", 
-                                 [listing.owner_id, listing.title, listing.description, listing.price_per_night], listing.thumbnail)
-        
+                                [listing.owner_id, listing.title, listing.description, listing.price_per_night])
+
         return None
         
     def remove(self, id):

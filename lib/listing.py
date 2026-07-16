@@ -1,5 +1,5 @@
 class Listing():
-    def __init__(self, owner_id, title, description, price, thumbnail, id=None):
+    def __init__(self, owner_id, title, description, price, thumbnail='placeholder.png', id=None):
         # For MVP, description is used as proxy for location
 
         self.owner_id = owner_id
