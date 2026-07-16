@@ -182,7 +182,7 @@ def get_individual_listing_converter_with_calendar(property_id):
 @app.post('/listings/<int:listing_id>/my_bookings')
 def create_booking(listing_id):
     if "user_id" not in session:
-        redirect("/users/login")
+        return redirect("/users/login")
 
     connection = DatabaseConnection()
     connection.connect()
