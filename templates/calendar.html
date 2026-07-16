@@ -1,4 +1,7 @@
 <section class="booking-section" id = "booking-calendar">
+    <div>
+        <p>Available from {{ listing.available_from }} until {{ listing.available_until }}</p>
+    </div>
     <div class="calendar-header">
         <a href="/listings/{{ listing.id }}?year={{ prev_year }}&month={{ prev_month }}#booking-calendar" class="nav-arrow">←</a>
         <h2>{{ month_name }} {{ year }}</h2>
@@ -30,7 +33,7 @@
                                 {% if day != 0 %}
                                     <button type="button"
                                             data-date="{{ year }}-{{ '%02d' % month }}-{{ '%02d' % day }}"
-                                            class="calendar-day-btn">
+                                            class="calendar-day-btn unavailable" disabled="true">
                                         {{ day }}
                                     </button>
                                 {% else %}
@@ -57,6 +60,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const checkInInput = document.getElementById("check_in_input");
     const checkOutInput = document.getElementById("check_out_input");
     const submitBtn = document.getElementById("submit-booking-btn");
+    const available_from = new Date("{{ listing.available_from }}");
+    const available_until = new Date("{{ listing.available_until }}");
+    
+    buttons.forEach(btn => {
+        const btnDateStr = btn.getAttribute("data-date");
+        const btnDate = new Date (btnDateStr);        
+        if (btnDate >= available_from && btnDate < available_until ) {
+            btn.disabled = false;
+            btn.classList.remove("unavailable")
+        }
+    });
     buttons.forEach(btn => {
         btn.addEventListener("click", () => {
             const clickedDateStr = btn.getAttribute("data-date");
