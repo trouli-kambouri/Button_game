@@ -3,7 +3,7 @@ h1
 {
     margin: 0;
     padding: 0;
-    color:  #FFFFFF; 
+    color:  rgba(255, 255, 255, 0.9); 
     font-size: 40px;
     text-align: center;
     text-shadow: 0px 4px 10px rgba(0, 0, 0, 0.7);
@@ -12,7 +12,7 @@ h1
 /* Header 2 */
 h2      
 {
-    color: #FFFFFF;
+    color: rgba(255, 255, 255, 0.9);
     font-size: 36px;
     text-align: center;
     font-style: italic;
@@ -581,8 +581,8 @@ body{
     margin: 15px 0 0 0;
     font-size: 24px;
     font-weight: 300;
-    color: rgba(255, 255, 255, 0.85);
-    text-shadow: 0px 2px 8px rgba(0, 0, 0, 0.8);
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0px 2px 8px rgba(0, 0, 0, 0.7);
     letter-spacing: 0.5px;
     
     animation: subtitleEntrance 1s ease-out 0.2s forwards;
