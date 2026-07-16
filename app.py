@@ -63,7 +63,7 @@ def signup_user():
     try:
         user_repository.create(new_user)
         flash("Sign up successful!", "success")
-        return redirect('users/login')
+        return redirect('/users/login')
     except ValueError as e:
         flash(str(e), "error")
         return redirect("/users/new")
