@@ -15,7 +15,7 @@
 <!-- /*                -- Listing [booking-listings] thumbnail, title, booking dates, status */ -->
                 {% for booking in bookings_list %}
                     <div class="booking-container">
-                        <p>{{ booking.title }}</p>
+                        <p><a href="/listings/{{ booking.listing_id }}">Booking {{ booking.listing_id }}</a></p>
                     </div>
                 {% endfor %}
             </div>
