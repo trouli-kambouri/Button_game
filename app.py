@@ -121,7 +121,9 @@ def create_listing():
     connection.connect()
     listing_repository = ListingRepository(connection)
     listing_details = request.form
-    new_listing = Listing(title=listing_details["title"], description=listing_details["description"], price=listing_details['price'], owner_id=listing_details['owner_id'])
+    new_listing = Listing(title=listing_details["title"], description=listing_details["description"],
+                          price=listing_details['price'], available_from=listing_details['available_from'],
+                          available_until=listing_details['available_until'], owner_id=listing_details['owner_id'])
     listing_repository.create(new_listing)
     return redirect("/listings")
 
@@ -143,7 +145,7 @@ def get_individual_listin_converter_with_calendar(property_id):
     connection = DatabaseConnection()
     connection.connect()
     listing_repository = ListingRepository(connection)
-    listing = listing_repository.find_by_listing_id(property_id)
+    listing = listing_repository.find_listing_by_id(property_id)
 
     now = datetime.now()
     year = request.args.get('year', default=now.year, type=int)

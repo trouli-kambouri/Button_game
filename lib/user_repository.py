@@ -41,3 +41,4 @@ class UserRepository():
         user = result[0]
 
         return User(user["name"], user["email"], user["phone_number"], user["password"], user["id"])
+    
