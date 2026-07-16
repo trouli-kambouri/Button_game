@@ -35,7 +35,7 @@ class ListingRepository():
         
         result = self._connection.execute("SELECT * FROM listings WHERE id = %s", [property_id])[0]
 
-        return Listing(result["owner_id"], result["title"], result["description"], result["price_per_night"], result["thumbnail"], result["id"])
+        return Listing(result["owner_id"], result["title"], result["description"], result["price_per_night"], result["available_from"], result["available_until"], result["thumbnail"], result["id"])
 
     def create(self, listing):
         # DB wants dates as YYYY-MM-DD
