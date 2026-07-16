@@ -1,6 +1,4 @@
-
-'''
-from lib.booking import Booking
+from lib.bookings import Bookings
 
 class BookingRepository():
 
@@ -8,11 +6,39 @@ class BookingRepository():
         self._connection = connection
 
     def all(self):
-        rows = self._connection.execute("SELECT * FROM listings;")
-
-        return [Listing(row["owner_id"], row["title"], row["description"], row["price_per_night"], row["id"]) for row in rows]
+        rows = self._connection.execute("SELECT * FROM bookings;")
+        return [Bookings(row["start_date"], row["end_date"], row["listing_id"], row["guest_id"], row["status"]) for row in rows]
     
-    def all_with_owner_emails(self):
+    def find_bookings_by_listing_id(self, listing_id):
+        rows = self._connection.execute("SELECT * FROM bookings WHERE listing_id = %s", [listing_id])
+
+        return [Bookings(row["start_date"], row["end_date"], row["listing_id"], row["guest_id"], row["status"]) for row in rows]
+
+    def find_bookings_by_guest_id(self, guest_id):
+        rows = self._connection.execute("SELECT * FROM bookings WHERE guest_id = %s", [guest_id])
+
+        return [Bookings(row["start_date"], row["end_date"], row["listing_id"], row["guest_id"], row["status"]) for row in rows]
+
+    def find_by_status(self, status):
+        rows = self._connection.execute("SELECT * FROM bookings WHERE status = %s", [status])
+        
+        return [Bookings(row["start_date"], row["end_date"], row["listing_id"], row["guest_id"], row["status"]) for row in rows]
+
+
+    def create(self, booking):
+        self._connection.execute("INSERT INTO bookings (start_date, end_date, listing_id, guest_id, status) VALUES (%s, %s, %s, %s, %s)", 
+                                [booking.start_date, booking.end_date, booking.listing_id, booking.guest_id, booking.status])
+        
+        return None
+        
+
+    def remove_booking(self, id):
+        self._connection.execute("DELETE FROM bookings WHERE id = %s", [id])
+        
+        return None
+
+
+    def find_all_bookings_with_owner_id(self):
         # Should this do this or should it get the owner ids 
         # using all and query the owner details separately?
         query = """ SELECT
@@ -21,28 +47,11 @@ class BookingRepository():
                         u.email AS owner_email,
                         l.title,
                         l.description,
-                        l.price_per_night
+                        l.price_per_night,
+                        l.available_from,
+                        l.available_until,
+                        l.thumbnail
                     FROM listings l
                         JOIN users u
                         ON l.owner_id = u.id;
         """
-
-        rows = self._connection.execute(query)
-        return [[Listing(row["owner_id"], row["title"], row["description"], row["price_per_night"], row["property_id"]), row["owner_email"]] for row in rows]
-
-    def find_by_listing_id(self, property_id):
-        
-        result = self._connection.execute("SELECT * FROM listings WHERE id = %s", [property_id])[0]
-
-        return Listing(result["owner_id"], result["title"], result["description"], result["price_per_night"], result["id"])
-
-    def create(self, listing):
-        self._connection.execute("INSERT INTO listings (owner_id, title, description, price_per_night) VALUES (%s, %s, %s, %s)", 
-                                 [listing.owner_id, listing.title, listing.description, listing.price_per_night])
-        
-        return None
-        
-    def remove(self, id):
-        self._connection.execute("DELETE FROM listings WHERE id = %s", [id])
-        return None
-'''
