@@ -11,7 +11,7 @@ class Bookings():
 
 # change the below to bookings:
     def __repr__(self):
-        return(f"Booking({self._format_date(self.start_date)}, {self._format_date(self.end_date)}, {self.listing_id}, {self.guest_id}, {self.status}")
+        return(f"Booking({self._format_date(self.start_date)}, {self._format_date(self.end_date)}, {self.listing_id}, {self.guest_id}, {self.status}, {self.id})")
     
     def __eq__(self, other):
         return self.__dict__ == other.__dict__
