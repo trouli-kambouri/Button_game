@@ -130,7 +130,7 @@ def create_listing():
     connection.connect()
     listing_repository = ListingRepository(connection)
     listing_details = request.form
-    new_listing = Listing(title=listing_details["title"], description=listing_details["description"],
+    new_listing = Listing(title=listing_details["title"].strip(), description=listing_details["description"].strip(),
                           price=listing_details['price'], available_from=listing_details['available_from'],
                           available_until=listing_details['available_until'], owner_id=session["user_id"])
     listing_repository.create(new_listing)
