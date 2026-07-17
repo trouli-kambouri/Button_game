@@ -49,5 +49,3 @@ Everyone in the team should then clone that copy of the repo to their local mach
 
 # Now visit http://localhost:5001/index in your browser
 ```
-Trouli change
-Anton change x3
