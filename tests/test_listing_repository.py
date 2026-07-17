@@ -42,8 +42,8 @@ def expected_listings():
             "Medieval castle with ghost included",
             "Spooksville",
             199,
-            "2026-01-01",
-            "2026-01-31",
+            "2025-10-31",
+            "2026-11-01",
             "Spooksville.png",
             4
         ),
@@ -52,8 +52,8 @@ def expected_listings():
             "Luxury treehouse with unreliable ladder",
             "Treeford",
             89,
-            "2026-01-01",
-            "2026-01-31",
+            "2025-10-01",
+            "2026-06-29",
             "Treeford.png",
             5
         ),
@@ -62,8 +62,8 @@ def expected_listings():
             "Converted bus stop with panoramic traffic views",
             "Roundabout-on-Sea",
             34,
-            "2026-01-01",
-            "2026-01-31",
+            "2026-07-10",
+            "2026-08-31",
             "Roundabout-on-sea.png",
             6
         ),
@@ -72,8 +72,8 @@ def expected_listings():
             "Medieval prison cell",
             "Stonechester",
             66,
-            "2026-01-01",
-            "2026-01-31",
+            "2026-02-03",
+            "2026-07-21",
             "Stonechester.png",
             7
         ),
@@ -82,8 +82,8 @@ def expected_listings():
             "Studio flat above a loud pub",
             "Pintbury",
             88,
-            "2026-01-01",
-            "2026-01-31",
+            "2026-05-01",
+            "2026-09-21",
             "Pintbury.png",
             8
         ),
@@ -92,8 +92,8 @@ def expected_listings():
             "Floating house that is not sinking",
             "Above Mariana's Trench",
             112,
-            "2026-01-01",
-            "2026-01-31",
+            "2026-05-01",
+            "2026-11-10",
             "Above_marianas_trench.png",
             9
         ),
@@ -102,8 +102,8 @@ def expected_listings():
             "Countryside cottage with sheep included",
             "Baaxton",
             93,
-            "2026-01-01",
-            "2026-01-31",
+            "2025-01-01",
+            "2026-07-20",
             "Baaxton.png",
             10
         ),
@@ -113,7 +113,7 @@ def expected_listings():
             "Little Houseton",
             68,
             "2026-01-01",
-            "2026-01-31",
+            "2026-08-31",
             "Little_Houseton.png",
             11
         ),
@@ -122,8 +122,8 @@ def expected_listings():
             "Beach hut only 5 days walk from beach",
             "Landlockedshire",
             58,
-            "2026-01-01",
-            "2026-01-31",
+            "2026-03-01",
+            "2026-09-30",
             "Landlockedshire.png",
             12
         )
