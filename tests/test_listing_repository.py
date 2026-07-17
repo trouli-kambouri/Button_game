@@ -12,50 +12,50 @@ def expected_listings():
             "Rain-soaked shed on a mountain",
             "Greenfield",
             71,
-            "2026-01-01",
-            "2026-01-31",
+            "2026-07-01",
+            "2027-12-31",
             "Greenfield.png",
-            1
+            1,
         ),
         Listing(
             1,
             "Uncomfortable camper van in a lay-by",
             "Newtown",
             21,
-            "2026-01-01",
-            "2026-01-31",
+            "2026-07-01",
+            "2027-12-31",
             "Newton.png",
-            2
+            2,
         ),
         Listing(
             2,
             "Glamorous pad in fancy town",
             "Hopington",
             311,
-            "2026-01-01",
-            "2026-01-31",
+            "2026-07-01",
+            "2027-12-31",
             "Hopington.png",
-            3
+            3,
         ),
         Listing(
             2,
             "Medieval castle with ghost included",
             "Spooksville",
             199,
-            "2025-10-31",
-            "2026-11-01",
+            "2026-07-31",
+            "2027-11-01",
             "Spooksville.png",
-            4
+            4,
         ),
         Listing(
             3,
             "Luxury treehouse with unreliable ladder",
             "Treeford",
             89,
-            "2025-10-01",
-            "2026-06-29",
+            "2026-07-01",
+            "2027-12-29",
             "Treeford.png",
-            5
+            5,
         ),
         Listing(
             1,
@@ -63,85 +63,95 @@ def expected_listings():
             "Roundabout-on-Sea",
             34,
             "2026-07-10",
-            "2026-08-31",
+            "2027-08-31",
             "Roundabout-on-sea.png",
-            6
+            6,
         ),
         Listing(
             4,
             "Medieval prison cell",
             "Stonechester",
             66,
-            "2026-02-03",
-            "2026-07-21",
+            "2026-07-03",
+            "2027-12-21",
             "Stonechester.png",
-            7
+            7,
         ),
         Listing(
             2,
             "Studio flat above a loud pub",
             "Pintbury",
             88,
-            "2026-05-01",
-            "2026-09-21",
+            "2026-07-01",
+            "2027-09-21",
             "Pintbury.png",
-            8
+            8,
         ),
         Listing(
             5,
             "Floating house that is not sinking",
             "Above Mariana's Trench",
             112,
-            "2026-05-01",
-            "2026-11-10",
+            "2026-12-01",
+            "2027-11-10",
             "Above_marianas_trench.png",
-            9
+            9,
         ),
         Listing(
             3,
             "Countryside cottage with sheep included",
             "Baaxton",
             93,
-            "2025-01-01",
-            "2026-07-20",
+            "2026-07-01",
+            "2027-12-20",
             "Baaxton.png",
-            10
+            10,
         ),
         Listing(
             4,
             "Tiny house that is not a shed",
             "Little Houseton",
             68,
-            "2026-01-01",
-            "2026-08-31",
+            "2026-07-01",
+            "2027-12-31",
             "Little_Houseton.png",
-            11
+            11,
         ),
         Listing(
             5,
             "Beach hut only 5 days walk from beach",
             "Landlockedshire",
             58,
-            "2026-03-01",
-            "2026-09-30",
+            "2026-07-01",
+            "2027-12-30",
             "Landlockedshire.png",
-            12
-        )
+            12,
+        ),
     ]
 
 
+def sort_listings_by_id(listings):
+    return sorted(
+        listings,
+        key=lambda listing: listing.id
+    )
+
+
 def test_listing_repository_all_returns_list_of_all_listings(
-    db_connection
+    db_connection,
 ):
     db_connection.seed(SEED_FILE)
 
     repository = ListingRepository(db_connection)
 
-    assert repository.all() == expected_listings()
+    actual = sort_listings_by_id(repository.all())
+    expected = expected_listings()
+
+    assert actual == expected
 
 
 def test_listing_repository_returns_all_listings_with_owner_emails(
-    db_connection
+    db_connection,
 ):
     db_connection.seed(SEED_FILE)
 
@@ -157,14 +167,14 @@ def test_listing_repository_returns_all_listings_with_owner_emails(
         "ttipple@taliastipples.co.uk",
         "gurpgill@grillsforu.net",
         "salsal@salsalsalads.net",
-        "ttipple@taliastipples.co.uk"
+        "ttipple@taliastipples.co.uk",
     ]
 
     expected = [
         [listing, email]
         for listing, email in zip(
             expected_listings(),
-            owner_emails
+            owner_emails,
         )
     ]
 
@@ -174,90 +184,99 @@ def test_listing_repository_returns_all_listings_with_owner_emails(
 
     actual_sorted = sorted(
         actual,
-        key=lambda item: item[0].id
+        key=lambda item: item[0].id,
     )
 
     expected_sorted = sorted(
         expected,
-        key=lambda item: item[0].id
+        key=lambda item: item[0].id,
     )
 
     assert actual_sorted == expected_sorted
 
 
 def test_listing_repository_returns_listing_with_id(
-    db_connection
+    db_connection,
 ):
     db_connection.seed(SEED_FILE)
+
+    repository = ListingRepository(db_connection)
 
     expected = Listing(
         1,
         "Uncomfortable camper van in a lay-by",
         "Newtown",
         21,
-        "2026-01-01",
-        "2026-01-31",
+        "2026-07-01",
+        "2027-12-31",
         "Newton.png",
-        2
+        2,
     )
-
-    repository = ListingRepository(db_connection)
 
     assert repository.find_listing_by_id(2) == expected
 
-def test_listing_repository_returns_listings_with_ids_in_list(db_connection):
+
+def test_listing_repository_returns_listings_with_ids_in_list(
+    db_connection,
+):
     db_connection.seed(SEED_FILE)
 
-    expected_listings = [
+    repository = ListingRepository(db_connection)
+
+    expected = [
         Listing(
             1,
             "Uncomfortable camper van in a lay-by",
             "Newtown",
             21,
-            "2026-01-01",
-            "2026-01-31",
+            "2026-07-01",
+            "2027-12-31",
             "Newton.png",
-            2
+            2,
         ),
         Listing(
             4,
             "Medieval prison cell",
             "Stonechester",
             66,
-            "2026-02-03",
-            "2026-07-21",
+            "2026-07-03",
+            "2027-12-21",
             "Stonechester.png",
-            7
+            7,
         ),
         Listing(
             5,
             "Floating house that is not sinking",
             "Above Mariana's Trench",
             112,
-            "2026-05-01",
-            "2026-11-10",
+            "2026-12-01",
+            "2027-11-10",
             "Above_marianas_trench.png",
-            9
+            9,
         ),
         Listing(
             3,
             "Countryside cottage with sheep included",
             "Baaxton",
             93,
-            "2025-01-01",
-            "2026-07-20",
+            "2026-07-01",
+            "2027-12-20",
             "Baaxton.png",
-            10
-        )
+            10,
+        ),
     ]
 
-    repository = ListingRepository(db_connection)
+    actual = repository.find_listings_by_id_list(
+        [2, 7, 9, 10]
+    )
 
-    assert expected_listings == repository.find_listings_by_id_list([2, 7, 9, 10])
+    assert sort_listings_by_id(actual) == (
+        sort_listings_by_id(expected)
+    )
 
 
 def test_listing_repository_adds_new_listing(
-    db_connection
+    db_connection,
 ):
     db_connection.seed(SEED_FILE)
 
@@ -268,28 +287,30 @@ def test_listing_repository_adds_new_listing(
         "Palatial shed in a field",
         "Idyllicville",
         1010,
-        "2026-02-01",
-        "2026-02-28"
+        "2028-01-01",
+        "2028-01-31",
     )
 
     repository.create(new_listing)
 
     created_listing = repository.find_listing_by_id(13)
 
-    assert created_listing == Listing(
+    expected = Listing(
         1,
         "Palatial shed in a field",
         "Idyllicville",
         1010,
-        "2026-02-01",
-        "2026-02-28",
+        "2028-01-01",
+        "2028-01-31",
         "placeholder.png",
-        13
+        13,
     )
+
+    assert created_listing == expected
 
 
 def test_listing_repository_deletes_listing_with_given_id(
-    db_connection
+    db_connection,
 ):
     db_connection.seed(SEED_FILE)
 
@@ -298,6 +319,7 @@ def test_listing_repository_deletes_listing_with_given_id(
     repository.remove(2)
 
     remaining_listings = repository.all()
+
     remaining_ids = [
         listing.id
         for listing in remaining_listings
