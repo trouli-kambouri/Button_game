@@ -1,4 +1,4 @@
-<section class="booking-section" id = "booking-calendar">
+<section class="booking-section" id="booking-calendar">
     <div class="calendar-header">
         <a href="/listings/{{ listing.id }}?year={{ prev_year }}&month={{ prev_month }}#booking-calendar" class="nav-arrow">←</a>
         <h2>{{ month_name }} {{ year }}</h2>
@@ -45,6 +45,7 @@
         <button type="submit" id="submit-booking-btn" class="book-button" disabled>Confirm Booking</button>
     </form>
 </section>
+
 <script>
 document.addEventListener("DOMContentLoaded", () => {
     let startDate = null;
@@ -57,6 +58,43 @@ document.addEventListener("DOMContentLoaded", () => {
     const checkInInput = document.getElementById("check_in_input");
     const checkOutInput = document.getElementById("check_out_input");
     const submitBtn = document.getElementById("submit-booking-btn");
+    const available_from = new Date("{{ listing.available_from }}");
+    const available_until = new Date("{{ listing.available_until }}");
+    
+    const bookedRanges = {{ booked_ranges | tojson | safe if booked_ranges else '[]' }};
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    function isDateBooked(targetDate) {
+        return bookedRanges.some(range => {
+            const start = new Date(range.start);
+            const end = new Date(range.end);
+            start.setHours(0, 0, 0, 0);
+            end.setHours(0, 0, 0, 0);
+            return targetDate >= start && targetDate < end;
+        });
+    }
+
+    buttons.forEach(btn => {
+        const btnDateStr = btn.getAttribute("data-date");
+        const btnDate = new Date(btnDateStr);        
+        btnDate.setHours(0, 0, 0, 0);
+
+        const isAvailable = btnDate >= available_from && btnDate < available_until;
+        const isPast = btnDate < today;
+        const isBooked = isDateBooked(btnDate);
+
+        if (isAvailable && !isPast && !isBooked) {
+            btn.disabled = false;
+            btn.classList.remove("unavailable");
+        } else if (isBooked) {
+            btn.classList.add("booked");
+            btn.classList.remove("unavailable");
+            btn.disabled = true;
+        }
+    });
+
     const available_from = new Date("{{ listing.available_from }}");
     const available_until = new Date("{{ listing.available_until }}");
     
@@ -73,6 +111,7 @@ const today = new Date();
             btn.classList.remove("unavailable");
         }
     });
+
     buttons.forEach(btn => {
         btn.addEventListener("click", () => {
             const clickedDateStr = btn.getAttribute("data-date");
@@ -87,25 +126,39 @@ const today = new Date();
             } else if (startDate && !endDate) {
                 // Second click
                 if (clickedDate < startDate) {
-                    // If they clicked a date before check-in, treat it as the new check-in
                     startDate = clickedDate;
                     checkInInput.value = clickedDateStr;
                 } else if (clickedDate.getTime() === startDate.getTime()) {
-                    // Clicking the same date twice resets it
                     startDate = null;
                     checkInInput.value = "";
                 } else {
-                    // Set Check-Out
-                    endDate = clickedDate;
-                    checkOutInput.value = clickedDateStr;
-                    submitBtn.disabled = false;
+                    // Prevent users from picking a range that spans OVER already booked dates
+                    let containsBookedDate = false;
+                    let checkDate = new Date(startDate);
+                    while (checkDate < clickedDate) {
+                        if (isDateBooked(checkDate)) {
+                            containsBookedDate = true;
+                            break;
+                        }
+                        checkDate.setDate(checkDate.getDate() + 1);
+                    }
+
+                    if (containsBookedDate) {
+                        alert("Your selection includes dates that are already booked! Please select a different range.");
+                        startDate = clickedDate;
+                        checkInInput.value = clickedDateStr;
+                    } else {
+                        endDate = clickedDate;
+                        checkOutInput.value = clickedDateStr;
+                        submitBtn.disabled = false;
+                    }
                 }
             }
             updateUI();
         });
     });
+
     function updateUI() {
-        // Update summary text
         if (startDate) {
             summaryBox.classList.remove("hidden");
             summaryStart.textContent = checkInInput.value;
@@ -122,7 +175,6 @@ const today = new Date();
             summaryEnd.textContent = "-";
             stayLength.textContent = "0";
         }
-        // Apply visual highlights (selected, in-range)
         buttons.forEach(btn => {
             const btnDate = new Date(btn.getAttribute("data-date"));
             btn.classList.remove("selected", "in-range");
@@ -139,5 +191,3 @@ const today = new Date();
     }
 });
 </script>
-
-
