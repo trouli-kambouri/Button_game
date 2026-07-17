@@ -18,6 +18,7 @@ This creates a Navigation Bar that contains links to other pages.
     
     {% if email %}
         <a href="/listings/new">Create Listing</a>
+        <a href="/my_bookings">My Bookings</a>
         <span class="user-status">Logged in as: <strong>{{ email }}</strong></span>
         <a href="/users/logout" class="logout-link">Log Out</a>
     {% else %}
