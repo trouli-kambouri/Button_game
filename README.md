@@ -1,3 +1,13 @@
+## Contributors
+
+Built collaboratively by:
+
+- [Anton](https://github.com/tsukuyomji)
+- [Matt](https://github.com/MattsL4b)
+- [Sam](https://github.com/sam-chong)
+- [Seb](https://github.com/sebblock88)
+- [Trouli](https://github.com/trouli-kambouri)
+
 # MakersBnB Python Project Seed
 
 This repo contains the seed codebase for the MakersBnB project in Python (using 
