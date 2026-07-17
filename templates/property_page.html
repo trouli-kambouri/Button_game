@@ -21,21 +21,21 @@
 
                 <section class="image-gallery">
                     <img
-                        src="{{ url_for('static', filename='thumbnails/' + listing.thumbnail) if listing.thumbnail else '/static/placeholder.png' }}"
+                        src="{% if gallery_images %}{{ gallery_images[0].image_url }}{% else %}/static/placeholder.png{% endif %}"
                         alt="{{ listing.title }}"
                         class="hero-image"
                     >
-                <div class="thumbnail-gallery">
-                    {% if gallery_images %}
-                        {% for img in gallery_images %}
-                        <!-- We use your uploaded database URLs directly! -->
-                            <img src="{{ img.image_url }}" alt="Gallery Image">
-                        {% endfor %}
-                    {% else %}
-                    <!-- Optional: Keep 1 or 2 placeholders if they have no other photos -->
-                        <img src="/static/placeholder.png" alt="">
-                    {% endif %}
-                </div>
+
+                    <!-- Thumbnail gallery -->
+                    <div class="thumbnail-gallery">
+                        {% if gallery_images %}
+                            {% for img in gallery_images %}
+                                <img src="{{ img.image_url }}" alt="Gallery Image">
+                            {% endfor %}
+                        {% else %}
+                            <img src="/static/placeholder.png" alt="">
+                        {% endif %}
+                    </div>
             </section>
 
             <section class="property-details">
