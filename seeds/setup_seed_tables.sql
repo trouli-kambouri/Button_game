@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS listing_images;
 DROP TABLE IF EXISTS bookings;
 DROP TABLE IF EXISTS booking_statuses CASCADE;
 DROP TABLE IF EXISTS listings CASCADE;
@@ -38,12 +39,6 @@ CREATE TABLE listing_images (
         ON DELETE CASCADE
 );
 
--- TODO: Add column for url image to listings
-
-CREATE TABLE booking_statuses (
-    id INT PRIMARY KEY,
-    name VARCHAR(20)
-);
 
 CREATE TABLE bookings (
     id SERIAL PRIMARY KEY,
