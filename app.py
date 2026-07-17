@@ -226,7 +226,7 @@ Manage bookings page: GET /my_bookings
 @app.route("/my_bookings", methods=["GET"])
 def get_manage_bookings_page():
     if "user_id" not in session:
-        redirect("/users/login")
+        return redirect("/users/login")
     connection = DatabaseConnection()
     connection.connect()
 
