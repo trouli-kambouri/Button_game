@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS listing_images;
 DROP TABLE IF EXISTS bookings;
-DROP TABLE IF EXISTS booking_statuses CASCADE;
+DROP TABLE IF EXISTS booking_statuses CASCADE; -- just in case anyone still has it
 DROP TABLE IF EXISTS listings CASCADE;
 DROP TABLE IF EXISTS users CASCADE;
 
@@ -38,7 +38,6 @@ CREATE TABLE listing_images (
         REFERENCES listings(id) 
         ON DELETE CASCADE
 );
-
 
 CREATE TABLE bookings (
     id SERIAL PRIMARY KEY,
@@ -87,5 +86,6 @@ INSERT INTO bookings (start_date, end_date, listing_id, guest_id, status)
         ('2026-07-13', '2026-07-14', 2, 3, 'completed'),
         ('2026-07-21', '2026-07-22', 4, 2, 'confirmed'),
         ('2026-07-19', '2026-07-20', 4, 5, 'denied'),
-        ('2026-07-12', '2026-07-13', 12, 3, 'requested'),
-        ('2026-07-12', '2026-07-16', 10, 4, 'requested');
+        ('2026-07-12', '2026-07-12', 12, 3, 'requested'),
+        ('2026-07-12', '2026-07-12', 10, 4, 'requested');
+        
