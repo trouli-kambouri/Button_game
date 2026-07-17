@@ -19,24 +19,27 @@
                     </div>
                 {% endif %}
 
-                <section class="image-gallery">
-                    <img
-                        src="{% if gallery_images %}{{ gallery_images[0].image_url }}{% else %}/static/placeholder.png{% endif %}"
-                        alt="{{ listing.title }}"
-                        class="hero-image"
-                    >
-
-                    <!-- Thumbnail gallery -->
+<section class="image-gallery">
+    <img
+        src="{{ url_for('static', filename='thumbnails/' + listing.thumbnail) if listing.thumbnail else '/static/placeholder.png' }}"
+        alt="{{ listing.title }}"
+        class="hero-image"
+    >
                     <div class="thumbnail-gallery">
                         {% if gallery_images %}
-                            {% for img in gallery_images [1:]%}
+                            {# Tier 1: Use gallery images if they exist #}
+                            {% for img in gallery_images %}
                                 <img src="{{ img.image_url }}" alt="Gallery Image">
                             {% endfor %}
+                        {% elif listing.thumbnail %}
+                            {# Tier 2: Fall back to the main thumbnail if no gallery images #}
+                            <img src="{{ url_for('static', filename='thumbnails/' + listing.thumbnail) }}" alt="Main Thumbnail">
                         {% else %}
-                            <img src="/static/placeholder.png" alt="">
+                            {# Tier 3: Fall back to placeholder if neither exists #}
+                            <img src="/static/placeholder.png" alt="Placeholder">
                         {% endif %}
                     </div>
-            </section>
+                </section>
 
             <section class="property-details">
                 <h2>£{{ listing.price_per_night }} per night</h2>
