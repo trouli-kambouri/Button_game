@@ -29,7 +29,7 @@
                     <!-- Thumbnail gallery -->
                     <div class="thumbnail-gallery">
                         {% if gallery_images %}
-                            {% for img in gallery_images %}
+                            {% for img in gallery_images [1:]%}
                                 <img src="{{ img.image_url }}" alt="Gallery Image">
                             {% endfor %}
                         {% else %}
