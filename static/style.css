@@ -587,3 +587,209 @@ body{
         opacity: 1;
     }
 }
+
+/* Edit listing page
+
+.owner-controls-card {
+    /* Faded background with clean modern glassmorphism blur */
+    background: rgba(255, 255, 255, 0.15); 
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    
+    /* Elegant rounded corners and thin subtle border */
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    
+    padding: 15px 25px;
+    margin: 15px auto;
+    max-width: 500px; /* Slimmer, clean layout footprint */
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Badge text: "You are the owner of this listing" */
+.owner-badge {
+    color: #ffffff; /* High contrast white text */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4); /* Gentle shadow for great readability over sunset */
+    font-size: 1.35rem; /* Larger than the button text */
+    font-weight: 700;
+    margin: 0 0 10px 0;
+}
+
+/* Small, subtle grey edit button */
+.btn-owner-edit {
+    display: inline-block;
+    background: rgba(240, 240, 240, 0.85); /* Semi-transparent grey/white */
+    color: #333333 !important; /* Elegant dark grey text */
+    padding: 6px 14px; /* Shrunk down layout padding */
+    font-size: 0.85rem; /* Noticeably smaller text */
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 6px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+}
+
+.btn-owner-edit:hover {
+    background: rgba(255, 255, 255, 0.95);
+    transform: translateY(-1px);
+}
+
+
+
+.edit-form-container {
+    background: rgba(0, 0, 0, 0.65); /* Dark faded backdrop overlay */
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border-radius: 12px;
+    padding: 40px;
+    max-width: 650px;
+    margin: 40px auto;
+    color: #ffffff;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* Page Titles (Georgia Serif Typography) */
+.form-title {
+    font-family: Georgia, serif;
+    font-size: 2.2rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.form-subtitle {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: #e0e0e0;
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+/* Form layouts and centered labels */
+.styled-form .form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 24px;
+}
+
+.styled-form label {
+    font-family: Georgia, serif;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center; /* Exactly matches centered layout mockup */
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+
+/* Custom Styled Input Elements */
+.styled-form input[type="text"],
+.styled-form input[type="number"],
+.styled-form input[type="date"],
+.styled-form textarea {
+    background: rgba(255, 255, 255, 0.1); /* Dark translucent fill */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Soft visible outline border */
+    border-radius: 8px;
+    padding: 12px;
+    color: #ffffff;
+    font-size: 1rem;
+    font-family: inherit;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+
+.styled-form input:focus,
+.styled-form textarea:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+/* Side-by-side date rows layout */
+.form-group-row {
+    display: flex;
+    gap: 20px;
+}
+
+.form-group-row .col {
+    flex: 1;
+}
+
+/* Dashed upload area box */
+.file-upload-zone {
+    border: 1px dashed rgba(255, 255, 255, 0.4);
+    border-radius: 8px;
+    padding: 25px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.02);
+    margin: 30px 0;
+}
+
+.upload-icon {
+    font-size: 2rem;
+    margin-bottom: 8px;
+}
+
+.upload-label {
+    font-family: Georgia, serif !important;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 12px !important;
+}
+
+.file-input {
+    color: #cccccc;
+    font-size: 0.9rem;
+}
+
+.file-help {
+    font-family: Georgia, serif;
+    font-size: 0.8rem;
+    color: #aaaaaa;
+    margin-top: 10px;
+}
+
+/* Actions panel aligned to bottom-right */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+/* Vibrant primary action blue button */
+.btn-primary-action {
+    background: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 24px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-primary-action:hover {
+    background: #0056b3;
+}
+
+/* Dark secondary action button with light border */
+.btn-secondary-action {
+    background: #000000;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 8px;
+    padding: 10px 24px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.2s;
+}
+
+.btn-secondary-action:hover {
+    background: #1c1c1c;
+    border-color: #ffffff;
+}
