@@ -48,146 +48,147 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-    let startDate = null;
-    let endDate = null;
-    const buttons = document.querySelectorAll(".calendar-day-btn");
-    const summaryBox = document.getElementById("booking-summary");
-    const summaryStart = document.getElementById("summary-start");
-    const summaryEnd = document.getElementById("summary-end");
-    const stayLength = document.getElementById("stay-length");
-    const checkInInput = document.getElementById("check_in_input");
-    const checkOutInput = document.getElementById("check_out_input");
-    const submitBtn = document.getElementById("submit-booking-btn");
-    const available_from = new Date("{{ listing.available_from }}");
-    const available_until = new Date("{{ listing.available_until }}");
-    
-    const bookedRanges = {{ booked_ranges | tojson | safe if booked_ranges else '[]' }};
-
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    
-    function isDateBooked(targetDate) {
-        return bookedRanges.some(range => {
-            const start = new Date(range.start);
-            const end = new Date(range.end);
-            start.setHours(0, 0, 0, 0);
-            end.setHours(0, 0, 0, 0);
-            return targetDate >= start && targetDate < end;
-        });
-    }
-
-    buttons.forEach(btn => {
-        const btnDateStr = btn.getAttribute("data-date");
-        const btnDate = new Date(btnDateStr);        
-        btnDate.setHours(0, 0, 0, 0);
-
-        const isAvailable = btnDate >= available_from && btnDate < available_until;
-        const isPast = btnDate < today;
-        const isBooked = isDateBooked(btnDate);
-
-        if (isAvailable && !isPast && !isBooked) {
-            btn.disabled = false;
-            btn.classList.remove("unavailable");
-        } else if (isBooked) {
-            btn.classList.add("booked");
-            btn.classList.remove("unavailable");
-            btn.disabled = true;
-        }
-    });
-
-    const available_from = new Date("{{ listing.available_from }}");
-    const available_until = new Date("{{ listing.available_until }}");
-    
-const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    
-    buttons.forEach(btn => {
-        const btnDateStr = btn.getAttribute("data-date");
-        const btnDate = new Date (btnDateStr);        
+{
+        let startDate = null;
+        let endDate = null;
+        const buttons = document.querySelectorAll(".calendar-day-btn");
+        const summaryBox = document.getElementById("booking-summary");
+        const summaryStart = document.getElementById("summary-start");
+        const summaryEnd = document.getElementById("summary-end");
+        const stayLength = document.getElementById("stay-length");
+        const checkInInput = document.getElementById("check_in_input");
+        const checkOutInput = document.getElementById("check_out_input");
+        const submitBtn = document.getElementById("submit-booking-btn");
         
-        // 💡 THE UPDATE: Add "&& btnDate >= today" to the condition!
-        if (btnDate >= available_from && btnDate < available_until && btnDate >= today) {
-            btn.disabled = false;
-            btn.classList.remove("unavailable");
+        // Helper to parse dates in local timezone to avoid UTC displacement
+        function parseLocalJSDate(dateStr) {
+            if (!dateStr) return new Date(NaN);
+            const parts = dateStr.split('-');
+            return new Date(parts[0], parts[1] - 1, parts[2]);
         }
-    });
 
-    buttons.forEach(btn => {
-        btn.addEventListener("click", () => {
-            const clickedDateStr = btn.getAttribute("data-date");
-            const clickedDate = new Date(clickedDateStr);
-            if (!startDate || (startDate && endDate)) {
-                // First click: Set Check-In
-                startDate = clickedDate;
-                endDate = null;
-                checkInInput.value = clickedDateStr;
-                checkOutInput.value = "";
-                submitBtn.disabled = true;
-            } else if (startDate && !endDate) {
-                // Second click
-                if (clickedDate < startDate) {
+        const available_from = parseLocalJSDate("{{ listing.available_from }}");
+        const available_until = parseLocalJSDate("{{ listing.available_until }}");
+        const bookedRanges = {{ booked_ranges | tojson | safe if booked_ranges else '[]' }};
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        // 💡 Debug logs to track down your greying-out issues
+        console.log("--- CALENDAR DEBUGGER ---");
+        console.log("Today's Date:", today);
+        console.log("Available From:", available_from);
+        console.log("Available Until:", available_until);
+        console.log("Booked Ranges:", bookedRanges);
+        
+        // Helper to check if date falls in confirmed bookings
+        function isDateBooked(targetDate) {
+            return bookedRanges.some(range => {
+                const start = parseLocalJSDate(range.start);
+                const end = parseLocalJSDate(range.end);
+                start.setHours(0, 0, 0, 0);
+                end.setHours(0, 0, 0, 0);
+                return targetDate >= start && targetDate < end;
+            });
+        }
+
+        // Single loop to initialize buttons cleanly
+        buttons.forEach(btn => {
+            const btnDateStr = btn.getAttribute("data-date");
+            const btnDate = parseLocalJSDate(btnDateStr);        
+            btnDate.setHours(0, 0, 0, 0);
+
+            const isAvailable = btnDate >= available_from && btnDate < available_until;
+            const isPast = btnDate < today;
+            const isBooked = isDateBooked(btnDate);
+
+            if (isAvailable && !isPast && !isBooked) {
+                btn.disabled = false;
+                btn.classList.remove("unavailable");
+            } else if (isBooked) {
+                btn.classList.add("booked");
+                btn.classList.remove("unavailable");
+                btn.disabled = true;
+            }
+        });
+
+        // Click interaction
+        buttons.forEach(btn => {
+            btn.addEventListener("click", () => {
+                const clickedDateStr = btn.getAttribute("data-date");
+                const clickedDate = parseLocalJSDate(clickedDateStr);
+                
+                if (!startDate || (startDate && endDate)) {
                     startDate = clickedDate;
+                    endDate = null;
                     checkInInput.value = clickedDateStr;
-                } else if (clickedDate.getTime() === startDate.getTime()) {
-                    startDate = null;
-                    checkInInput.value = "";
-                } else {
-                    // Prevent users from picking a range that spans OVER already booked dates
-                    let containsBookedDate = false;
-                    let checkDate = new Date(startDate);
-                    while (checkDate < clickedDate) {
-                        if (isDateBooked(checkDate)) {
-                            containsBookedDate = true;
-                            break;
-                        }
-                        checkDate.setDate(checkDate.getDate() + 1);
-                    }
-
-                    if (containsBookedDate) {
-                        alert("Your selection includes dates that are already booked! Please select a different range.");
+                    checkOutInput.value = "";
+                    submitBtn.disabled = true;
+                } else if (startDate && !endDate) {
+                    if (clickedDate < startDate) {
                         startDate = clickedDate;
                         checkInInput.value = clickedDateStr;
+                    } else if (clickedDate.getTime() === startDate.getTime()) {
+                        startDate = null;
+                        checkInInput.value = "";
                     } else {
-                        endDate = clickedDate;
-                        checkOutInput.value = clickedDateStr;
-                        submitBtn.disabled = false;
+                        // Prevent selection spanning over booked dates
+                        let containsBookedDate = false;
+                        let checkDate = new Date(startDate);
+                        while (checkDate < clickedDate) {
+                            if (isDateBooked(checkDate)) {
+                                containsBookedDate = true;
+                                break;
+                            }
+                            checkDate.setDate(checkDate.getDate() + 1);
+                        }
+
+                        if (containsBookedDate) {
+                            alert("Your selection includes dates that are already booked! Please select a different range.");
+                            startDate = clickedDate;
+                            checkInInput.value = clickedDateStr;
+                        } else {
+                            endDate = clickedDate;
+                            checkOutInput.value = clickedDateStr;
+                            submitBtn.disabled = false;
+                        }
                     }
                 }
-            }
-            updateUI();
+                updateUI();
+            });
         });
-    });
 
-    function updateUI() {
-        if (startDate) {
-            summaryBox.classList.remove("hidden");
-            summaryStart.textContent = checkInInput.value;
-        } else {
-            summaryBox.classList.add("hidden");
-            summaryStart.textContent = "-";
+        function updateUI() {
+            if (startDate) {
+                summaryBox.classList.remove("hidden");
+                summaryStart.textContent = checkInInput.value;
+            } else {
+                summaryBox.classList.add("hidden");
+                summaryStart.textContent = "-";
+            }
+            if (endDate) {
+                summaryEnd.textContent = checkOutInput.value;
+                const diffTime = Math.abs(endDate - startDate);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                stayLength.textContent = diffDays;
+            } else {
+                summaryEnd.textContent = "-";
+                stayLength.textContent = "0";
+            }
+            buttons.forEach(btn => {
+                const btnDate = parseLocalJSDate(btn.getAttribute("data-date"));
+                btn.classList.remove("selected", "in-range");
+                if (startDate && btnDate.getTime() === startDate.getTime()) {
+                    btn.classList.add("selected");
+                }
+                if (endDate && btnDate.getTime() === endDate.getTime()) {
+                    btn.classList.add("selected");
+                }
+                if (startDate && endDate && btnDate > startDate && btnDate < endDate) {
+                    btn.classList.add("in-range");
+                }
+            });
         }
-        if (endDate) {
-            summaryEnd.textContent = checkOutInput.value;
-            const diffTime = Math.abs(endDate - startDate);
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            stayLength.textContent = diffDays;
-        } else {
-            summaryEnd.textContent = "-";
-            stayLength.textContent = "0";
-        }
-        buttons.forEach(btn => {
-            const btnDate = new Date(btn.getAttribute("data-date"));
-            btn.classList.remove("selected", "in-range");
-            if (startDate && btnDate.getTime() === startDate.getTime()) {
-                btn.classList.add("selected");
-            }
-            if (endDate && btnDate.getTime() === endDate.getTime()) {
-                btn.classList.add("selected");
-            }
-            if (startDate && endDate && btnDate > startDate && btnDate < endDate) {
-                btn.classList.add("in-range");
-            }
-        });
     }
 });
 </script>
