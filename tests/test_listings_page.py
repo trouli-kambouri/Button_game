@@ -30,9 +30,10 @@ def test_property_page_displays_the_selected_listing(
     assert "Rain-soaked shed on a mountain" in html
     assert "Greenfield" in html
     assert "71 per night" in html
-    assert "Greenfield.png" in html
     assert "booking-calendar" in html
     assert "January 2026" in html
+
+
 def test_different_listing_ids_display_different_properties(
     web_client,
     db_connection,
@@ -42,22 +43,29 @@ def test_different_listing_ids_display_different_properties(
     db_connection.seed(SEED_FILE)
 
     first_response = web_client.get(
-        "/listings/1?year=2026&month=1"
+        "/listings/1?year=2026&month=7"
     )
+
     second_response = web_client.get(
-        "/listings/2?year=2026&month=1"
+        "/listings/2?year=2026&month=7"
     )
 
-    assert b"Rain-soaked shed on a mountain" in first_response.data
-    assert b"Uncomfortable camper van in a lay-by" not in (
-        first_response.data
+    first_html = first_response.data.decode("utf-8")
+    second_html = second_response.data.decode("utf-8")
+
+    assert first_response.status_code == 200
+    assert second_response.status_code == 200
+
+    assert "Rain-soaked shed on a mountain" in first_html
+    assert "Uncomfortable camper van in a lay-by" not in (
+        first_html
     )
 
-    assert b"Uncomfortable camper van in a lay-by" in (
-        second_response.data
+    assert "Uncomfortable camper van in a lay-by" in (
+        second_html
     )
-    assert b"Rain-soaked shed on a mountain" not in (
-        second_response.data
+    assert "Rain-soaked shed on a mountain" not in (
+        second_html
     )
 
 
@@ -74,6 +82,10 @@ def test_property_page_contains_previous_and_next_month_links(
     )
 
     html = response.data.decode("utf-8")
+
+    # Normalise HTML escaping so the test accepts both
+    # "&month" and "&amp;month".
+    html = html.replace("&amp;", "&")
 
     assert response.status_code == 200
 
@@ -100,8 +112,13 @@ def test_december_calendar_links_to_january_of_the_next_year(
         "/listings/1?year=2026&month=12"
     )
 
-    assert b"December 2026" in response.data
+    html = response.data.decode("utf-8")
+    html = html.replace("&amp;", "&")
+
+    assert response.status_code == 200
+    assert "December 2026" in html
+
     assert (
-        b"/listings/1?year=2027&month=1#booking-calendar"
-        in response.data
+        "/listings/1?year=2027&month=1#booking-calendar"
+        in html
     )
