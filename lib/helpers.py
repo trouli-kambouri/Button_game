@@ -28,11 +28,6 @@ def get_listings_for_bookings(connection, booking_list):
 
     return listing_repo.find_listings_by_id_list(ids)
 
-    # listings = []
-    # for listing_id in [booking.listing_id for booking in booking_list]:
-    #     listings.append(listing_repo.find_listing_by_id(listing_id))
-
-
 def format_date_strings(booking_list):
     dt_to_str = lambda d: dt.datetime.strftime(d,"%d-%m-%Y" )
     dates = [(dt_to_str(booking.start_date), dt_to_str(booking.end_date)) for booking in booking_list]
