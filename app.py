@@ -1,6 +1,7 @@
 import os
 from flask import Flask, render_template, request, redirect, session, flash
 from lib.database_connection import DatabaseConnection
+from lib.helpers import get_guest_booking_info, get_owner_request_info 
 from lib.users import User
 from lib.user_repository import UserRepository
 from lib.listing import Listing
@@ -115,18 +116,23 @@ def get_all_listings():
 # Please feel free to edit/change.
 @app.route('/listings/new', methods=['GET'])
 def get_create_listing():
+    if "user_id" not in session:
+        return redirect("/users/login")
     return render_template("create_listing.html")
 # End
 
 @app.route('/listings/new', methods=['POST'])
-def create_listing():    
+def create_listing():
+    if "user_id" not in session:
+        return redirect("/users/login")
+
     connection = DatabaseConnection()
     connection.connect()
     listing_repository = ListingRepository(connection)
     listing_details = request.form
-    new_listing = Listing(title=listing_details["title"], description=listing_details["description"],
+    new_listing = Listing(title=listing_details["title"].strip(), description=listing_details["description"].strip(),
                           price=listing_details['price'], available_from=listing_details['available_from'],
-                          available_until=listing_details['available_until'], owner_id=listing_details['owner_id'])
+                          available_until=listing_details['available_until'], owner_id=session["user_id"])
     listing_repository.create(new_listing)
     return redirect("/listings")
 
@@ -217,7 +223,6 @@ def create_booking(listing_id):
 """
 Manage bookings page: GET /my_bookings
 """
-# Will need to get user id, e.g. from session
 @app.route("/my_bookings", methods=["GET"])
 def get_manage_bookings_page():
     if "user_id" not in session:
@@ -227,25 +232,10 @@ def get_manage_bookings_page():
 
     user_id = session["user_id"]
 
-    booking_repo = BookingRepository(connection)
-    listing_repo = ListingRepository(connection)
+    guest_bookings = get_guest_booking_info(connection, user_id)
+    owner_requests = get_owner_request_info(connection, user_id)
 
-    bookings = booking_repo.find_bookings_by_guest_id(user_id)
-    requests = booking_repo.find_bookings_by_owner_id(user_id)
-
-    guest_listings = []
-    owner_listings = []
-    for listing_id in [booking.listing_id for booking in bookings]:
-        guest_listings.append(listing_repo.find_listing_by_id(listing_id))
-
-    for listing_id in [request.listing_id for request in requests]:
-        owner_listings.append(listing_repo.find_listing_by_id(listing_id))
-    
-    guest_bookings = [(booking, listing) for booking, listing in zip(bookings, guest_listings)]
-    owner_requests = [(request, listing) for request, listing in zip(requests, owner_listings)]
-
-
-    return render_template("my_bookings.html", user_id=user_id, bookings_list=bookings, requests_list=requests, guest_list=guest_bookings, owner_list=owner_requests)
+    return render_template("my_bookings.html", user_id=user_id, guest_list=guest_bookings, owner_list=owner_requests)
 
 
 @app.after_request
