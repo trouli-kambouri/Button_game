@@ -1,5 +1,6 @@
+DROP TABLE IF EXISTS listing_images;
 DROP TABLE IF EXISTS bookings;
-DROP TABLE IF EXISTS booking_statuses CASCADE;
+DROP TABLE IF EXISTS booking_statuses CASCADE; -- just in case anyone still has it
 DROP TABLE IF EXISTS listings CASCADE;
 DROP TABLE IF EXISTS users CASCADE;
 
@@ -36,13 +37,6 @@ CREATE TABLE listing_images (
         FOREIGN KEY(listing_id) 
         REFERENCES listings(id) 
         ON DELETE CASCADE
-);
-
--- TODO: Add column for url image to listings
-
-CREATE TABLE booking_statuses (
-    id INT PRIMARY KEY,
-    name VARCHAR(20)
 );
 
 CREATE TABLE bookings (
@@ -94,3 +88,4 @@ INSERT INTO bookings (start_date, end_date, listing_id, guest_id, status)
         ('2026-07-19', '2026-07-20', 4, 5, 'denied'),
         ('2026-07-12', '2026-07-12', 12, 3, 'requested'),
         ('2026-07-12', '2026-07-12', 10, 4, 'requested');
+        
