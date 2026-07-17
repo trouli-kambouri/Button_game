@@ -21,12 +21,11 @@ def get_owner_request_info(connection, user_id):
     return [(booking, dates, listing) for booking, dates, listing in zip(bookings, booking_dates, listings)]
 
 def get_listings_for_bookings(connection, booking_list):
-
     listing_repo = ListingRepository(connection)
+    return [listing_repo.find_listing_by_id(booking.listing_id) for booking in booking_list]
+    # ids = [booking.listing_id for booking in booking_list]
 
-    ids = [booking.listing_id for booking in booking_list]
-
-    return listing_repo.find_listings_by_id_list(ids)
+    # return listing_repo.find_listings_by_id_list(ids)
 
 def format_date_strings(booking_list):
     dt_to_str = lambda d: dt.datetime.strftime(d,"%d-%m-%Y" )
