@@ -60,12 +60,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const available_from = new Date("{{ listing.available_from }}");
     const available_until = new Date("{{ listing.available_until }}");
     
+const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
     buttons.forEach(btn => {
         const btnDateStr = btn.getAttribute("data-date");
         const btnDate = new Date (btnDateStr);        
-        if (btnDate >= available_from && btnDate < available_until ) {
+        
+        // 💡 THE UPDATE: Add "&& btnDate >= today" to the condition!
+        if (btnDate >= available_from && btnDate < available_until && btnDate >= today) {
             btn.disabled = false;
-            btn.classList.remove("unavailable")
+            btn.classList.remove("unavailable");
         }
     });
     buttons.forEach(btn => {
