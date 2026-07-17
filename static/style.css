@@ -3,7 +3,7 @@ h1
 {
     margin: 0;
     padding: 0;
-    color:  #FFFFFF; 
+    color:  rgba(255, 255, 255, 0.9); 
     font-size: 40px;
     text-align: center;
     text-shadow: 0px 4px 10px rgba(0, 0, 0, 0.7);
@@ -12,7 +12,7 @@ h1
 /* Header 2 */
 h2      
 {
-    color: #FFFFFF;
+    color: rgba(255, 255, 255, 0.9);
     font-size: 36px;
     text-align: center;
     font-style: italic;
@@ -22,7 +22,7 @@ h2
 /* Header 3*/
 h3     
 {
-    color: #FFFFFF;
+    color: rgba(255, 255, 255, 0.9);
     font-size: 32px;
     text-align: center;
     font-style: italic;
@@ -87,6 +87,36 @@ body{
 {
     background-color: rgba(255, 255, 255, 0.2);
     transform: translateY(-2px);
+}
+
+
+.user-status 
+{
+    color: rgba(255, 255, 255, 0.7); 
+    font-size: 14px;                 
+    font-weight: normal;             
+    padding: 10px 5px;               
+    
+    
+    white-space: nowrap; 
+}
+
+
+.user-status strong 
+{
+    color: #FFFFFF;                 
+    font-weight: bold;               
+}
+
+
+.logout-link 
+{
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.logout-link:hover 
+{
+    background-color: rgba(255, 99, 71, 0.2)
 }
 
 /* Formatting the form containers */
@@ -315,8 +345,11 @@ body{
     max-width: 450px;
     border-radius: 16px;
     
-    /* 💡 Translucent Blurry Glass Effect */
-    background: rgba(255, 255, 255, 0.45); 
+    /* Translucent Blurry Glass Effect - edited for dark background */
+    background: rgba(20, 20, 20, 0.55);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255,255,255,0.15);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px); /* Safari support */
     
@@ -325,7 +358,9 @@ body{
 }
 
 .booking-section h2 {
-    color: #2c3e50;
+    color: white;
+    font-size: 2rem;
+    text-shadow: 0 3px 10px rgba(0,0,0,0.7);
     margin-bottom: 20px;
     text-align: center;
 }
@@ -337,7 +372,7 @@ body{
 }
 
 .no-js-calendar th {
-    color: #555;
+    color: rgba(255,255,255,0.85);
     font-weight: 600;
     padding-bottom: 15px;
     text-align: center;
@@ -350,27 +385,34 @@ body{
     vertical-align: middle;
 }
 
-/* 💡 Day buttons: Perfectly aligned horizontally and vertically */
+/* align buttons */
 .calendar-day-btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    
-    /* Force buttons to be identical perfect circles/squares */
+
     width: 45px;
     height: 45px;
     margin: 0 auto;
-    
-    /* Reset default button styling */
-    background: transparent;
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    border-radius: 50%; /* Rounded circles, change to 8px for soft squares */
-    
+
+    /* Dark glass style */
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+
+    /* White text */
+    color: white;
     font-size: 1rem;
-    font-weight: bold;
-    color: #2c3e50;
+    font-weight: 600;
+
     cursor: pointer;
-    transition: all 0.2s ease;
+
+    transition: all 0.25s ease;
+}
+/* Greyed out unavailable dates */
+.calendar-day-btn.unavailable {
+    background: rgba(255, 255, 255, 0.01);
+    color: rgb(81, 71, 71);
 }
 
 /* Hover & Click Effects */
@@ -402,6 +444,8 @@ body{
     justify-content: space-between;
     width: 100%;
     margin-bottom: 15px 
+}
+
 .nav-arrow {
     text-decoration: none;
     font-size: 1.5rem;
@@ -412,8 +456,6 @@ body{
     transition: background 0.2s;
 }
 
-.nav-arrow:hover    background-color: rgba(255, 90, 95, 0.1);
-}
 
 /* Info Summary Box above calendar */
 .booking-summary {
@@ -456,8 +498,6 @@ body{
     border-radius: 4px; /* Square off highlights so range looks like a solid bar */
 }
 
-<<<<<<< Updated upstream
-=======
 .calendar-day-btn.booked {
     background-color: #ff5a5f !important; /* MakersBnB Brand Pink / Scarlet */
     color: #ffffff !important;
@@ -467,9 +507,47 @@ body{
     border: none;
 }
 
-/* Manage Bookings */
->>>>>>> Stashed changes
 
+.bookings-container {
+    margin: 1em auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: minmax(150px, auto);
+    gap: 1em;
+    width: 80%;
+
+}
+
+.booking-list-container {
+    background: rgba(30, 30, 30, 0.8);
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(255, 255,255,0.15);
+    backdrop-filter: blur(5px);
+}
+
+.booking-container {
+    border-radius: 12px;
+    width: 70%;
+    padding: 1em;
+    margin: 0.2em auto;
+    /* background: rgba(30, 30, 30, 0.8);
+    box-shadow: 0 5px 5px rgba(255, 255,255,0.15); */
+}
+
+.booking-container p {
+    font-size: 0.8em;
+    color: white;
+}
+
+.booking-container a {
+    color: white;
+    text-decoration: none;
+}
+
+.booking-container a:hover {
+    color: rgb(240, 185, 185);
+    text-decoration: none;
+}
 
 /* Logo - optional */
 /*
@@ -480,3 +558,118 @@ body{
 }
 */
 
+.hero-header {
+    text-align: center;
+    margin: 60px auto 30px auto;
+    padding: 0 20px;
+}
+
+.hero-title {
+    margin: 0;
+    padding: 0;
+    font-size: 56px;
+    font-weight: 800;
+    text-align: center;
+    letter-spacing: -1.5px;
+    line-height: 1.1;
+    
+    background: linear-gradient(to right,
+        #ffffff 40%,
+        #FD5E53 100%
+    );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+
+    /* animation when page loads */
+    animation: titleEntrance 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.hero-subtitle {
+    margin-top: 20px 0 0 0;
+    font-size: 24px;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0px 3px 12px rgba(0, 0, 0, 0.8);
+    letter-spacing: 0.5px;
+    
+    animation: subtitleEntrance 1s ease-out 0.2s forwards;
+    opacity: 0; /* hidden until animation triggers */
+}
+
+/* animations for hero title and subtitle */
+@keyframes titleEntrance {
+    0% {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes subtitleEntrance {
+    0% {
+        transform: translateY(10px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+/* logo css */
+.house-logo-shadow-container {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    filter: drop-shadow(2px 0px 0px #000000) 
+            drop-shadow(-2px 0px 0px #000000) 
+            drop-shadow(0px 2px 0px #000000) 
+            drop-shadow(0px -2px 0px #000000)
+            drop-shadow(1px 1px 0px #000000)
+            drop-shadow(-1px 1px 0px #000000)
+            drop-shadow(1px -1px 0px #000000)
+            drop-shadow(-1px -1px 0px #000000)
+            drop-shadow(0px 1px 0px #000000) /* 💡 Your perfect 1px bottom weight! */
+            drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.4));
+}
+
+.house-logo-wrapper {
+    width: 100%;
+    height: 100%;
+    background-color: #E2E2E2; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    clip-path: polygon(
+        0% 100%, 
+        0% 50%, 
+        15% 35%,     /* 3. Shifted Left & Down */
+        15% 5%,      /* 4. Shifted Left */
+        30% 5%,      /* 5. Shifted Left */
+        30% 20%,     /* 6. Shifted Left & Down */
+        50% 0%,      /* 7. Peak remains exactly at top-center */
+        100% 50%, 
+        100% 100%
+    );
+}
+/* Icon logo */
+.house-logo-icon {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    transform: scale(0.72); 
+    transform-origin: center bottom;
+    mix-blend-mode: multiply;
+}

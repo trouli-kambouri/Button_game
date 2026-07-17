@@ -1,4 +1,5 @@
-DROP TABLE IF EXISTS users;
+-- Will delete FK on listings, bookings
+DROP TABLE IF EXISTS users CASCADE;
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,

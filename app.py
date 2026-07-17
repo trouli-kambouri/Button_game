@@ -1,10 +1,14 @@
 import os
 from flask import Flask, render_template, request, redirect, session, flash
 from lib.database_connection import DatabaseConnection
+from lib.helpers import get_guest_booking_info, get_owner_request_info 
 from lib.users import User
 from lib.user_repository import UserRepository
 from lib.listing import Listing
 from lib.listing_repository import ListingRepository
+from lib.booking_repository import BookingRepository
+from lib.bookings import Bookings
+
 
 import calendar
 from datetime import datetime
@@ -33,15 +37,15 @@ def get_landing_page():
     return render_template('index.html', listings=listings_emails)
 
 
-@app.route('/', methods=['POST'])
-def remove_listing():
-    connection = DatabaseConnection()
-    connection.connect()
-    listing_repository = ListingRepository(connection)
-    listing_details = request.form
-    listing = Listing(title=listing_details["title"], description=listing_details["description"], price=listing_details['price'], owner_id=listing_details['owner_id'])
-    listing_repository.remove(listing)
-    return redirect("/")    
+# @app.route('/', methods=['POST'])
+# def remove_listing():
+#     connection = DatabaseConnection()
+#     connection.connect()
+#     listing_repository = ListingRepository(connection)
+#     listing_details = request.form
+#     listing = Listing(title=listing_details["title"], description=listing_details["description"], price=listing_details['price'], thumbnail=listing_details['thumbnail'], owner_id=listing_details['owner_id'])
+#     listing_repository.remove(listing)
+#     return redirect("/")    
 
 
 """
@@ -63,7 +67,7 @@ def signup_user():
     try:
         user_repository.create(new_user)
         flash("Sign up successful!", "success")
-        return redirect('users/login')
+        return redirect('/users/login')
     except ValueError as e:
         flash(str(e), "error")
         return redirect("/users/new")
@@ -112,16 +116,23 @@ def get_all_listings():
 # Please feel free to edit/change.
 @app.route('/listings/new', methods=['GET'])
 def get_create_listing():
+    if "user_id" not in session:
+        return redirect("/users/login")
     return render_template("create_listing.html")
 # End
 
 @app.route('/listings/new', methods=['POST'])
 def create_listing():
+    if "user_id" not in session:
+        return redirect("/users/login")
+
     connection = DatabaseConnection()
     connection.connect()
     listing_repository = ListingRepository(connection)
     listing_details = request.form
-    new_listing = Listing(title=listing_details["title"], description=listing_details["description"], price=listing_details['price'], owner_id=listing_details['owner_id'])
+    new_listing = Listing(title=listing_details["title"].strip(), description=listing_details["description"].strip(),
+                          price=listing_details['price'], available_from=listing_details['available_from'],
+                          available_until=listing_details['available_until'], owner_id=session["user_id"])
     listing_repository.create(new_listing)
     return redirect("/listings")
 
@@ -139,11 +150,14 @@ Individual listing page. GET(get listing page)
 #     return render_template('property_page.html', listing=listing)
     
 @app.get('/listings/<int:property_id>')
-def get_individual_listin_converter_with_calendar(property_id):
+def get_individual_listing_converter_with_calendar(property_id):
     connection = DatabaseConnection()
     connection.connect()
     listing_repository = ListingRepository(connection)
-    listing = listing_repository.find_by_listing_id(property_id)
+    listing = listing_repository.find_listing_by_id(property_id)
+
+    user_repository = UserRepository(connection)
+    owner = user_repository.find_by_user_id(listing.owner_id)
 
 # 💡 1. INITIALIZE BOOKING REPOSITORY & FIND BOOKINGS
     # (Adjust 'BookingRepository' and 'find_by_listing_id' to match your class/method names)
@@ -183,41 +197,61 @@ def get_individual_listin_converter_with_calendar(property_id):
     cal_matrix = calendar.monthcalendar(year, month)
     month_name = calendar.month_name[month]
 
-<<<<<<< Updated upstream
-    return render_template('property_page.html', listing=listing, cal_matrix=cal_matrix, month_name=month_name, month=month, year=year, prev_month = prev_month, prev_year = prev_year, next_month = next_month, next_year = next_year)
-=======
     return render_template('property_page.html', listing=listing, cal_matrix=cal_matrix, month_name=month_name, month=month, year=year, prev_month = prev_month, prev_year = prev_year, next_month = next_month, next_year = next_year, owner_email = owner.email, booked_ranges=booked_ranges)
->>>>>>> Stashed changes
 
 # The POST route: Processes the booking submission for that listing
-# @app.post('/listings/<int:listing_id>')
-# def create_booking(listing_id):
-#     selected_date = request.form.get('selected_date') # Format: "YYYY-MM-DD"
+@app.post('/listings/<int:listing_id>/my_bookings')
+def create_booking(listing_id):
+    if "user_id" not in session:
+        return redirect("/users/login")
+
+    connection = DatabaseConnection()
+    connection.connect()
+    booking_repository = BookingRepository(connection)
     
-#     # 1. Validation: Make sure they actually clicked a date
-#     if not selected_date:
-#         flash("Please select a date on the calendar.", "error")
-#         return redirect(f'/listings/{listing_id}')
-        
-#     # 2. Database Integration
-#     connection = DatabaseConnection()
-#     connection.connect()
-#     booking_repository = BookingRepository(connection)
+    # 1. Get the dates from the submitted form
+    start_date = request.form.get('check_in')
+    end_date = request.form.get('check_out')
     
-#     try:
-#         # Mocking user_id = 1 for now (replace this with session['user_id'] once login is set up)
-#         booker_id = 1
+    # Simple validation: ensure both dates were actually selected
+    if not start_date or not end_date:
+        flash("Please select both check-in and check-out dates.", "error")
+        return redirect(f"/listings/{listing_id}")
         
-#         # 3. USE the selected_date variable to write a new row to your bookings table!
-#         booking_repository.create(listing_id=listing_id, user_id=booker_id, date=selected_date)
-        
-#         # 4. Success feedback
-#         flash(f"Successfully booked for {selected_date}!", "success")
-#         return redirect(f'/listings/{listing_id}')
-        
-#     except Exception as e:
-#         flash(f"Could not complete booking: {str(e)}", "error")
-#         return redirect(f'/listings/{listing_id}')
+    # 2. Get the logged-in user's ID 
+
+    current_user_id = session["user_id"] 
+    
+    # 3. Create a new Booking instance (status defaults to 'pending')
+    new_booking = Bookings(
+        start_date=start_date,
+        end_date=end_date,
+        listing_id=listing_id,
+        guest_id=current_user_id,
+        status="requested"
+    )
+    
+    booking_repository.create(new_booking)
+    flash("Booking request sent successfully!", "success")
+    return redirect('/my_bookings')
+
+"""
+Manage bookings page: GET /my_bookings
+"""
+@app.route("/my_bookings", methods=["GET"])
+def get_manage_bookings_page():
+    if "user_id" not in session:
+        return redirect("/users/login")
+    connection = DatabaseConnection()
+    connection.connect()
+
+    user_id = session["user_id"]
+
+    guest_bookings = get_guest_booking_info(connection, user_id)
+    owner_requests = get_owner_request_info(connection, user_id)
+
+    return render_template("my_bookings.html", user_id=user_id, guest_list=guest_bookings, owner_list=owner_requests)
+
 
 @app.after_request
 def add_header(response):
@@ -227,10 +261,22 @@ def add_header(response):
     response.headers["Expires"] = "0"
     return response
 
+@app.route('/users/logout', methods=['GET'])
+def logout_user():
+    session.clear() 
+    flash("You have been logged out.", "success")
+    return redirect('/')
+
+@app.context_processor
+def inject_user_email():
+    return dict(email=session.get('email'))
+
 # These lines start the server if you run this file directly
 # They also start the server configured to use the test database
 # if started in test mode.
 if __name__ == '__main__':
     app.run(debug=True, port=int(os.environ.get('PORT', 5001)))
+
+
 
 

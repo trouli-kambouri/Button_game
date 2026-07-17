@@ -3,10 +3,34 @@
 This creates a Navigation Bar that contains links to other pages.
 
 -->
-<nav class="navigation_bar">
+<!-- <nav class="navigation_bar">
     <a href="/">Home</a>
     <a href="/users/login">Login</a>
     <a href="/users/new">Sign Up</a>
     <a href="/listings">Listings</a>
     <a href="/listings/new">Create Listing</a>
+</nav> -->
+
+
+<nav class="navigation_bar">
+    <a href="/">Home</a>
+    <a href="/listings">Listings</a>
+    
+    {% if email %}
+        <a href="/listings/new">Create Listing</a>
+        <a href="/my_bookings">My Bookings</a>
+        <span class="user-status">Logged in as: <strong>{{ email }}</strong></span>
+        <a href="/users/logout" class="logout-link">Log Out</a>
+    {% else %}
+        <a href="/users/login">Login</a>
+        <a href="/users/new">Sign Up</a>
+    {% endif %}
+    
+    <div class="nav-logo-inline">
+        <div class="house-logo-shadow-container">
+            <div class="house-logo-wrapper">
+                <img src="{{ url_for('static', filename='makers_academy_logo.png') }}" alt="MakersBnB Logo" class="house-logo-icon">
+            </div>
+        </div>
+    </div>
 </nav>

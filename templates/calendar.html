@@ -13,7 +13,7 @@
             <strong>Stay Length:</strong> <span id="stay-length">0</span> nights
         </div>
     </div>
-    <form id="booking-form" method="POST" action="/listings/{{ listing.id }}/bookings">
+    <form id="booking-form" method="POST" action="/listings/{{ listing.id }}/my_bookings">
         <input type="hidden" id="check_in_input" name="check_in">
         <input type="hidden" id="check_out_input" name="check_out">
         <table class="no-js-calendar">
@@ -30,7 +30,7 @@
                                 {% if day != 0 %}
                                     <button type="button"
                                             data-date="{{ year }}-{{ '%02d' % month }}-{{ '%02d' % day }}"
-                                            class="calendar-day-btn">
+                                            class="calendar-day-btn unavailable" disabled="true">
                                         {{ day }}
                                     </button>
                                 {% else %}
@@ -58,8 +58,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const checkInInput = document.getElementById("check_in_input");
     const checkOutInput = document.getElementById("check_out_input");
     const submitBtn = document.getElementById("submit-booking-btn");
-<<<<<<< Updated upstream
-=======
     const available_from = new Date("{{ listing.available_from }}");
     const available_until = new Date("{{ listing.available_until }}");
     
@@ -97,7 +95,23 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
->>>>>>> Stashed changes
+    const available_from = new Date("{{ listing.available_from }}");
+    const available_until = new Date("{{ listing.available_until }}");
+    
+const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    buttons.forEach(btn => {
+        const btnDateStr = btn.getAttribute("data-date");
+        const btnDate = new Date (btnDateStr);        
+        
+        // 💡 THE UPDATE: Add "&& btnDate >= today" to the condition!
+        if (btnDate >= available_from && btnDate < available_until && btnDate >= today) {
+            btn.disabled = false;
+            btn.classList.remove("unavailable");
+        }
+    });
+
     buttons.forEach(btn => {
         btn.addEventListener("click", () => {
             const clickedDateStr = btn.getAttribute("data-date");

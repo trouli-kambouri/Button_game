@@ -1,7 +1,17 @@
--- NOTE - will delete FK on referencing bookings table
+DROP TABLE IF EXISTS bookings;
+DROP TABLE IF EXISTS booking_statuses CASCADE;
 DROP TABLE IF EXISTS listings CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
 
-CREATE TABLE listings(
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL,
+    phone_number TEXT,
+    password TEXT NOT NULL
+);
+
+CREATE TABLE listings (
     id SERIAL PRIMARY KEY, 
     owner_id INT NOT NULL,
     title TEXT NOT NULL,
@@ -14,6 +24,29 @@ CREATE TABLE listings(
     CONSTRAINT valid_date_range CHECK (available_from <= available_until),
     CONSTRAINT fk_owner FOREIGN KEY(owner_id) REFERENCES users(id) ON DELETE CASCADE
 );
+
+CREATE TABLE bookings (
+    id SERIAL PRIMARY KEY,
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    listing_id INT NOT NULL,
+    guest_id INT NOT NULL,
+    status VARCHAR(20) NOT NULL,
+    CONSTRAINT fk_listing FOREIGN KEY(listing_id) 
+        REFERENCES listings(id) 
+        ON DELETE CASCADE,
+    CONSTRAINT fk_guest FOREIGN KEY(guest_id) 
+        REFERENCES users(id) 
+        ON DELETE CASCADE
+);
+
+INSERT INTO users (name, email, phone_number, password)
+    VALUES
+        ('kayleighkarpal', 'kayleighk@kickabout.com', '07635183911', 'badpassword'),
+        ('mingma', 'maming@matsforcats.co.uk', '07876543909', '-*76sjfyemv'),
+        ('gurpeetgill', 'gurpgill@grillsforu.net', '07652987709', 'youcantguess'),
+        ('salsalamander', 'salsal@salsalsalads.net', '076526479839', 'icanguess'),
+        ('taliatipple', 'ttipple@taliastipples.co.uk', '07856981178', 'guessmeifyoudare');
 
 INSERT INTO listings (
     owner_id, title, description, price_per_night, available_from, available_until, thumbnail)
@@ -31,3 +64,13 @@ INSERT INTO listings (
         (4, 'Tiny house that is not a shed', 'Little Houseton', 68, '2026-01-01', '2026-08-31', 'Little_Houseton.png'),
         (5, 'Beach hut only 5 days walk from beach', 'Landlockedshire', 58, '2026-03-01', '2026-09-30', 'Landlockedshire.png');
         
+
+INSERT INTO bookings (start_date, end_date, listing_id, guest_id, status)
+    VALUES
+        ('2026-01-21', '2026-01-22', 1, 3, 'completed'),
+        ('2026-01-11', '2026-01-22', 1, 2, 'completed'),
+        ('2026-01-13', '2026-01-14', 2, 3, 'completed'),
+        ('2026-07-21', '2026-07-22', 4, 2, 'confirmed'),
+        ('2026-07-19', '2026-07-20', 4, 5, 'denied'),
+        ('2026-07-12', '2026-07-12', 12, 3, 'requested'),
+        ('2026-07-12', '2026-07-12', 10, 4, 'requested');

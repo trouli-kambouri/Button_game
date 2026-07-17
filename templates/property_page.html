@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -11,7 +12,7 @@
             <h1>{{ listing.title }}</h1>
                 <section class="image-gallery">
                     <img
-                        src="/static/placeholder.png"
+                        src="{{ url_for('static', filename='thumbnails/' + listing.thumbnail) if listing.thumbnail else '/static/placeholder.png' }}"
                         alt="{{ listing.title }}"
                         class="hero-image"
                     >
@@ -26,16 +27,18 @@
                 <h2>£{{ listing.price_per_night }} per night</h2>
                 <p>
                     <strong>Host:</strong>
-                    {{ email }}
+                    {{ owner_email }}
                 </p>
                 <h3>About this property</h3>
                 <p>{{ listing.description }}</p>
             </section>
+            <!--
             <section class="booking-card">
                 <p>
                     "To book, contact: {{ email }}"
                 </p>
             </section>
+            -->
             <section class="booking-card">
                 {% include "calendar.html" %}
             </section>
