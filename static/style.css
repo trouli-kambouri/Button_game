@@ -456,6 +456,19 @@ body{
     border-radius: 4px; /* Square off highlights so range looks like a solid bar */
 }
 
+<<<<<<< Updated upstream
+=======
+.calendar-day-btn.booked {
+    background-color: #ff5a5f !important; /* MakersBnB Brand Pink / Scarlet */
+    color: #ffffff !important;
+    text-decoration: line-through; /* Striking through the number makes it clear it's taken */
+    opacity: 0.65; /* Lower opacity tells the user it cannot be interacted with */
+    cursor: not-allowed;
+    border: none;
+}
+
+/* Manage Bookings */
+>>>>>>> Stashed changes
 
 
 /* Logo - optional */
