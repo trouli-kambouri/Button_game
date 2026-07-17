@@ -25,6 +25,26 @@ CREATE TABLE listings (
     CONSTRAINT fk_owner FOREIGN KEY(owner_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
+CREATE TABLE listing_images (
+    id SERIAL PRIMARY KEY,
+    listing_id INT NOT NULL,
+    image_url VARCHAR(255) NOT NULL,
+    position INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_listing 
+        FOREIGN KEY(listing_id) 
+        REFERENCES listings(id) 
+        ON DELETE CASCADE
+);
+
+-- TODO: Add column for url image to listings
+
+CREATE TABLE booking_statuses (
+    id INT PRIMARY KEY,
+    name VARCHAR(20)
+);
+
 CREATE TABLE bookings (
     id SERIAL PRIMARY KEY,
     start_date DATE NOT NULL,

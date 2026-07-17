@@ -10,6 +10,15 @@
     {% include "navigation_bar.html" %}
         <main class="property-page">
             <h1>{{ listing.title }}</h1>
+                {% if session.get('user_id') == listing.owner_id %}
+                    <div class="owner-controls-card">
+                        <p class="owner-badge">You are the owner of this listing</p>
+                        <a href="/listings/{{ listing.id }}/edit" class="btn-owner-edit">
+                        Edit Listing & Add Photos
+                        </a>
+                    </div>
+                {% endif %}
+
                 <section class="image-gallery">
                     <img
                         src="{{ url_for('static', filename='thumbnails/' + listing.thumbnail) if listing.thumbnail else '/static/placeholder.png' }}"
@@ -17,12 +26,18 @@
                         class="hero-image"
                     >
                 <div class="thumbnail-gallery">
-                    <img src="/static/placeholder.png" alt="">
-                    <img src="/static/placeholder.png" alt="">
-                    <img src="/static/placeholder.png" alt="">
-                    <img src="/static/placeholder.png" alt="">
+                    {% if gallery_images %}
+                        {% for img in gallery_images %}
+                        <!-- We use your uploaded database URLs directly! -->
+                            <img src="{{ img.image_url }}" alt="Gallery Image">
+                        {% endfor %}
+                    {% else %}
+                    <!-- Optional: Keep 1 or 2 placeholders if they have no other photos -->
+                        <img src="/static/placeholder.png" alt="">
+                    {% endif %}
                 </div>
             </section>
+
             <section class="property-details">
                 <h2>£{{ listing.price_per_night }} per night</h2>
                 <p>

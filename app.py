@@ -9,13 +9,23 @@ from lib.listing_repository import ListingRepository
 from lib.booking_repository import BookingRepository
 from lib.bookings import Bookings
 
-
+import uuid
 import calendar
 from datetime import datetime
+from werkzeug.utils import secure_filename
+
+
 
 # Create a new Flask app
 app = Flask(__name__)
 app.secret_key = "some_really_secret_key"
+
+UPLOAD_FOLDER = 'static/thumbnails'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp'}
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # == Your Routes Here ==
 
@@ -155,6 +165,11 @@ def get_individual_listing_converter_with_calendar(property_id):
     connection.connect()
     listing_repository = ListingRepository(connection)
     listing = listing_repository.find_listing_by_id(property_id)
+    
+    gallery_images = connection.execute(
+        "SELECT image_url FROM listing_images WHERE listing_id = %s ORDER BY position;", 
+        [property_id]
+    )
 
     user_repository = UserRepository(connection)
     owner = user_repository.find_by_user_id(listing.owner_id)
@@ -197,7 +212,7 @@ def get_individual_listing_converter_with_calendar(property_id):
     cal_matrix = calendar.monthcalendar(year, month)
     month_name = calendar.month_name[month]
 
-    return render_template('property_page.html', listing=listing, cal_matrix=cal_matrix, month_name=month_name, month=month, year=year, prev_month = prev_month, prev_year = prev_year, next_month = next_month, next_year = next_year, owner_email = owner.email, booked_ranges=booked_ranges)
+    return render_template('property_page.html', listing=listing, gallery_images=gallery_images, cal_matrix=cal_matrix, month_name=month_name, month=month, year=year, prev_month = prev_month, prev_year = prev_year, next_month = next_month, next_year = next_year, owner_email = owner.email, booked_ranges=booked_ranges)
 
 # The POST route: Processes the booking submission for that listing
 @app.post('/listings/<int:listing_id>/my_bookings')
@@ -251,6 +266,127 @@ def get_manage_bookings_page():
     owner_requests = get_owner_request_info(connection, user_id)
 
     return render_template("my_bookings.html", user_id=user_id, guest_list=guest_bookings, owner_list=owner_requests)
+
+
+"""
+Route for editing the listing to be used after initial creation of a listing
+"""
+
+@app.route('/listings/<int:property_id>/edit', methods=['GET'])
+def get_edit_listing_page(property_id):
+    if "user_id" not in session:
+        return redirect("/users/login")
+
+    connection = DatabaseConnection()
+    connection.connect()
+    
+    listing_repo = ListingRepository(connection)
+    listing = listing_repo.find_listing_by_id(property_id)
+
+    gallery_images = connection.execute(
+        "SELECT image_url FROM listing_images WHERE listing_id = %s ORDER BY position;",
+        [property_id]
+    )
+    
+
+    if listing.owner_id != session["user_id"]:
+        flash("You are not authorized to edit this listing.", "error")
+        return redirect("/")
+
+    return render_template('edit_listing.html', listing=listing, gallery_images=gallery_images)
+
+
+"""
+Route for file uploads to the database
+"""
+
+@app.route('/listings/<int:property_id>/edit', methods=['POST'])
+def update_listing_and_add_images(property_id):
+    if "user_id" not in session:
+        return redirect("/users/login")
+
+    connection = DatabaseConnection()
+    connection.connect()
+    listing_repo = ListingRepository(connection)
+    listing = listing_repo.find_listing_by_id(property_id)
+
+    if listing.owner_id != session["user_id"]:
+        flash("Unauthorized action.", "error")
+        return redirect("/")
+
+
+    listing_details = request.form
+
+    connection.execute(
+        """
+        UPDATE listings 
+        SET title = %s, description = %s, price_per_night = %s, 
+            available_from = %s, available_until = %s
+        WHERE id = %s;
+        """,
+        [
+            listing_details["title"], 
+            listing_details["description"], 
+            int(listing_details["price"]),
+            listing_details["available_from"], 
+            listing_details["available_until"],
+            property_id
+        ]
+    )
+
+    uploaded_files = request.files.getlist("additional_images")
+
+    for file in uploaded_files:
+        if file and allowed_file(file.filename):
+            # Secure the filename and make it unique using a UUID
+            original_filename = secure_filename(file.filename)
+            unique_name = f"{uuid.uuid4()}_{original_filename}"
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], unique_name)
+            
+            # Save the file physically to static/thumbnails/
+            file.save(file_path)
+
+            # Construct the relative url path
+            relative_url = f"/static/thumbnails/{unique_name}"
+
+            # 3. Write to the database
+            # (Executing raw SQL inside your connection object)
+            connection.execute(
+                "INSERT INTO listing_images (listing_id, image_url) VALUES (%s, %s);",
+                [property_id, relative_url]
+            )
+
+    flash("Listing updated successfully!", "success")
+    return redirect(f"/listings/{property_id}")
+
+@app.get('/listings/<int:listing_id>/images/delete')
+def delete_listing_image(listing_id):
+    if "user_id" not in session:
+        return redirect("/users/login")
+        
+    connection = DatabaseConnection()
+    connection.connect()
+
+    listing_repo = ListingRepository(connection)
+    listing = listing_repo.find_listing_by_id(listing_id)
+    if listing.owner_id != session["user_id"]:
+        flash("Unauthorized action.", "error")
+        return redirect(f"/listings/{listing_id}")
+    
+    image_url = request.args.get("image_url")
+
+    if image_url:
+        relative_path = image_url.lstrip('/')
+        if os.path.exists(relative_path):
+            os.remove(relative_path)
+
+        connection.execute(
+            "DELETE FROM listing_images WHERE listing_id = %s AND image_url = %s;",
+            [listing_id, image_url]
+        )
+        flash("Image deleted successfully!", "success")
+
+    return redirect(f"/listings/{listing_id}/edit")
 
 
 @app.after_request
