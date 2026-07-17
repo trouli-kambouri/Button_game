@@ -1,6 +1,7 @@
 import os
 from flask import Flask, render_template, request, redirect, session, flash
 from lib.database_connection import DatabaseConnection
+from lib.helpers import get_guest_booking_info, get_owner_request_info 
 from lib.users import User
 from lib.user_repository import UserRepository
 from lib.listing import Listing
@@ -125,18 +126,23 @@ def get_all_listings():
 # Please feel free to edit/change.
 @app.route('/listings/new', methods=['GET'])
 def get_create_listing():
+    if "user_id" not in session:
+        return redirect("/users/login")
     return render_template("create_listing.html")
 # End
 
 @app.route('/listings/new', methods=['POST'])
-def create_listing():    
+def create_listing():
+    if "user_id" not in session:
+        return redirect("/users/login")
+
     connection = DatabaseConnection()
     connection.connect()
     listing_repository = ListingRepository(connection)
     listing_details = request.form
-    new_listing = Listing(title=listing_details["title"], description=listing_details["description"],
+    new_listing = Listing(title=listing_details["title"].strip(), description=listing_details["description"].strip(),
                           price=listing_details['price'], available_from=listing_details['available_from'],
-                          available_until=listing_details['available_until'], owner_id=listing_details['owner_id'])
+                          available_until=listing_details['available_until'], owner_id=session["user_id"])
     listing_repository.create(new_listing)
     return redirect("/listings")
 
@@ -168,6 +174,21 @@ def get_individual_listing_converter_with_calendar(property_id):
     user_repository = UserRepository(connection)
     owner = user_repository.find_by_user_id(listing.owner_id)
 
+# 💡 1. INITIALIZE BOOKING REPOSITORY & FIND BOOKINGS
+    # (Adjust 'BookingRepository' and 'find_by_listing_id' to match your class/method names)
+    booking_repository = BookingRepository(connection)
+    bookings = booking_repository.find_bookings_by_listing_id(property_id) 
+
+    # 💡 2. FORMAT BOOKINGS TO A JAVASCRIPT-FRIENDLY DICTIONARY LIST
+    # This formats the Python date/datetime objects to "YYYY-MM-DD" strings
+    booked_ranges = [
+        {
+            "start": b.start_date.strftime('%Y-%m-%d'), 
+            "end": b.end_date.strftime('%Y-%m-%d')
+        }
+        for b in bookings
+    ]
+
     now = datetime.now()
     year = request.args.get('year', default=now.year, type=int)
     month = request.args.get('month', default=now.month, type=int)
@@ -191,13 +212,13 @@ def get_individual_listing_converter_with_calendar(property_id):
     cal_matrix = calendar.monthcalendar(year, month)
     month_name = calendar.month_name[month]
 
-    return render_template('property_page.html', listing=listing, gallery_images=gallery_images, cal_matrix=cal_matrix, month_name=month_name, month=month, year=year, prev_month = prev_month, prev_year = prev_year, next_month = next_month, next_year = next_year, owner_email = owner.email)
+    return render_template('property_page.html', listing=listing, gallery_images=gallery_images, cal_matrix=cal_matrix, month_name=month_name, month=month, year=year, prev_month = prev_month, prev_year = prev_year, next_month = next_month, next_year = next_year, owner_email = owner.email, booked_ranges=booked_ranges)
 
 # The POST route: Processes the booking submission for that listing
 @app.post('/listings/<int:listing_id>/my_bookings')
 def create_booking(listing_id):
     if "user_id" not in session:
-        redirect("/users/login")
+        return redirect("/users/login")
 
     connection = DatabaseConnection()
     connection.connect()
@@ -232,33 +253,19 @@ def create_booking(listing_id):
 """
 Manage bookings page: GET /my_bookings
 """
-# Will need to get user id, e.g. from session
 @app.route("/my_bookings", methods=["GET"])
 def get_manage_bookings_page():
     if "user_id" not in session:
-        redirect("/users/login")
+        return redirect("/users/login")
     connection = DatabaseConnection()
     connection.connect()
 
     user_id = session["user_id"]
 
-    booking_repo = BookingRepository(connection)
-    listing_repo = ListingRepository(connection)
-    bookings = booking_repo.find_bookings_by_guest_id(user_id)
-    requests = booking_repo.find_bookings_by_owner_id(user_id)
+    guest_bookings = get_guest_booking_info(connection, user_id)
+    owner_requests = get_owner_request_info(connection, user_id)
 
-    guest_listings = []
-    owner_listings = []
-    for listing_id in [request.listing_id for request in requests]:
-        guest_listings.append(listing_repo.find_listing_by_id(listing_id))
-
-    for listing_id in [booking.listing_id for booking in bookings]:
-        owner_listings.append(listing_repo.find_listing_by_id(listing_id))
-    
-
-
-
-    return render_template("my_bookings.html", user_id=user_id, bookings_list=bookings, requests_list=requests, guest_list=guest_listings, owner_list=owner_listings)
+    return render_template("my_bookings.html", user_id=user_id, guest_list=guest_bookings, owner_list=owner_requests)
 
 
 """

@@ -60,14 +60,6 @@ CREATE TABLE bookings (
         ON DELETE CASCADE
 );
 
-
-INSERT INTO booking_statuses (id, name)
-    VALUES
-        (1, 'requested'),
-        (2, 'confirmed'),
-        (3, 'denied'),
-        (4, 'completed');
-
 INSERT INTO users (name, email, phone_number, password)
     VALUES
         ('kayleighkarpal', 'kayleighk@kickabout.com', '07635183911', 'badpassword'),
@@ -82,18 +74,23 @@ INSERT INTO listings (
         (1, 'Rain-soaked shed on a mountain', 'Greenfield', 71, '2026-01-01', '2026-01-31', 'Greenfield.png'),
         (1, 'Uncomfortable camper van in a lay-by', 'Newtown', 21, '2026-01-01', '2026-01-31', 'Newton.png'),
         (2, 'Glamorous pad in fancy town', 'Hopington', 311, '2026-01-01', '2026-01-31', 'Hopington.png'),
-        (2, 'Medieval castle with ghost included', 'Spooksville', 199, '2026-01-01', '2026-01-31', 'Spooksville.png'),
-        (3, 'Luxury treehouse with unreliable ladder', 'Treeford', 89, '2026-01-01', '2026-01-31', 'Treeford.png'),
-        (1, 'Converted bus stop with panoramic traffic views', 'Roundabout-on-Sea', 34, '2026-01-01', '2026-01-31', 'Roundabout-on-sea.png'),
-        (4, 'Medieval prison cell', 'Stonechester', 66, '2026-01-01', '2026-01-31', 'Stonechester.png'),
-        (2, 'Studio flat above a loud pub', 'Pintbury', 88, '2026-01-01', '2026-01-31', 'Pintbury.png'),
-        (5, 'Floating house that is not sinking', 'Above Mariana''s Trench', 112, '2026-01-01', '2026-01-31', 'Above_marianas_trench.png'),
-        (3, 'Countryside cottage with sheep included', 'Baaxton', 93, '2026-01-01', '2026-01-31', 'Baaxton.png'),
-        (4, 'Tiny house that is not a shed', 'Little Houseton', 68, '2026-01-01', '2026-01-31', 'Little_Houseton.png'),
-        (5, 'Beach hut only 5 days walk from beach', 'Landlockedshire', 58, '2026-01-01', '2026-01-31', 'Landlockedshire.png');
+        (2, 'Medieval castle with ghost included', 'Spooksville', 199, '2025-10-31', '2026-11-01', 'Spooksville.png'),
+        (3, 'Luxury treehouse with unreliable ladder', 'Treeford', 89, '2025-10-01', '2026-06-29', 'Treeford.png'),
+        (1, 'Converted bus stop with panoramic traffic views', 'Roundabout-on-Sea', 34, '2026-07-10', '2026-08-31', 'Roundabout-on-sea.png'),
+        (4, 'Medieval prison cell', 'Stonechester', 66, '2026-02-03', '2026-07-21', 'Stonechester.png'),
+        (2, 'Studio flat above a loud pub', 'Pintbury', 88, '2026-05-01', '2026-09-21', 'Pintbury.png'),
+        (5, 'Floating house that is not sinking', 'Above Mariana''s Trench', 112, '2026-05-01', '2026-11-10', 'Above_marianas_trench.png'),
+        (3, 'Countryside cottage with sheep included', 'Baaxton', 93, '2025-01-01', '2026-07-20', 'Baaxton.png'),
+        (4, 'Tiny house that is not a shed', 'Little Houseton', 68, '2026-01-01', '2026-08-31', 'Little_Houseton.png'),
+        (5, 'Beach hut only 5 days walk from beach', 'Landlockedshire', 58, '2026-03-01', '2026-09-30', 'Landlockedshire.png');
+        
 
 INSERT INTO bookings (start_date, end_date, listing_id, guest_id, status)
     VALUES
-        ('2026-11-21', '2026-11-22', 1, 3, 'requested'),
-        ('2026-10-21', '2026-10-22', 1, 3, 'requested'),
-        ('2026-08-21', '2026-08-22', 2, 3, 'requested');
+        ('2026-01-21', '2026-01-22', 1, 3, 'completed'),
+        ('2026-01-11', '2026-01-22', 1, 2, 'completed'),
+        ('2026-01-13', '2026-01-14', 2, 3, 'completed'),
+        ('2026-07-21', '2026-07-22', 4, 2, 'confirmed'),
+        ('2026-07-19', '2026-07-20', 4, 5, 'denied'),
+        ('2026-07-12', '2026-07-12', 12, 3, 'requested'),
+        ('2026-07-12', '2026-07-12', 10, 4, 'requested');
