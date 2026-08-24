@@ -1,20 +1,10 @@
 import os
 from flask import Flask, render_template, request, redirect, session, flash
-from lib.database_connection import DatabaseConnection
-from lib.helpers import get_guest_booking_info, get_owner_request_info 
-from lib.users import User
-from lib.user_repository import UserRepository
-from lib.listing import Listing
-from lib.listing_repository import ListingRepository
-from lib.booking_repository import BookingRepository
-from lib.bookings import Bookings
 
 import uuid
 import calendar
 from datetime import datetime
 from werkzeug.utils import secure_filename
-
-
 
 # Create a new Flask app
 app = Flask(__name__)
@@ -40,24 +30,11 @@ Landing page GET(get landing page) POST(create listig) POST(remove listing)
 
 @app.route('/', methods=['GET'])
 def get_landing_page():
-    connection = DatabaseConnection()
-    connection.connect()
-    listing_repository = ListingRepository(connection)
-    listings_emails = listing_repository.all_with_owner_emails()
-    return render_template('index.html', listings=listings_emails)
+    return render_template('index.html')
 
 
-# @app.route('/', methods=['POST'])
-# def remove_listing():
-#     connection = DatabaseConnection()
-#     connection.connect()
-#     listing_repository = ListingRepository(connection)
-#     listing_details = request.form
-#     listing = Listing(title=listing_details["title"], description=listing_details["description"], price=listing_details['price'], thumbnail=listing_details['thumbnail'], owner_id=listing_details['owner_id'])
-#     listing_repository.remove(listing)
-#     return redirect("/")    
 
-
+'''
 """
 Sign up page GET(get signin page) POST(signup user)
 """
@@ -414,5 +391,5 @@ if __name__ == '__main__':
     app.run(debug=True, port=int(os.environ.get('PORT', 5001)))
 
 
-
+'''
 

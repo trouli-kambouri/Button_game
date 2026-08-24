@@ -2,3 +2,15 @@ __pycache__
 .vscode
 .pytest_cache
 screenshot.png
+/target
+.idea/
+/node_modules
+dependency-reduced-pom.xml
+*.iml
+.log
+/src/main/resources/static/built
+.classpath
+.factorypath
+.project
+.settings/
+**/.DS_Store
