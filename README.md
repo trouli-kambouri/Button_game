@@ -1,5 +1,14 @@
 I am turning this into a button game. :)
 
+Goals for MVP:
+
+1. Integrate AUTH0 (/login)
+2. One button (/home)
+3. Deploy site
+
+Right now:
+0. Integrate Supabase for a remote database.
+
 # MakersBnB Python Project Seed
 
 This repo contains the seed codebase for the MakersBnB project in Python (using 
