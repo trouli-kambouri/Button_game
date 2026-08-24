@@ -1,12 +1,4 @@
-## Contributors
-
-Built collaboratively by:
-
-- [Anton](https://github.com/tsukuyomji)
-- [Matt](https://github.com/MattsL4b)
-- [Sam](https://github.com/sam-chong)
-- [Seb](https://github.com/sebblock88)
-- [Trouli](https://github.com/trouli-kambouri)
+I am turning this into a button game. :)
 
 # MakersBnB Python Project Seed
 
