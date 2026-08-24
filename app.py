@@ -25,67 +25,30 @@ def allowed_file(filename):
 #   ; open http://localhost:5001/index
 
 """
-Landing page GET(get landing page) POST(create listig) POST(remove listing)
+Landing page GET(get landing page) POST(create listing) POST(remove listing)
 """
 
 @app.route('/', methods=['GET'])
 def get_landing_page():
     return render_template('index.html')
 
-
-
-'''
 """
 Sign up page GET(get signin page) POST(signup user)
 """
-
 
 @app.route("/users/new", methods=["GET"])
 def get_sign_up_page():
     return render_template('signup.html')
 
-@app.route('/users', methods=['POST'])
-def signup_user():
-    connection = DatabaseConnection()
-    connection.connect()
-    user_repository = UserRepository(connection)
-    user_details = request.form
-    new_user = User(name=user_details["name"], email=user_details["email"], phone_number=user_details["phone_number"], password=user_details["password"])
-    try:
-        user_repository.create(new_user)
-        flash("Sign up successful!", "success")
-        return redirect('/users/login')
-    except ValueError as e:
-        flash(str(e), "error")
-        return redirect("/users/new")
-
 """
 Login Page GET(get login page) POST(create session)
 """
-
 
 @app.route("/users/login", methods=["GET"])
 def get_login_page():
     return render_template('login.html')
 
-
-@app.route('/sessions', methods=['POST'])
-def create_session():
-    connection = DatabaseConnection()
-    connection.connect()
-    user_repository = UserRepository(connection)
-    email = request.form["email"]
-    password = request.form["password"]
-    user = user_repository.find_by_email(email)
-
-    if user and user.password == password:
-        session["user_id"] = user.id
-        session["email"] = user.email
-        return redirect("/")
-    else:
-        return redirect("/users/login")
-    
-"""
+'''
 Listings page GET(get listings page) POST(get create listings page) POST(create listing)
 """
 

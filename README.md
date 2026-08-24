@@ -7,15 +7,16 @@ Goals for MVP:
 3. Deploy site
 
 Right now:
-0. Integrate Supabase for a remote database.
+0. Integrate Supabase for a remote database. Make sure everything is set up.
+1. Set up Supabase Authentication and login page.
+2. Maybe deploy site on something that's not github pages but that's ok for now.
+3. Learn enough JS to create one button.
 
-# MakersBnB Python Project Seed
+
+# Python Project Seed
 
 This repo contains the seed codebase for the MakersBnB project in Python (using 
 Flask and Pytest).
-
-Someone in your team should "Use this template" to create a copy of the codebase on their GitHub account.
-Everyone in the team should then clone that copy of the repo to their local machine.
 
 > NOTE: If you encounter a `ModuleNotFound` error, deactivate and then reactivate your virtual env. If that doesn't help, please reach out to your coach.
 
