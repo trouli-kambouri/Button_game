@@ -7,10 +7,12 @@ Goals for MVP:
 3. Deploy site
 
 Right now:
+
 0. Integrate Supabase for a remote database. Make sure everything is set up.
 1. Set up Supabase Authentication and login page.
-2. Maybe deploy site on something that's not github pages but that's ok for now.
+2. Maybe deploy site on something that's not github pages... but that's ok for now.
 3. Learn enough JS to create one button.
+4. Clean up the code.
 
 
 # Python Project Seed
