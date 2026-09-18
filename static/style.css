@@ -38,7 +38,7 @@ body{
     /* To make more dim or less dim, change the "0.5" to a larger or smaller number */
     background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
     
-    url('../static/background.png');  /* The background image is at the location ../static/background.png. */
+    url(static/background.png.);
     margin: 0;
     min-height: 100vh;
     background-size: cover;        /* Filling screen */
