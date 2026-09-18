@@ -6,4 +6,5 @@ Goals for MVP:
 2. Deploy site
 
 Right now:
+
 3. Learn enough JS to create one button.
